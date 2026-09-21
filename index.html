@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام جرد عيادة الأسنان - واتساب API</title>
+<style>
+:root{--bg:#f4f1ec;--card:#fff;--primary:#2563eb;--primary-dark:#1d4ed8;--success:#059669;--warning:#d97706;--danger:#dc2626;--text:#0f172a;--text-light:#64748b;--border:#e2e8f0;--whatsapp:#25D366;--whatsapp-dark:#128C7E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Cairo,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.18);position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:11px}.brand-logo{width:40px;height:40px;background:linear-gradient(135deg,#60a5fa,#2563eb);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.brand h1{font-size:15px;font-weight:800}.brand p{font-size:10.5px;opacity:.7;margin-top:1px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn{border:none;padding:8px 14px;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.15)}.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.btn-light{background:#fff;color:var(--text);box-shadow:0 1px 6px rgba(0,0,0,.06);border:1px solid var(--border)}
+.btn-sm{padding:5px 10px;font-size:11px;border-radius:7px}.btn-danger{background:var(--danger);color:#fff}.btn-success{background:var(--success);color:#fff}
+.btn-whatsapp{background:var(--whatsapp);color:#fff;box-shadow:0 2px 10px rgba(37,211,102,.35)}.btn-whatsapp:hover{background:var(--whatsapp-dark);transform:translateY(-1px)}
+.container{max-width:1280px;margin:0 auto;padding:14px}
+.intro{background:var(--card);border-radius:14px;padding:14px 18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid #ece8e2}
+.intro h2{font-size:14px}.intro p{font-size:11.5px;color:var(--text-light);margin-top:3px;max-width:620px;line-height:1.6}
+.stats{display:flex;gap:8px}.stat{background:#f8fafc;border:1px solid var(--border);padding:8px 12px;border-radius:9px;min-width:85px;text-align:center}.stat b{font-size:16px;display:block}.stat span{font-size:9.5px;color:var(--text-light)}
+.whatsapp-status-bar{background:linear-gradient(135deg,#dcfce7 0%,#f0fdf4 100%);border:1.5px solid #bbf7d0;border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.whatsapp-status-bar.not-connected{background:linear-gradient(135deg,#fef3c7 0%,#fffbeb 100%);border-color:#fde68a}
+.whatsapp-status-bar .status-left{display:flex;align-items:center;gap:10px}
+.whatsapp-dot{width:10px;height:10px;border-radius:50%;background:var(--success);box-shadow:0 0 0 4px rgba(5,150,105,.2);animation:pulseDot 2s infinite}
+.whatsapp-dot.off{background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,.2)}
+@keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.low-stock-section{background:linear-gradient(135deg,#fef2f2 0%,#fff 100%);border:2px solid #fecaca;border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 4px 16px rgba(220,38,38,.08);display:none}
+.low-stock-section.has-alerts{display:block;animation:slideDown .4s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.low-stock-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.low-stock-header h3{font-size:13px;color:#991b1b;display:flex;align-items:center;gap:6px}
+.low-stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.low-stock-card{background:#fff;border:1px solid #fecaca;border-radius:11px;padding:10px 12px;display:flex;gap:10px;align-items:center;position:relative;overflow:hidden}
+.low-stock-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--danger)}
+.low-stock-card.expiry::before{background:var(--warning)}.low-stock-card img.thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0}
+.low-stock-card .info{flex:1;min-width:0}.low-stock-card .info b{font-size:11.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.low-stock-card .info span{font-size:10px;color:var(--text-light)}.low-stock-card .actions-col{display:flex;flex-direction:column;gap:4px}
+.storage-wrapper{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 8px 28px rgba(0,0,0,.07);border:1px solid #ece8e2;margin-bottom:14px}
+.storage-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}.storage-header h3{font-size:13px}
+.hint{font-size:10px;color:#475569;background:#f1f5f9;padding:4px 9px;border-radius:20px;border:1px solid var(--border)}
+.real-storage-container{position:relative;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.08);background:#111;line-height:0}
+.real-storage-container img.main-img{width:100%;height:auto;display:block;user-select:none;-webkit-user-drag:none}
+.hotspots-layer{position:absolute;inset:0;width:100%;height:100%}
+.hotspot{position:absolute;cursor:pointer;border:2px solid transparent;border-radius:6px;transition:.18s;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:5px;background:rgba(255,255,255,0);overflow:hidden}
+.hotspot:hover{background:rgba(37,99,235,.18);border-color:rgba(37,99,235,.9);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 4px 18px rgba(37,99,235,.32)}
+.hotspot.cabinet:hover{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.9)}
+.hotspot-label{background:rgba(15,23,42,.86);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;white-space:nowrap;backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.3);transform:translateY(4px);opacity:0;transition:.18s;pointer-events:none;max-width:95%;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.hotspot:hover .hotspot-label{transform:translateY(0);opacity:1}
+.hotspot-count{position:absolute;top:5px;right:5px;background:#2563eb;color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:20px;box-shadow:0 2px 6px rgba(37,99,235,.5);line-height:1.2;pointer-events:none}
+.hotspot-count.empty{background:rgba(15,23,42,.6)}.hotspot.cabinet .hotspot-count{background:#059669}
+.hotspot-count.alert{background:var(--danger);animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.hotspot-handle-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,.92);color:#0f172a;font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;opacity:0;transition:.18s;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.hotspot:hover .hotspot-handle-hint{opacity:1}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.78);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:12px;z-index:200;opacity:1;transition:.22s}
+.modal.hidden{opacity:0;pointer-events:none;visibility:hidden}
+.modal-content{background:#fff;border-radius:16px;width:100%;max-width:700px;max-height:92vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;animation:pop .32s cubic-bezier(.34,1.56,.64,1)}
+.modal-content.large{max-width:1160px}.modal-content.medium{max-width:860px}
+@keyframes pop{from{transform:scale(.92) translateY(16px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-header{padding:12px 16px;border-bottom:1px solid #eef0f2;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fcfaf8}
+.modal-header h3{font-size:13px;display:flex;align-items:center;gap:6px}
+.modal-header input.unit-name{font-size:13px;font-weight:800;border:1px dashed #cbd5e1;padding:5px 9px;border-radius:7px;background:#fff;min-width:150px}
+.modal-body{padding:14px;overflow:auto;flex:1}.modal-footer{padding:10px 16px;border-top:1px solid #eef0f2;display:flex;justify-content:space-between;align-items:center;background:#fcfaf8;gap:8px;flex-wrap:wrap}
+.unit-editor{display:grid;grid-template-columns:1fr 330px;gap:0;height:100%;min-height:0;flex:1;overflow:hidden}
+.canvas-area{position:relative;background:#0f172a;overflow:auto;display:flex;align-items:center;justify-content:center;padding:12px}
+.canvas-image-wrapper{position:relative;display:inline-block;max-width:100%;max-height:100%;box-shadow:0 12px 40px rgba(0,0,0,.5);border-radius:8px;overflow:hidden;background:#1e293b}
+.canvas-image-wrapper img.canvas-img{display:block;max-width:100%;max-height:70vh;width:auto;height:auto;object-fit:contain}
+.items-layer{position:absolute;inset:0;z-index:2}
+.placed-item{position:absolute;background:#fff;border-radius:9px;box-shadow:0 4px 14px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.9);border:2px solid transparent;cursor:grab;user-select:none;display:flex;flex-direction:column;overflow:hidden;min-width:58px;min-height:38px;transition:box-shadow .15s, border-color .15s}
+.placed-item:active{cursor:grabbing}.placed-item:hover{border-color:var(--primary);box-shadow:0 8px 22px rgba(0,0,0,.35);z-index:5}
+.placed-item.selected{border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.32),0 8px 22px rgba(0,0,0,.35);z-index:10!important}
+.placed-item.alert{border-color:var(--danger);box-shadow:0 0 0 2px rgba(220,38,38,.3),0 6px 18px rgba(0,0,0,.3)}.placed-item.expiry{border-color:var(--warning)}
+.placed-item img.item-img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0}
+.placed-item .item-overlay{position:relative;z-index:1;background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.85) 100%);padding:5px 7px;flex:1;display:flex;flex-direction:column;backdrop-filter:blur(2px)}
+.placed-item.has-image .item-overlay{background:linear-gradient(180deg,rgba(255,255,255,.92) 0%,rgba(255,255,255,.78) 100%)}
+.placed-item .item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:3px}.placed-item .item-icon{font-size:13px;line-height:1}.placed-item .item-qty{background:#0f172a;color:#fff;font-size:9px;font-weight:800;padding:2px 5px;border-radius:20px;min-width:18px;text-align:center;cursor:pointer;z-index:2}
+.placed-item .item-qty.alert-qty{background:var(--danger);animation:pulse 1s infinite}
+.placed-item .item-name{font-size:10px;font-weight:800;margin-top:3px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.placed-item .item-meta{font-size:8.5px;color:#475569;margin-top:1px;display:flex;gap:4px;flex-wrap:wrap}.placed-item .item-meta span{background:rgba(0,0,0,.06);padding:1px 4px;border-radius:10px}
+.placed-item .resize-handle{position:absolute;bottom:1px;left:1px;width:14px;height:14px;background:var(--primary);border-radius:3px 0 7px 0;cursor:nwse-resize;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;opacity:0;transition:.15s;z-index:3}
+.placed-item:hover .resize-handle,.placed-item.selected .resize-handle{opacity:1}
+.placed-item .delete-btn{position:absolute;top:1px;left:1px;width:16px;height:16px;background:var(--danger);color:#fff;border:none;border-radius:50%;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:.15s;z-index:3}
+.placed-item:hover .delete-btn,.placed-item.selected .delete-btn{opacity:1}
+.placed-item .alert-badge{position:absolute;top:1px;right:1px;background:var(--danger);color:#fff;font-size:8px;font-weight:900;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.side-panel{background:#f8fafc;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.side-panel-header{padding:12px;border-bottom:1px solid var(--border);background:#fff}.side-panel-header h4{font-size:12px;margin-bottom:7px}
+.search-box{position:relative}.search-box input{width:100%;padding:8px 30px 8px 9px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;background:#fff}
+.search-box span{position:absolute;left:9px;top:50%;transform:translateY(-50%);opacity:.5;font-size:12px}
+.catalog-list{flex:1;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:6px}
+.catalog-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 9px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:.15s}
+.catalog-item:hover{border-color:var(--primary);box-shadow:0 3px 10px rgba(0,0,0,.06);transform:translateY(-1px)}
+.catalog-item.alert-item{border-color:#fecaca;background:#fef2f2}
+.catalog-color{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;position:relative}
+.catalog-color img{width:100%;height:100%;object-fit:cover}
+.catalog-info{flex:1;min-width:0}.catalog-info b{font-size:11px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.catalog-info span{font-size:9.5px;color:var(--text-light);display:flex;gap:4px;flex-wrap:wrap}
+.catalog-add{width:24px;height:24px;border-radius:6px;border:none;background:#f1f5f9;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.catalog-add:hover{background:var(--primary);color:#fff}
+.side-panel-footer{padding:9px;border-top:1px solid var(--border);background:#fff}
+.form-group{margin-bottom:10px}.form-group label{font-size:11px;font-weight:700;margin-bottom:4px;display:block;color:#334155}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;background:#fff}
+.form-group textarea{resize:vertical;min-height:60px}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:2px solid var(--primary);border-color:transparent}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.color-options{display:flex;gap:6px;flex-wrap:wrap}.color-opt{width:28px;height:28px;border-radius:6px;cursor:pointer;border:3px solid transparent;transition:.15s}.color-opt.selected{border-color:#0f172a;transform:scale(1.1)}
+.icon-options{display:flex;gap:4px;flex-wrap:wrap}.icon-opt{width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.15s}.icon-opt.selected{border-color:var(--primary);background:#eff6ff}
+.image-upload{border:2px dashed var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:.18s;background:#fcfcfc;position:relative;overflow:hidden}
+.image-upload:hover{border-color:var(--primary);background:#f0f7ff}.image-upload img.preview{width:100%;max-height:160px;object-fit:contain;border-radius:8px;margin-bottom:8px;display:none}
+.image-upload.has-image img.preview{display:block}.image-upload.has-image .upload-text{display:none}
+.materials-list{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow:auto;padding:3px}
+.mat-row{display:flex;align-items:center;gap:9px;padding:9px;background:#fff;border:1px solid var(--border);border-radius:10px;transition:.15s}
+.mat-row:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}.mat-row .actions{margin-right:auto;display:flex;gap:4px}
+.suppliers-list{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow:auto}
+.supplier-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+.supplier-card .sup-icon{width:42px;height:42px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.supplier-card .sup-info{flex:1;min-width:0}.supplier-card .sup-info b{font-size:12px;display:block}.supplier-card .sup-info span{font-size:10px;color:var(--text-light);display:block;margin-top:2px}
+.supplier-card .sup-actions{display:flex;gap:4px;flex-wrap:wrap}
+.report-table{width:100%;border-collapse:collapse;font-size:11.5px}.report-table th{background:#f8fafc;padding:8px 9px;text-align:right;font-weight:800;border-bottom:2px solid var(--border);position:sticky;top:0}
+.report-table td{padding:8px 9px;border-bottom:1px solid #f1f5f9}.report-table tr:hover td{background:#f8fafc}
+.badge{padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;display:inline-block}.badge-green{background:#dcfce7;color:#166534}.badge-yellow{background:#fef9c3;color:#854d0e}.badge-red{background:#fee2e2;color:#991b1b}.badge-blue{background:#dbeafe;color:#1e40af}
+.empty-state{text-align:center;padding:28px 14px;color:var(--text-light)}.empty-state .icon{font-size:36px;margin-bottom:8px;opacity:.5}.empty-state p{font-size:11.5px;line-height:1.6}
+.item-edit-preview{width:100%;height:180px;background:#f8fafc;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px;position:relative}
+.item-edit-preview img{max-width:100%;max-height:100%;object-fit:contain}.item-edit-preview .no-image{font-size:12px;color:var(--text-light)}
+.wa-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
+.wa-card.highlight{border-color:var(--whatsapp);background:linear-gradient(135deg,#f0fdf4 0%,#fff 100%)}
+.wa-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.wa-step-num{width:28px;height:28px;background:var(--whatsapp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.wa-step-content{flex:1}.wa-step-content b{font-size:12px;display:block}.wa-step-content p{font-size:10.5px;color:var(--text-light);margin-top:3px;line-height:1.5}
+.switch{position:relative;display:inline-block;width:44px;height:24px}.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;transition:.2s;border-radius:24px}
+.slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#fff;transition:.2s;border-radius:50%}
+input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:before{transform:translateX(20px)}
+.api-box{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px;font-family:monospace;font-size:11px;direction:ltr;text-align:left;overflow:auto}
+@media(max-width:900px){.unit-editor{grid-template-columns:1fr;grid-template-rows:1fr 340px}.form-row{grid-template-columns:1fr}}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brand-logo">🦷</div><div><h1>جرد عيادة الأسنان - واتساب API</h1><p>صور حقيقية • تنبيهات • واتساب تلقائي كامل</p></div></div>
+  <div class="actions">
+    <button class="btn btn-ghost" id="btnMaterials">📦 المواد</button>
+    <button class="btn btn-ghost" id="btnSuppliers">🏢 الموردين</button>
+    <button class="btn btn-whatsapp" id="btnWhatsapp">📱 ربط واتساب</button>
+    <button class="btn btn-ghost" id="btnReport">📊 التقرير</button>
+    <button class="btn btn-ghost" id="btnImport">📥 استيراد</button>
+    <button class="btn btn-primary" id="btnExport">💾 تصدير</button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="intro">
+    <div><h2>نظام الجرد مع واتساب Business API - إرسال تلقائي 100%</h2><p>وضعان: <b>wa.me العادي</b> (يفتح واتساب) و <b>Cloud API التلقائي</b> (يرسل بدون تدخل). اربط حسابك وفعّل الإرسال التلقائي.</p></div>
+    <div class="stats">
+      <div class="stat"><b id="statTotalItems">0</b><span>إجمالي القطع</span></div>
+      <div class="stat"><b id="statMaterials">0</b><span>نوع مادة</span></div>
+      <div class="stat"><b id="statLow">0</b><span>تنبيهات</span></div>
+      <div class="stat"><b id="statSuppliers">0</b><span>موردين</span></div>
+    </div>
+  </div>
+
+  <div id="whatsappStatusBar" class="whatsapp-status-bar not-connected">
+    <div class="status-left">
+      <div id="waDot" class="whatsapp-dot off"></div>
+      <div><b id="waStatusText" style="font-size:12px">📱 واتساب غير مربوط</b><p id="waStatusSub" style="font-size:10px;color:var(--text-light);margin-top:2px">اختر وضع الربط: wa.me أو Cloud API</p></div>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button class="btn btn-whatsapp btn-sm" id="btnQuickConnectWa">🔗 ربط الآن</button>
+      <button class="btn btn-light btn-sm" id="btnOpenWaWeb">🌐 واتساب ويب</button>
+    </div>
+  </div>
+
+  <div id="lowStockSection" class="low-stock-section">
+    <div class="low-stock-header"><h3>⚠️ مواد وصلت حد التنبيه</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-success btn-sm" id="btnSendWhatsappOrders">📱 إرسال طلبات واتساب</button><button class="btn btn-light btn-sm" id="btnDismissAlerts">إخفاء</button></div></div>
+    <div id="lowStockGrid" class="low-stock-grid"></div>
+  </div>
+
+  <div class="storage-wrapper">
+    <div class="storage-header"><h3>🖼️ المخزن الحقيقي - اضغط على أي جرار/خزانة</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="hint">🔵 جرارات • 🟢 خزائن • 🔴 تنبيه</span><label style="font-size:10px;display:flex;align-items:center;gap:4px;background:#fff;padding:4px 8px;border-radius:20px;border:1px solid var(--border);cursor:pointer"><input type="checkbox" id="toggleLabels" checked> إظهار الأسماء</label></div></div>
+    <div class="real-storage-container" id="realStorageContainer"><img src="images/full.jpg" class="main-img" alt="المخزن" id="mainStorageImg" draggable="false"><div class="hotspots-layer" id="hotspotsLayer"></div></div>
+  </div>
+</div>
+
+<!-- Unit Modal -->
+<div id="unitModal" class="modal hidden">
+  <div class="modal-content large" style="height:88vh">
+    <div class="modal-header"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><h3><span id="unitIcon">🗄️</span> <input id="unitNameInput" class="unit-name" value="جرار"></h3><span id="unitTypeBadge" class="badge badge-green">جرار</span><span id="unitCountBadge" class="badge badge-blue">0 عنصر</span><span id="unitAlertBadge" class="badge badge-red" style="display:none">⚠️ تنبيه</span></div><div style="display:flex;gap:5px;align-items:center"><button class="btn btn-light btn-sm" id="btnClearUnit">🗑️ تفريغ</button><button class="btn btn-light btn-sm" id="btnCloseUnit">✕</button></div></div>
+    <div class="unit-editor"><div class="canvas-area" id="canvasArea"><div class="canvas-image-wrapper" id="canvasWrapper"><img id="canvasImg" class="canvas-img" src="images/drawer.jpg" alt="جرار"><div class="items-layer" id="itemsLayer"></div></div><div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.72);color:#fff;padding:5px 12px;border-radius:20px;font-size:9.5px;z-index:3;backdrop-filter:blur(6px);display:flex;gap:10px"><span>🖱️ اسحب</span><span>📏 حجم</span><span>👆 تعديل</span></div></div><div class="side-panel"><div class="side-panel-header"><h4>📦 إضافة مواد</h4><div class="search-box"><input id="catalogSearch" placeholder="ابحث..."><span>🔍</span></div></div><div class="catalog-list" id="catalogList"></div><div class="side-panel-footer"><div style="display:flex;gap:5px"><input id="quickAddQty" type="number" min="1" value="1" style="width:56px;padding:6px;border:1px solid var(--border);border-radius:7px;text-align:center"><button class="btn btn-light btn-sm" style="flex:1" id="btnOpenMatFromUnit">➕ مادة جديدة</button></div></div></div></div>
+  </div>
+</div>
+
+<!-- Materials Modal -->
+<div id="materialsModal" class="modal hidden">
+  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><input id="matName" placeholder="كمبوزيت A2"></div><div class="form-row"><div class="form-group"><label>الفئة</label><select id="matCategory"><option value="استهلاكية">🧴 استهلاكية</option><option value="أدوات">🔧 أدوات</option><option value="تخدير">💉 تخدير</option><option value="حشوات">🦷 حشوات</option><option value="تعقيم">🧼 تعقيم</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option></select></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
+</div>
+
+<!-- Suppliers Modal -->
+<div id="suppliersModal" class="modal hidden">
+  <div class="modal-content medium"><div class="modal-header"><h3>🏢 الموردين</h3><button class="btn btn-light btn-sm" id="btnCloseSuppliers">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة مورد</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="supEditId"><div class="form-group"><label>اسم الشركة *</label><input id="supCompany"></div><div class="form-row"><div class="form-group"><label>المندوب</label><input id="supRep"></div><div class="form-group"><label>الهاتف *</label><input id="supPhone" dir="ltr"></div></div><div class="form-row"><div class="form-group"><label>واتساب</label><input id="supWhatsapp" dir="ltr"></div><div class="form-group"><label>إيميل</label><input id="supEmail" dir="ltr"></div></div><div class="form-group"><label>العنوان</label><input id="supAddress"></div><div class="form-group"><label>ملاحظات</label><textarea id="supNotes"></textarea></div><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-primary" id="btnSaveSup" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelSup">إلغاء</button></div></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 الموردين (<span id="supCount">0</span>)</h4><div class="suppliers-list" id="suppliersList"></div></div></div></div></div>
+</div>
+
+<!-- WhatsApp Modal with Business API -->
+<div id="whatsappModal" class="modal hidden" style="z-index:260">
+  <div class="modal-content medium" style="max-width:760px">
+    <div class="modal-header" style="background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border-bottom:2px solid #bbf7d0"><h3>📱 ربط واتساب - عادي + Business API التلقائي</h3><button class="btn btn-light btn-sm" id="btnCloseWhatsapp">✕</button></div>
+    <div class="modal-body">
+      <div class="wa-card highlight"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><div style="display:flex;align-items:center;gap:10px"><div id="waModalDot" class="whatsapp-dot off"></div><div><b id="waModalStatus" style="font-size:13px">غير مربوط</b><p style="font-size:11px;color:var(--text-light)">اختر وضع الربط أدناه</p></div></div><span id="waModalBadge" class="badge badge-yellow">غير مفعل</span></div></div>
+
+      <div class="wa-card" style="border:2px solid var(--whatsapp)">
+        <h4 style="font-size:12px;margin-bottom:10px">⚙️ وضع الإرسال - اختر واحداً:</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label style="border:2px solid var(--border);border-radius:10px;padding:10px;cursor:pointer;display:flex;gap:8px;align-items:flex-start" id="modeWameLabel"><input type="radio" name="waMode" value="wa_me" checked style="margin-top:3px"><div><b style="font-size:11px">🔗 الوضع العادي - wa.me</b><p style="font-size:10px;color:var(--text-light);margin-top:2px">يفتح واتساب ويب/التطبيق برسالة جاهزة. يحتاج ضغط إرسال يدوي. مجاني وسهل.</p></div></label>
+          <label style="border:2px solid var(--border);border-radius:10px;padding:10px;cursor:pointer;display:flex;gap:8px;align-items:flex-start" id="modeApiLabel"><input type="radio" name="waMode" value="cloud_api" style="margin-top:3px"><div><b style="font-size:11px">🤖 API تلقائي كامل - Cloud API</b><p style="font-size:10px;color:var(--text-light);margin-top:2px">إرسال تلقائي 100% بدون فتح المتصفح. يحتاج إعداد Meta Business.</p><span style="font-size:9px;background:#dbeafe;color:#1e40af;padding:2px 6px;border-radius:10px">للمحترفين</span></div></label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="wa-card" style="flex:1;margin-bottom:0">
+          <div class="form-group"><label>📱 رقم واتساب العيادة *</label><input id="waClinicNumber" placeholder="07XXXXXXXX" dir="ltr" style="font-weight:700;text-align:center;font-size:14px"></div>
+          <div class="form-group"><label>⏰ تأخير التلقائي</label><select id="waDelay"><option value="0">فوري</option><option value="5" selected>5 ثواني</option><option value="10">10 ثواني</option><option value="30">30 ثانية</option></select></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b style="font-size:11px">🤖 تفعيل تلقائي</b></div><label class="switch"><input type="checkbox" id="waAutoEnabled"><span class="slider"></span></label></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b style="font-size:11px">✅ تأكيد قبل الإرسال</b></div><label class="switch"><input type="checkbox" id="waRequireConfirm" checked><span class="slider"></span></label></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><b style="font-size:11px">🔔 صوت تنبيه</b></div><label class="switch"><input type="checkbox" id="waSoundEnabled" checked><span class="slider"></span></label></div>
+        </div>
+        <div class="wa-card" style="flex:1;margin-bottom:0">
+          <div class="form-group"><label>📝 قالب الرسالة</label><textarea id="waTemplate" style="min-height:100px;font-size:11px">مرحبا {repName} - {companyName}،
+
+نحتاج طلب مستلزمات عاجل:
+
+{itemsList}
+
+📍 العيادة: عمان
+📅 {date}
+📱 من نظام الجرد</textarea></div>
+        </div>
+      </div>
+
+      <div id="apiSettingsBox" class="wa-card" style="display:none;border:2px solid #0f172a;background:#f8fafc">
+        <h4 style="font-size:12px;margin-bottom:10px">🔧 إعدادات WhatsApp Cloud API - للإرسال التلقائي الكامل</h4>
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px;margin-bottom:10px"><b style="font-size:10px">📚 كيف تحصل على البيانات؟</b><p style="font-size:10px;color:#92400e;margin-top:4px;line-height:1.5">1. ادخل <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a> → إنشاء تطبيق → نوع Business → إضافة منتج WhatsApp<br>2. من لوحة التحكم → WhatsApp → API Setup → انسخ Phone Number ID و Access Token<br>3. الصقها هنا. <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started" target="_blank">دليل مفصل</a></p></div>
+        <div class="form-group"><label>📞 Phone Number ID * (من Meta)</label><input id="waPhoneNumberId" placeholder="مثال: 123456789012345" dir="ltr"></div>
+        <div class="form-group"><label>🔑 Access Token * (مؤقت أو دائم)</label><div style="display:flex;gap:6px"><input id="waAccessToken" type="password" placeholder="EAAxxxxxxxx..." dir="ltr" style="flex:1"><button class="btn btn-light btn-sm" id="btnToggleToken">👁️</button></div><p style="font-size:9px;color:var(--text-light);margin-top:3px">⚠️ Token يُحفظ محلياً في متصفحك فقط - لا يُرسل لأي خادم خارجي</p></div>
+        <div class="form-group"><label>🏢 Business Account ID (اختياري)</label><input id="waBusinessId" placeholder="اختياري" dir="ltr"></div>
+        <div class="api-box" id="apiCodePreview">POST https://graph.facebook.com/v20.0/{phone-number-id}/messages
+Headers: Authorization: Bearer {token}
+Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body":"..."}}</div>
+        <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-whatsapp btn-sm" id="btnTestApi">🧪 اختبار API</button><button class="btn btn-light btn-sm" id="btnOpenMetaDocs">📚 فتح دليل Meta</button></div>
+        <div id="apiTestResult" style="margin-top:8px;font-size:11px;padding:8px;border-radius:8px;display:none"></div>
+      </div>
+
+      <div class="wa-card" style="background:#fffbeb;border-color:#fde68a"><b style="font-size:11px">🔐 الصلاحيات:</b><ul style="font-size:10.5px;color:#92400e;margin:8px 16px 0 0;line-height:1.7"><li>الوضع العادي: السماح بفتح wa.me + تسجيل دخول واتساب ويب</li><li>وضع API: يحتاج Meta Business Account + رقم واتساب بيزنس مفعل</li><li>الـ Token يبقى في جهازك فقط</li></ul></div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn btn-whatsapp" id="btnGrantWhatsapp" style="flex:1">🔗 ربط واتساب ومنح الصلاحية</button>
+        <button class="btn btn-light" id="btnOpenWhatsappWeb" style="flex:1">🌐 واتساب ويب</button>
+        <button class="btn btn-light" id="btnTestWhatsapp">🧪 اختبار wa.me</button>
+        <button class="btn btn-primary" id="btnSaveWhatsapp">💾 حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Item Edit Modal -->
+<div id="itemEditModal" class="modal hidden" style="z-index:250">
+  <div class="modal-content" style="max-width:520px">
+    <div class="modal-header"><h3>✏️ تعديل المادة</h3><button class="btn btn-light btn-sm" id="btnCloseItemEdit">✕</button></div>
+    <div class="modal-body">
+      <div class="item-edit-preview" id="itemEditPreview"><span class="no-image">لا توجد صورة</span></div>
+      <input type="hidden" id="itemEditUnitId"><input type="hidden" id="itemEditItemId">
+      <div class="form-group"><label>اسم المادة</label><input id="itemEditName" disabled style="background:#f1f5f9"></div>
+      <div class="form-row"><div class="form-group"><label>الكمية *</label><input id="itemEditQty" type="number" min="0" style="font-weight:800;font-size:16px;text-align:center"></div><div class="form-group"><label>حد التنبيه</label><input id="itemEditThreshold" type="number" min="0" placeholder="افتراضي"></div></div>
+      <div class="form-row"><div class="form-group"><label>انتهاء</label><input id="itemEditExpiry" type="date"></div><div class="form-group"><label>المورد</label><select id="itemEditSupplier"><option value="">-- نفس مورد المادة --</option></select></div></div>
+      <div class="form-group"><label>ملاحظات</label><input id="itemEditNotes"></div>
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 10px;display:none" id="itemEditAlertBox"><b style="font-size:11px;color:#991b1b">⚠️ تنبيه</b><p style="font-size:10px;color:#7f1d1d;margin-top:2px" id="itemEditAlertText"></p></div>
+      <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" id="btnSaveItemEdit" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnDeleteItemFromDrawer">🗑️ حذف من الجرار</button><button class="btn btn-danger btn-sm" id="btnDeleteItemCompletely">❌ حذف نهائي</button></div>
+      <div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-light btn-sm" style="flex:1" id="btnCallSupplier">📞 اتصال</button><button class="btn btn-success btn-sm" style="flex:1" id="btnWhatsappSupplier">💬 واتساب</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="reportModal" class="modal hidden"><div class="modal-content large"><div class="modal-header"><h3>📊 تقرير الجرد</h3><div style="display:flex;gap:5px"><button class="btn btn-light btn-sm" id="btnPrintReport">🖨️ طباعة</button><button class="btn btn-light btn-sm" id="btnCloseReport">✕</button></div></div><div class="modal-body" id="reportBody" style="padding:0"></div></div></div>
+<div id="qtyModal" class="modal hidden" style="z-index:300"><div class="modal-content" style="max-width:320px"><div class="modal-header"><h3>تعديل الكمية</h3><button class="btn btn-light btn-sm" id="btnCloseQty">✕</button></div><div class="modal-body" style="text-align:center"><div id="qtyMatName" style="font-weight:800;margin-bottom:12px;font-size:12px"></div><input id="qtyInput" type="number" min="0" style="width:110px;padding:10px;font-size:18px;font-weight:800;text-align:center;border:2px solid var(--border);border-radius:10px"><div style="display:flex;gap:6px;margin-top:16px"><button class="btn btn-primary" id="btnSaveQty" style="flex:1">حفظ</button><button class="btn btn-light" id="btnCancelQty" style="flex:1">إلغاء</button></div></div></div></div>
+<input type="file" id="importFile" accept=".json" style="display:none">
+
+<script>
+const COLORS=['#fef3c7','#dbeafe','#dcfce7','#fce7f3','#e0e7ff','#ffedd5','#f3e8ff','#ccfbf1','#fecaca','#f1f5f9'];
+const ICONS=['🦷','🔧','💉','🧴','🩹','🧤','😷','🪥','🔬','📦','🧼','🩺','💊','🧪','⚙️','🔩','📷','✂️','🪛','🧫'];
+const DEFAULT_CATALOG=[
+  {id:'c1',name:'كمبوزيت A2',cat:'حشوات',color:'#fef3c7',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0},
+  {id:'c2',name:'كمبوزيت A3',cat:'حشوات',color:'#ffedd5',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0},
+  {id:'c3',name:'بوند',cat:'حشوات',color:'#dbeafe',icon:'🧴',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0},
+  {id:'c4',name:'إيتش 37%',cat:'حشوات',color:'#dbeafe',icon:'🧪',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0},
+  {id:'c5',name:'بنج ليدوكائين',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:5,autoWhatsapp:1},
+  {id:'c6',name:'إبر بنج',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:10,autoWhatsapp:1},
+  {id:'c7',name:'قفازات M',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1},
+  {id:'c8',name:'قفازات L',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1},
+];
+const DEFAULT_UNITS=[
+  {id:'d1',type:'drawer',name:'جرار علوي يسار - صغير',pos:{left:0,top:0,width:20.6,height:21.8},items:[]},
+  {id:'d2',type:'drawer',name:'جرار علوي وسط 1',pos:{left:20.9,top:0,width:29.2,height:27.5},items:[]},
+  {id:'d3',type:'drawer',name:'جرار علوي وسط 2',pos:{left:50.4,top:0,width:29.2,height:27.5},items:[]},
+  {id:'d4',type:'drawer',name:'جرار علوي يمين - صغير',pos:{left:79.9,top:0,width:20.1,height:21.8},items:[]},
+  {id:'c1',type:'cabinet',name:'الخزانة اليسرى - كبيرة',pos:{left:0,top:22.4,width:20.6,height:76.5},items:[]},
+  {id:'d5',type:'drawer',name:'جرار وسط يسار علوي',pos:{left:20.9,top:28.2,width:29.2,height:21.2},items:[]},
+  {id:'d6',type:'drawer',name:'جرار وسط يمين علوي',pos:{left:50.4,top:28.2,width:29.2,height:21.2},items:[]},
+  {id:'c2',type:'cabinet',name:'الخزانة اليمنى - كبيرة',pos:{left:79.9,top:22.4,width:20.1,height:76.5},items:[]},
+  {id:'d7',type:'drawer',name:'جرار وسط يسار وسط',pos:{left:20.9,top:50.1,width:29.2,height:22.2},items:[]},
+  {id:'d8',type:'drawer',name:'جرار وسط يمين وسط',pos:{left:50.4,top:50.1,width:29.2,height:22.2},items:[]},
+  {id:'d9',type:'drawer',name:'جرار سفلي يسار',pos:{left:20.9,top:73,width:29.2,height:26},items:[]},
+  {id:'d10',type:'drawer',name:'جرار سفلي يمين',pos:{left:50.4,top:73,width:29.2,height:26},items:[]},
+];
+const DEFAULT_SUPPLIERS=[
+  {id:'s1',companyName:'شركة الابتسامة لطب الأسنان',repName:'أحمد أبو زيد',phone:'0791234567',whatsapp:'0791234567',email:'info@smile-jo.com',address:'عمان - شارع الجامعة',notes:'توصيل خلال 24 ساعة'},
+  {id:'s2',companyName:'المستلزمات الطبية المتحدة',repName:'محمد علي',phone:'0787654321',whatsapp:'0787654321',email:'sales@umed.com',address:'عمان - المقابلين',notes:'خصم 5%'},
+];
+const DEFAULT_WA_SETTINGS={
+  clinicNumber:'',autoEnabled:false,requireConfirm:true,soundEnabled:true,delay:5,
+  apiMode:'wa_me',phoneNumberId:'',accessToken:'',businessId:'',
+  template:`مرحبا {repName} - {companyName}،
+
+نحتاج طلب مستلزمات عاجل لعيادة الأسنان:
+
+{itemsList}
+
+📍 العيادة: عيادة الأسنان - عمان
+📅 التاريخ: {date}
+📱 مرسل من نظام الجرد التلقائي
+
+شكراً لتعاونكم.`,
+  connected:false,permissionGranted:false,lastConnected:null
+};
+
+let state={catalog:[],units:[],suppliers:[],settings:{whatsapp:DEFAULT_WA_SETTINGS}};
+let currentUnitId=null,dragState=null,resizeState=null,selectedItemId=null,qtyEdit={unitId:null,itemId:null};
+let tempMatImage='';
+
+function loadState(){
+  try{
+    const saved=localStorage.getItem('dental_inventory_v5');
+    if(saved){
+      state=JSON.parse(saved);
+      if(!state.suppliers) state.suppliers=DEFAULT_SUPPLIERS;
+      if(!state.settings) state.settings={whatsapp:DEFAULT_WA_SETTINGS};
+      if(!state.settings.whatsapp) state.settings.whatsapp=DEFAULT_WA_SETTINGS;
+      state.settings.whatsapp={...DEFAULT_WA_SETTINGS,...state.settings.whatsapp};
+      state.catalog.forEach(c=>{ if(c.minThreshold===undefined) c.minThreshold=3; if(c.autoWhatsapp===undefined) c.autoWhatsapp=0; if(c.image===undefined) c.image=''; });
+      state.units.forEach(u=>{ u.items.forEach(it=>{ if(it.expiryDate===undefined) it.expiryDate=''; if(it.minThreshold===undefined) it.minThreshold=null; if(it.supplierId===undefined) it.supplierId=''; }); });
+    }else{
+      const old=localStorage.getItem('dental_inventory_v4');
+      if(old){
+        const o=JSON.parse(old);
+        state.catalog=(o.catalog||DEFAULT_CATALOG).map(c=>({...c,image:c.image||'',supplierId:c.supplierId||'',minThreshold:c.minThreshold||3,autoWhatsapp:c.autoWhatsapp||0}));
+        state.units=o.units||DEFAULT_UNITS;
+        state.suppliers=o.suppliers||DEFAULT_SUPPLIERS;
+        state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(o.settings?.whatsapp||{})}};
+      }else{
+        state.catalog=JSON.parse(JSON.stringify(DEFAULT_CATALOG));
+        state.units=JSON.parse(JSON.stringify(DEFAULT_UNITS));
+        state.suppliers=JSON.parse(JSON.stringify(DEFAULT_SUPPLIERS));
+        state.settings={whatsapp:JSON.parse(JSON.stringify(DEFAULT_WA_SETTINGS))};
+      }
+      saveState();
+    }
+  }catch(e){
+    state.catalog=JSON.parse(JSON.stringify(DEFAULT_CATALOG));
+    state.units=JSON.parse(JSON.stringify(DEFAULT_UNITS));
+    state.suppliers=JSON.parse(JSON.stringify(DEFAULT_SUPPLIERS));
+    state.settings={whatsapp:JSON.parse(JSON.stringify(DEFAULT_WA_SETTINGS))};
+  }
+}
+function saveState(){ localStorage.setItem('dental_inventory_v5', JSON.stringify(state)); updateStats(); renderLowStockPanel(); updateWhatsappStatusBar(); }
+
+function cleanPhone(phone){ if(!phone) return ''; let p=phone.replace(/\D/g,''); if(p.startsWith('0')) p='962'+p.substring(1); if(p.startsWith('9620')) p='962'+p.substring(4); if(!p.startsWith('962')&&p.length===9) p='962'+p; return p; }
+function isLowStock(item,catalog){ const threshold=(item.minThreshold!==null&&item.minThreshold!==''&&item.minThreshold!==undefined)?parseInt(item.minThreshold):(catalog?parseInt(catalog.minThreshold):3); return item.qty<=threshold; }
+function isNearExpiry(d){ if(!d) return false; const today=new Date(); const exp=new Date(d); const diff=(exp-today)/(1000*60*60*24); return diff>=0&&diff<=60; }
+function isExpired(d){ if(!d) return false; return new Date(d)<new Date(); }
+
+function updateWhatsappStatusBar(){
+  const bar=document.getElementById('whatsappStatusBar');
+  const dot=document.getElementById('waDot');
+  const text=document.getElementById('waStatusText');
+  const sub=document.getElementById('waStatusSub');
+  const wa=state.settings.whatsapp;
+  const modeText=wa.apiMode==='cloud_api'?'🤖 API تلقائي':'🔗 wa.me عادي';
+  if(wa.connected&&wa.clinicNumber){
+    bar.classList.remove('not-connected');
+    dot.classList.remove('off');
+    text.textContent=`✅ واتساب مربوط [${modeText}] - ${wa.clinicNumber} - ${wa.autoEnabled?'مفعل 🤖':'معطل'}`;
+    sub.textContent=wa.apiMode==='cloud_api'?'وضع API: إرسال تلقائي كامل بدون فتح المتصفح':'وضع wa.me: يفتح واتساب برسالة جاهزة';
+  }else{
+    bar.classList.add('not-connected');
+    dot.classList.add('off');
+    text.textContent='📱 واتساب غير مربوط - اختر وضع الربط';
+    sub.textContent='وضعان: wa.me العادي (مجاني) أو Cloud API التلقائي (للمحترفين)';
+  }
+  const mDot=document.getElementById('waModalDot');
+  const mStatus=document.getElementById('waModalStatus');
+  const mBadge=document.getElementById('waModalBadge');
+  if(mDot){
+    if(wa.connected){
+      mDot.classList.remove('off'); mStatus.textContent=`مربوط [${modeText}] - ${wa.clinicNumber}`; mBadge.textContent=wa.autoEnabled?'مفعل 🤖':'مربوط'; mBadge.className='badge badge-green';
+    }else{
+      mDot.classList.add('off'); mStatus.textContent='غير مربوط'; mBadge.textContent='غير مفعل'; mBadge.className='badge badge-yellow';
+    }
+  }
+  // show/hide api box
+  const apiBox=document.getElementById('apiSettingsBox');
+  if(apiBox){
+    if(wa.apiMode==='cloud_api'){ apiBox.style.display='block'; }
+    else { apiBox.style.display='none'; }
+  }
+}
+
+function renderGrid(){
+  const layer=document.getElementById('hotspotsLayer'); layer.innerHTML='';
+  const showLabels=document.getElementById('toggleLabels')?.checked??true;
+  state.units.forEach(u=>{
+    const div=document.createElement('div'); div.className=`hotspot ${u.type}`; div.dataset.id=u.id;
+    div.style.left=u.pos.left+'%'; div.style.top=u.pos.top+'%'; div.style.width=u.pos.width+'%'; div.style.height=u.pos.height+'%';
+    const totalQty=u.items.reduce((s,i)=>s+(i.qty||0),0); const count=u.items.length;
+    const lowInUnit=u.items.filter(it=>{ const cat=state.catalog.find(c=>c.id===it.catalogId); return isLowStock(it,cat)||isNearExpiry(it.expiryDate)||isExpired(it.expiryDate); }).length;
+    const typeIcon=u.type==='drawer'?'🗄️':'🚪';
+    div.innerHTML=`<div class="hotspot-count ${count===0?'empty':''} ${lowInUnit>0?'alert':''}">${lowInUnit>0?'⚠️ ':''}${count===0?'فارغ':count+' • '+totalQty}</div><div class="hotspot-handle-hint">${typeIcon} فتح ${lowInUnit>0?'⚠️':''}</div><div class="hotspot-label" style="${showLabels?'':'display:none'}">${u.name}${lowInUnit>0?' ⚠️':''}</div>`;
+    if(lowInUnit>0){ div.style.borderColor='rgba(220,38,38,.8)'; div.style.background='rgba(220,38,38,.12)'; }
+    div.addEventListener('click',()=>openUnit(u.id));
+    div.addEventListener('dblclick',(e)=>{ e.stopPropagation(); const nn=prompt('تعديل اسم الجرار/الخزانة:',u.name); if(nn&&nn.trim()){ u.name=nn.trim(); saveState(); renderGrid(); }});
+    layer.appendChild(div);
+  });
+}
+
+function renderLowStockPanel(){
+  const section=document.getElementById('lowStockSection'); const grid=document.getElementById('lowStockGrid'); const allLow=[];
+  state.units.forEach(u=>{ u.items.forEach(it=>{ const cat=state.catalog.find(c=>c.id===it.catalogId); if(!cat) return; const low=isLowStock(it,cat); const near=isNearExpiry(it.expiryDate); const exp=isExpired(it.expiryDate); if(low||near||exp) allLow.push({unit:u,item:it,catalog:cat,low,nearExp:near,exp}); }); });
+  if(allLow.length===0){ section.classList.remove('has-alerts'); return; }
+  section.classList.add('has-alerts'); grid.innerHTML='';
+  allLow.forEach(entry=>{
+    const {unit,item,catalog,low,nearExp,exp}=entry; const sup=state.suppliers.find(s=>s.id==(item.supplierId||catalog.supplierId));
+    const div=document.createElement('div'); div.className=`low-stock-card ${exp?'expiry':''}`; const imgSrc=catalog.image||'';
+    div.innerHTML=`${imgSrc?`<img class="thumb" src="${imgSrc}">`:`<div class="thumb" style="width:44px;height:44px;border-radius:8px;background:${catalog.color};display:flex;align-items:center;justify-content:center;font-size:18px">${catalog.icon}</div>`}<div class="info"><b>${catalog.name} ${low?'🔴':''} ${exp?'⛔ منتهي':''} ${nearExp?'🟠 قارب':''}</b><span>📍 ${unit.name} • الكمية: ${item.qty} / حد: ${item.minThreshold||catalog.minThreshold||3}</span><span>📅 انتهاء: ${item.expiryDate||'غير محدد'} • 🏢 ${sup?sup.companyName:'بدون مورد'}</span></div><div class="actions-col"><button class="btn btn-light btn-sm" onclick="openUnit('${unit.id}'); setTimeout(()=>openItemEdit('${unit.id}','${item.id}'),300)">✏️ تعديل</button>${sup?`<button class="btn btn-success btn-sm" onclick="openWhatsappForItem('${item.id}','${unit.id}')">💬 واتساب</button><button class="btn btn-light btn-sm" onclick="callSupplier('${sup.phone}')">📞 اتصال</button>`:''}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+async function sendViaCloudApi(toPhone, message){
+  const wa=state.settings.whatsapp;
+  if(!wa.phoneNumberId||!wa.accessToken){
+    alert('❌ بيانات Cloud API ناقصة! أدخل Phone Number ID و Access Token في إعدادات واتساب.');
+    openWhatsappSettings();
+    return {success:false, error:'بيانات API ناقصة'};
+  }
+  const url=`https://graph.facebook.com/v20.0/${wa.phoneNumberId}/messages`;
+  try{
+    const res=await fetch(url,{
+      method:'POST',
+      headers:{'Authorization':`Bearer ${wa.accessToken}`,'Content-Type':'application/json'},
+      body:JSON.stringify({messaging_product:'whatsapp',to:toPhone,type:'text',text:{preview_url:false,body:message}})
+    });
+    const data=await res.json();
+    if(data.error){
+      console.error('WhatsApp API Error:', data.error);
+      return {success:false, error:data.error.message||JSON.stringify(data.error)};
+    }
+    return {success:true, data};
+  }catch(err){
+    console.error(err);
+    return {success:false, error:err.message};
+  }
+}
+
+async function openWhatsappForItem(itemId,unitId){
+  const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return;
+  const cat=state.catalog.find(c=>c.id===item.catalogId); const supId=item.supplierId||cat?.supplierId; const sup=state.suppliers.find(s=>s.id===supId);
+  if(!sup){ alert('لا يوجد مورد مرتبط.'); return; }
+  const wa=state.settings.whatsapp;
+  if(!wa.connected){ if(!confirm('⚠️ واتساب غير مربوط! فتح إعدادات الربط؟')) return; openWhatsappSettings(); return; }
+  const phone=cleanPhone(sup.whatsapp||sup.phone);
+  const itemsList=`• ${cat.name} - الكمية: ${item.qty} (حد: ${item.minThreshold||cat.minThreshold}) - المكان: ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}`;
+  let msg=wa.template||DEFAULT_WA_SETTINGS.template;
+  msg=msg.replace('{repName}',sup.repName||'').replace('{companyName}',sup.companyName).replace('{itemsList}',itemsList).replace('{date}',new Date().toLocaleDateString('ar-JO'));
+
+  if(wa.apiMode==='cloud_api'){
+    if(wa.requireConfirm&&!confirm(`سيتم إرسال رسالة تلقائية عبر Cloud API لـ ${sup.companyName}:\n\n${msg}\n\nمتابعة؟`)) return;
+    const result=await sendViaCloudApi(phone, msg);
+    if(result.success){
+      alert(`✅ تم إرسال رسالة واتساب تلقائياً عبر API لـ ${sup.companyName} بنجاح!\n\nID: ${result.data.messages?.[0]?.id||'--'}`);
+    }else{
+      alert(`❌ فشل الإرسال عبر API: ${result.error}\n\nسيتم فتح wa.me كبديل.`);
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+    }
+  }else{
+    if(wa.requireConfirm&&!confirm(`سيتم فتح واتساب وإرسال:\n\n${msg}\n\nمتابعة؟`)) return;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+  }
+}
+function callSupplier(phone){ if(!phone) return; window.open(`tel:${phone}`,'_self'); }
+
+function openUnit(id){
+  currentUnitId=id; const unit=state.units.find(x=>x.id===id); if(!unit) return;
+  document.getElementById('unitNameInput').value=unit.name;
+  document.getElementById('unitTypeBadge').textContent=unit.type==='drawer'?'جرار':'خزانة';
+  document.getElementById('unitTypeBadge').className='badge '+(unit.type==='drawer'?'badge-green':'badge-yellow');
+  document.getElementById('unitIcon').textContent=unit.type==='drawer'?'🗄️':'🚪';
+  document.getElementById('unitCountBadge').textContent=unit.items.length+' عنصر';
+  const lowCount=unit.items.filter(it=>{ const c=state.catalog.find(cc=>cc.id===it.catalogId); return isLowStock(it,c); }).length;
+  const alertBadge=document.getElementById('unitAlertBadge');
+  if(lowCount>0){ alertBadge.style.display='inline-block'; alertBadge.textContent=`⚠️ ${lowCount} تنبيه`; } else alertBadge.style.display='none';
+  const canvasImg=document.getElementById('canvasImg'); canvasImg.src=unit.type==='drawer'?'images/drawer.jpg':'images/cabinet.jpg';
+  document.getElementById('unitModal').classList.remove('hidden'); renderItemsLayer(); renderCatalogList();
+}
+function closeUnit(){ document.getElementById('unitModal').classList.add('hidden'); currentUnitId=null; selectedItemId=null; renderGrid(); }
+
+function renderItemsLayer(){
+  const unit=state.units.find(x=>x.id===currentUnitId); const layer=document.getElementById('itemsLayer'); layer.innerHTML=''; if(!unit) return;
+  unit.items.forEach(it=>{
+    const cat=state.catalog.find(c=>c.id===it.catalogId); if(!cat) return;
+    const low=isLowStock(it,cat); const near=isNearExpiry(it.expiryDate); const exp=isExpired(it.expiryDate);
+    const div=document.createElement('div'); div.className='placed-item'+(selectedItemId===it.id?' selected':'')+(low?' alert':'')+(near||exp?' expiry':'')+(cat.image?' has-image':'');
+    div.dataset.itemId=it.id; div.style.left=it.x+'%'; div.style.top=it.y+'%'; div.style.width=it.w+'%'; div.style.height=it.h+'%';
+    const imgHtml=cat.image?`<img class="item-img" src="${cat.image}" alt="${cat.name}">`:''; const alertIcon=low?'🔴':near?'🟠':exp?'⛔':'';
+    div.innerHTML=`${imgHtml}${low||near||exp?`<div class="alert-badge">${low?'!':near?'⏰':'✕'}</div>`:''}<button class="delete-btn">✕</button><div class="item-overlay"><div class="item-top"><span class="item-icon">${cat.icon}</span><span class="item-qty ${low?'alert-qty':''}">${it.qty}</span></div><div class="item-name">${alertIcon} ${cat.name}</div><div class="item-meta">${it.expiryDate?`<span>📅 ${it.expiryDate.slice(0,7)}</span>`:''}${low?`<span style="background:#fee2e2;color:#991b1b">⚠️ حد ${it.minThreshold||cat.minThreshold}</span>`:''}</div></div><div class="resize-handle">⤡</div>`;
+    div.addEventListener('pointerdown',(e)=>{ if(e.target.classList.contains('delete-btn')||e.target.classList.contains('resize-handle')) return; selectedItemId=it.id; document.querySelectorAll('.placed-item').forEach(el=>el.classList.remove('selected')); div.classList.add('selected'); startDrag(e,it,div); });
+    div.addEventListener('dblclick',(e)=>{ e.stopPropagation(); openItemEdit(currentUnitId,it.id); });
+    div.querySelector('.delete-btn').addEventListener('click',(e)=>{ e.stopPropagation(); if(confirm('حذف من الجرار؟')){ unit.items=unit.items.filter(x=>x.id!==it.id); saveState(); renderItemsLayer(); document.getElementById('unitCountBadge').textContent=unit.items.length+' عنصر'; }});
+    div.querySelector('.item-qty').addEventListener('click',(e)=>{ e.stopPropagation(); openItemEdit(currentUnitId,it.id); });
+    div.querySelector('.resize-handle').addEventListener('pointerdown',(e)=>{ e.stopPropagation(); startResize(e,it,div); });
+    layer.appendChild(div);
+  });
+}
+function renderCatalogList(){
+  const q=(document.getElementById('catalogSearch').value||'').toLowerCase(); const list=document.getElementById('catalogList'); list.innerHTML='';
+  const filtered=state.catalog.filter(c=> c.name.toLowerCase().includes(q)||c.cat.toLowerCase().includes(q));
+  if(filtered.length===0){ list.innerHTML='<div class="empty-state"><div class="icon">🔍</div><p>لا توجد نتائج</p></div>'; return; }
+  filtered.forEach(cat=>{
+    const lowGlobal=state.units.some(u=> u.items.some(it=> it.catalogId===cat.id&&isLowStock(it,cat))); const sup=state.suppliers.find(s=>s.id===cat.supplierId);
+    const row=document.createElement('div'); row.className='catalog-item'+(lowGlobal?' alert-item':'');
+    row.innerHTML=`<div class="catalog-color" style="background:${cat.color}">${cat.image?`<img src="${cat.image}">`:cat.icon}</div><div class="catalog-info"><b>${cat.name} ${lowGlobal?'⚠️':''}</b><span>${cat.cat} • حد: ${cat.minThreshold} ${sup?'• '+sup.companyName:''} ${cat.autoWhatsapp?'• 🤖':''}</span></div><button class="catalog-add">+</button>`;
+    row.querySelector('.catalog-add').addEventListener('click',()=>{ const qty=parseInt(document.getElementById('quickAddQty').value)||1; addItemToUnit(cat.id,qty); });
+    row.addEventListener('click',(e)=>{ if(e.target.classList.contains('catalog-add')) return; const qty=parseInt(document.getElementById('quickAddQty').value)||1; addItemToUnit(cat.id,qty); });
+    list.appendChild(row);
+  });
+}
+function addItemToUnit(catalogId,qty){
+  const unit=state.units.find(x=>x.id===currentUnitId); if(!unit) return;
+  const existing=unit.items.find(i=>i.catalogId===catalogId);
+  if(existing){ existing.qty+=qty; saveState(); renderItemsLayer(); openItemEdit(unit.id,existing.id); }
+  else{
+    const newItem={id:'i_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),catalogId,qty,x:10+Math.random()*40,y:10+Math.random()*50,w:unit.type==='drawer'?24:38,h:unit.type==='drawer'?28:16,expiryDate:'',supplierId:'',minThreshold:null,notes:''};
+    unit.items.push(newItem); selectedItemId=newItem.id; saveState(); renderItemsLayer(); document.getElementById('unitCountBadge').textContent=unit.items.length+' عنصر'; setTimeout(()=>openItemEdit(unit.id,newItem.id),200);
+  }
+}
+function startDrag(e,item,el){ e.preventDefault(); const layer=document.getElementById('itemsLayer'); const rect=layer.getBoundingClientRect(); const startX=e.clientX,startY=e.clientY,origX=item.x,origY=item.y; dragState={item,el,rect,startX,startY,origX,origY}; document.addEventListener('pointermove',onDragMove); document.addEventListener('pointerup',onDragEnd); el.setPointerCapture(e.pointerId); }
+function onDragMove(e){ if(!dragState) return; const {item,el,rect,startX,startY,origX,origY}=dragState; const dx=((e.clientX-startX)/rect.width)*100,dy=((e.clientY-startY)/rect.height)*100; let nx=origX+dx,ny=origY+dy; nx=Math.max(0,Math.min(100-item.w,nx)); ny=Math.max(0,Math.min(100-item.h,ny)); item.x=nx; item.y=ny; el.style.left=nx+'%'; el.style.top=ny+'%'; }
+function onDragEnd(){ if(dragState){ saveState(); dragState=null; document.removeEventListener('pointermove',onDragMove); document.removeEventListener('pointerup',onDragEnd); } }
+function startResize(e,item,el){ e.preventDefault(); const layer=document.getElementById('itemsLayer'); const rect=layer.getBoundingClientRect(); const startX=e.clientX,startY=e.clientY,origW=item.w,origH=item.h; resizeState={item,el,rect,startX,startY,origW,origH}; document.addEventListener('pointermove',onResizeMove); document.addEventListener('pointerup',onResizeEnd); el.setPointerCapture(e.pointerId); }
+function onResizeMove(e){ if(!resizeState) return; const {item,el,rect,startX,startY,origW,origH}=resizeState; const dw=((e.clientX-startX)/rect.width)*100,dh=((e.clientY-startY)/rect.height)*100; let nw=origW+dw,nh=origH+dh; nw=Math.max(12,Math.min(80,nw)); nh=Math.max(12,Math.min(80,nh)); if(item.x+nw>100) nw=100-item.x; if(item.y+nh>100) nh=100-item.y; item.w=nw; item.h=nh; el.style.width=nw+'%'; el.style.height=nh+'%'; }
+function onResizeEnd(){ if(resizeState){ saveState(); resizeState=null; document.removeEventListener('pointermove',onResizeMove); document.removeEventListener('pointerup',onResizeEnd); } }
+
+let selectedColor=COLORS[0],selectedIcon=ICONS[0];
+function initMaterialForm(){
+  const colorBox=document.getElementById('colorOptions'); colorBox.innerHTML=''; COLORS.forEach(c=>{ const d=document.createElement('div'); d.className='color-opt'+(c===selectedColor?' selected':''); d.style.background=c; d.addEventListener('click',()=>{selectedColor=c; document.querySelectorAll('.color-opt').forEach(el=>el.classList.remove('selected')); d.classList.add('selected');}); colorBox.appendChild(d); });
+  const iconBox=document.getElementById('iconOptions'); iconBox.innerHTML=''; ICONS.forEach(ic=>{ const d=document.createElement('div'); d.className='icon-opt'+(ic===selectedIcon?' selected':''); d.textContent=ic; d.addEventListener('click',()=>{selectedIcon=ic; document.querySelectorAll('.icon-opt').forEach(el=>el.classList.remove('selected')); d.classList.add('selected');}); iconBox.appendChild(d); });
+  const supSelect=document.getElementById('matSupplier'); supSelect.innerHTML='<option value="">-- بدون مورد --</option>'; state.suppliers.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.companyName+' - '+s.repName; supSelect.appendChild(o); });
+}
+function renderMaterialsList(){
+  const list=document.getElementById('materialsList'); const count=document.getElementById('matCount'); count.textContent=state.catalog.length; list.innerHTML='';
+  state.catalog.forEach(cat=>{
+    const sup=state.suppliers.find(s=>s.id===cat.supplierId);
+    const row=document.createElement('div'); row.className='mat-row';
+    row.innerHTML=`<div style="width:40px;height:40px;border-radius:8px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0">${cat.image?`<img src="${cat.image}" style="width:100%;height:100%;object-fit:cover">`:cat.icon}</div><div style="flex:1;min-width:0"><b style="font-size:11.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat.name}</b><span style="font-size:10px;color:#64748b">${cat.cat} • حد ${cat.minThreshold} ${sup?'• '+sup.companyName:''} ${cat.autoWhatsapp?'• 🤖':''}</span></div><div class="actions"><button class="btn btn-light btn-sm">✏️</button><button class="btn btn-light btn-sm">🗑️</button></div>`;
+    row.querySelectorAll('button')[0].addEventListener('click',()=>editMaterial(cat.id));
+    row.querySelectorAll('button')[1].addEventListener('click',()=>deleteMaterial(cat.id));
+    list.appendChild(row);
+  });
+}
+function editMaterial(id){
+  const cat=state.catalog.find(c=>c.id===id); if(!cat) return;
+  document.getElementById('matEditId').value=cat.id; document.getElementById('matName').value=cat.name; document.getElementById('matCategory').value=cat.cat; document.getElementById('matSupplier').value=cat.supplierId||''; document.getElementById('matMinThreshold').value=cat.minThreshold||3; document.getElementById('matAutoWhatsapp').value=cat.autoWhatsapp?1:0;
+  selectedColor=cat.color; selectedIcon=cat.icon; tempMatImage=cat.image||'';
+  const preview=document.getElementById('matImagePreview'); const upload=document.getElementById('matImageUpload');
+  if(tempMatImage){ preview.src=tempMatImage; upload.classList.add('has-image'); document.getElementById('btnRemoveMatImage').style.display='inline-flex'; } else { preview.src=''; upload.classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; }
+  initMaterialForm();
+}
+function deleteMaterial(id){
+  const cat=state.catalog.find(c=>c.id===id); if(!cat) return;
+  if(!confirm(`حذف المادة "${cat.name}" نهائياً؟`)) return;
+  state.catalog=state.catalog.filter(c=>c.id!==id); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==id); }); saveState(); renderMaterialsList(); renderGrid(); renderCatalogList(); if(currentUnitId) renderItemsLayer();
+}
+function saveMaterial(){
+  const editId=document.getElementById('matEditId').value; const name=document.getElementById('matName').value.trim(); const cat=document.getElementById('matCategory').value; const supplierId=document.getElementById('matSupplier').value; const minThreshold=parseInt(document.getElementById('matMinThreshold').value)||3; const autoWhatsapp=parseInt(document.getElementById('matAutoWhatsapp').value)||0;
+  if(!name){ alert('أدخل اسم المادة'); return; }
+  if(editId){ const ex=state.catalog.find(c=>c.id===editId); if(ex){ ex.name=name; ex.cat=cat; ex.color=selectedColor; ex.icon=selectedIcon; ex.image=tempMatImage; ex.supplierId=supplierId; ex.minThreshold=minThreshold; ex.autoWhatsapp=autoWhatsapp; } }
+  else{ state.catalog.push({id:'c_'+Date.now(),name,cat,color:selectedColor,icon:selectedIcon,image:tempMatImage,supplierId,minThreshold,autoWhatsapp}); }
+  document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; saveState(); renderMaterialsList(); renderCatalogList();
+}
+function handleMatImageUpload(file){
+  if(!file) return; if(file.size>5*1024*1024){ alert('حجم الصورة كبير'); return; }
+  const reader=new FileReader(); reader.onload=e=>{ const img=new Image(); img.onload=()=>{ const canvas=document.createElement('canvas'); const max=400; let w=img.width,h=img.height; if(w>max||h>max){ if(w>h){ h=h*(max/w); w=max; } else { w=w*(max/h); h=max; } } canvas.width=w; canvas.height=h; const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h); tempMatImage=canvas.toDataURL('image/jpeg',0.8); document.getElementById('matImagePreview').src=tempMatImage; document.getElementById('matImageUpload').classList.add('has-image'); document.getElementById('btnRemoveMatImage').style.display='inline-flex'; }; img.src=e.target.result; }; reader.readAsDataURL(file);
+}
+function renderSuppliersList(){
+  const list=document.getElementById('suppliersList'); const count=document.getElementById('supCount'); count.textContent=state.suppliers.length; list.innerHTML='';
+  state.suppliers.forEach(sup=>{
+    const card=document.createElement('div'); card.className='supplier-card';
+    card.innerHTML=`<div class="sup-icon">🏢</div><div class="sup-info"><b>${sup.companyName}</b><span>👤 ${sup.repName||'بدون'} • 📞 ${sup.phone}</span><span>💬 ${sup.whatsapp||sup.phone} • 📧 ${sup.email||'--'}</span></div><div class="sup-actions"><button class="btn btn-light btn-sm">✏️</button><button class="btn btn-success btn-sm">💬</button><button class="btn btn-light btn-sm">📞</button><button class="btn btn-light btn-sm">🗑️</button></div>`;
+    const btns=card.querySelectorAll('button'); btns[0].addEventListener('click',()=>editSupplier(sup.id)); btns[1].addEventListener('click',()=>{ const phone=cleanPhone(sup.whatsapp||sup.phone); const msg=`مرحبا ${sup.repName||sup.companyName}، نحتاج طلب مستلزمات.`; window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank'); }); btns[2].addEventListener('click',()=>callSupplier(sup.phone)); btns[3].addEventListener('click',()=>deleteSupplier(sup.id)); list.appendChild(card);
+  });
+  const matSup=document.getElementById('matSupplier'); if(matSup){ const val=matSup.value; matSup.innerHTML='<option value="">-- بدون مورد --</option>'; state.suppliers.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.companyName+' - '+s.repName; matSup.appendChild(o); }); matSup.value=val; }
+  const itemSup=document.getElementById('itemEditSupplier'); if(itemSup){ const val=itemSup.value; itemSup.innerHTML='<option value="">-- نفس مورد المادة --</option>'; state.suppliers.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.companyName; itemSup.appendChild(o); }); itemSup.value=val; }
+}
+function editSupplier(id){ const sup=state.suppliers.find(s=>s.id===id); if(!sup) return; document.getElementById('supEditId').value=sup.id; document.getElementById('supCompany').value=sup.companyName; document.getElementById('supRep').value=sup.repName; document.getElementById('supPhone').value=sup.phone; document.getElementById('supWhatsapp').value=sup.whatsapp; document.getElementById('supEmail').value=sup.email; document.getElementById('supAddress').value=sup.address; document.getElementById('supNotes').value=sup.notes; }
+function deleteSupplier(id){ const sup=state.suppliers.find(s=>s.id===id); if(!sup) return; if(!confirm(`حذف "${sup.companyName}"؟`)) return; state.suppliers=state.suppliers.filter(s=>s.id!==id); state.catalog.forEach(c=>{ if(c.supplierId===id) c.supplierId=''; }); state.units.forEach(u=>{ u.items.forEach(it=>{ if(it.supplierId===id) it.supplierId=''; }); }); saveState(); renderSuppliersList(); renderMaterialsList(); renderCatalogList(); }
+function saveSupplier(){ const editId=document.getElementById('supEditId').value; const companyName=document.getElementById('supCompany').value.trim(); const repName=document.getElementById('supRep').value.trim(); const phone=document.getElementById('supPhone').value.trim(); const whatsapp=document.getElementById('supWhatsapp').value.trim()||phone; const email=document.getElementById('supEmail').value.trim(); const address=document.getElementById('supAddress').value.trim(); const notes=document.getElementById('supNotes').value.trim(); if(!companyName||!phone){ alert('اسم الشركة ورقم الهاتف مطلوبان'); return; } if(editId){ const ex=state.suppliers.find(s=>s.id===editId); if(ex){ ex.companyName=companyName; ex.repName=repName; ex.phone=phone; ex.whatsapp=whatsapp; ex.email=email; ex.address=address; ex.notes=notes; } } else { state.suppliers.push({id:'s_'+Date.now(),companyName,repName,phone,whatsapp,email,address,notes}); } document.getElementById('supEditId').value=''; document.getElementById('supCompany').value=''; document.getElementById('supRep').value=''; document.getElementById('supPhone').value=''; document.getElementById('supWhatsapp').value=''; document.getElementById('supEmail').value=''; document.getElementById('supAddress').value=''; document.getElementById('supNotes').value=''; saveState(); renderSuppliersList(); }
+
+function openItemEdit(unitId,itemId){
+  const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return; const cat=state.catalog.find(c=>c.id===item.catalogId); if(!cat) return;
+  document.getElementById('itemEditUnitId').value=unitId; document.getElementById('itemEditItemId').value=itemId; document.getElementById('itemEditName').value=cat.name; document.getElementById('itemEditQty').value=item.qty; document.getElementById('itemEditThreshold').value=item.minThreshold||''; document.getElementById('itemEditExpiry').value=item.expiryDate||''; document.getElementById('itemEditNotes').value=item.notes||'';
+  const supSelect=document.getElementById('itemEditSupplier'); supSelect.innerHTML='<option value="">-- نفس مورد المادة ('+(state.suppliers.find(s=>s.id===cat.supplierId)?.companyName||'بدون')+') --</option>'; state.suppliers.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.companyName; supSelect.appendChild(o); }); supSelect.value=item.supplierId||'';
+  const preview=document.getElementById('itemEditPreview'); if(cat.image){ preview.innerHTML=`<img src="${cat.image}" alt="${cat.name}">`; } else { preview.innerHTML=`<div style="width:80px;height:80px;border-radius:12px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:36px">${cat.icon}</div><div style="margin-right:12px"><b>${cat.name}</b><br><span style="font-size:11px;color:#64748b">${cat.cat}</span></div>`; preview.style.display='flex'; preview.style.alignItems='center'; preview.style.justifyContent='center'; }
+  const low=isLowStock(item,cat); const exp=isExpired(item.expiryDate); const near=isNearExpiry(item.expiryDate); const alertBox=document.getElementById('itemEditAlertBox'); const alertText=document.getElementById('itemEditAlertText');
+  if(low||exp||near){ alertBox.style.display='block'; let txt=''; if(low) txt+=`الكمية ${item.qty} وصلت حد التنبيه. `; if(exp) txt+=`منتهية منذ ${item.expiryDate}. `; else if(near) txt+=`قارب الانتهاء (${item.expiryDate}). `; alertText.textContent=txt; } else alertBox.style.display='none';
+  document.getElementById('itemEditModal').classList.remove('hidden');
+}
+function saveItemEdit(){
+  const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return;
+  const qty=parseInt(document.getElementById('itemEditQty').value); if(isNaN(qty)||qty<0){ alert('كمية غير صحيحة'); return; } item.qty=qty; const th=document.getElementById('itemEditThreshold').value; item.minThreshold=th===''?null:parseInt(th); item.expiryDate=document.getElementById('itemEditExpiry').value; item.supplierId=document.getElementById('itemEditSupplier').value; item.notes=document.getElementById('itemEditNotes').value; saveState(); renderItemsLayer(); renderGrid(); renderLowStockPanel(); document.getElementById('itemEditModal').classList.add('hidden');
+  const cat=state.catalog.find(c=>c.id===item.catalogId); const wa=state.settings.whatsapp;
+  if(cat&&cat.autoWhatsapp&&isLowStock(item,cat)&&wa.connected&&wa.autoEnabled){
+    const delay=(parseInt(wa.delay)||5)*1000;
+    setTimeout(()=>{ if(confirm(`المادة "${cat.name}" وصلت حد التنبيه. إرسال واتساب تلقائي الآن؟`)){ openWhatsappForItem(itemId,unitId); } },delay);
+  }
+}
+
+function openReport(){
+  const body=document.getElementById('reportBody'); let html=`<div style="padding:14px"><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><div style="background:#f0fdf4;padding:9px 12px;border-radius:9px;border:1px solid #dcfce7;flex:1"><b style="font-size:14px">${state.units.reduce((s,u)=>s+u.items.length,0)}</b><br><span style="font-size:9px">إجمالي الأنواع</span></div><div style="background:#eff6ff;padding:9px 12px;border-radius:9px;border:1px solid #dbeafe;flex:1"><b style="font-size:14px">${state.units.reduce((s,u)=>s+u.items.reduce((a,i)=>a+i.qty,0),0)}</b><br><span style="font-size:9px">إجمالي القطع</span></div></div>`;
+  const summary={}; state.units.forEach(u=>{ u.items.forEach(it=>{ const cat=state.catalog.find(c=>c.id===it.catalogId); if(!cat) return; if(!summary[cat.id]) summary[cat.id]={...cat,total:0,locations:[],expiries:[],low:false}; summary[cat.id].total+=it.qty; summary[cat.id].locations.push({unit:u.name,qty:it.qty,expiry:it.expiryDate}); if(it.expiryDate) summary[cat.id].expiries.push(it.expiryDate); if(isLowStock(it,cat)) summary[cat.id].low=true; }); });
+  html+=`<div style="overflow:auto;max-height:60vh;border:1px solid var(--border);border-radius:10px"><table class="report-table"><thead><tr><th>المادة</th><th>الفئة</th><th>الإجمالي</th><th>الحالة</th><th>المورد</th><th>انتهاء</th><th>أماكن</th></tr></thead><tbody>`;
+  Object.values(summary).sort((a,b)=>a.total-b.total).forEach(s=>{
+    const sup=state.suppliers.find(ss=>ss.id===s.supplierId); let badge=s.total===0?'<span class="badge badge-red">نفذ</span>': s.low?'<span class="badge badge-red">ناقص</span>': s.total<6?'<span class="badge badge-yellow">قليل</span>':'<span class="badge badge-green">متوفر</span>';
+    const locs=s.locations.map(l=>`${l.unit} (${l.qty}${l.expiry?' • '+l.expiry:''})`).join('، '); const exps=[...new Set(s.expiries)].join('، ')||'--';
+    html+=`<tr><td><span style="display:inline-flex;align-items:center;gap:4px"><span style="width:22px;height:22px;border-radius:5px;background:${s.color};display:inline-flex;align-items:center;justify-content:center;overflow:hidden">${s.image?`<img src="${s.image}" style="width:100%;height:100%;object-fit:cover">`:s.icon}</span> ${s.name}</span></td><td>${s.cat}</td><td><b>${s.total}</b></td><td>${badge}</td><td>${sup?sup.companyName:'--'}</td><td style="font-size:10px">${exps}</td><td style="font-size:10px;max-width:180px">${locs}</td></tr>`;
+  });
+  html+=`</tbody></table></div></div>`; body.innerHTML=html; document.getElementById('reportModal').classList.remove('hidden');
+}
+function exportData(){ const dataStr=JSON.stringify(state,null,2); const blob=new Blob([dataStr],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dental-inventory-full-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url); }
+function importData(file){ const reader=new FileReader(); reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(imported.catalog&&imported.units){ const newUnits=JSON.parse(JSON.stringify(DEFAULT_UNITS)); imported.units.forEach(ou=>{ const target=newUnits.find(nu=>nu.id===ou.id); if(target){ target.items=ou.items||[]; target.name=ou.name||target.name; } }); state.catalog=imported.catalog.map(c=>({image:'',supplierId:'',minThreshold:3,autoWhatsapp:0,...c})); state.units=newUnits; state.suppliers=imported.suppliers||DEFAULT_SUPPLIERS; state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(imported.settings?.whatsapp||{})}}; saveState(); renderGrid(); renderMaterialsList(); renderSuppliersList(); renderLowStockPanel(); alert('تم الاستيراد ✅'); }else alert('ملف غير صالح'); }catch(err){ alert('خطأ: '+err.message); } }; reader.readAsText(file); }
+function updateStats(){ document.getElementById('statTotalItems').textContent=state.units.reduce((s,u)=>s+u.items.reduce((a,i)=>a+i.qty,0),0); document.getElementById('statMaterials').textContent=state.catalog.length; document.getElementById('statLow').textContent=state.units.reduce((s,u)=>s+u.items.filter(i=>{const c=state.catalog.find(cc=>cc.id===i.catalogId);return isLowStock(i,c)||isExpired(i.expiryDate);}).length,0); document.getElementById('statSuppliers').textContent=state.suppliers.length; }
+
+async function sendAllWhatsappOrders(){
+  const bySupplier={}; state.units.forEach(u=>{ u.items.forEach(it=>{ const cat=state.catalog.find(c=>c.id===it.catalogId); if(!cat) return; if(!isLowStock(it,cat)) return; const supId=it.supplierId||cat.supplierId; if(!supId) return; if(!bySupplier[supId]) bySupplier[supId]={supplier:state.suppliers.find(s=>s.id===supId),items:[]}; if(bySupplier[supId]) bySupplier[supId].items.push({cat,unit:u,item:it}); }); });
+  const supIds=Object.keys(bySupplier); if(supIds.length===0){ alert('لا توجد مواد ناقصة مرتبطة بموردين.'); return; }
+  const wa=state.settings.whatsapp;
+  if(!wa.connected){ if(!confirm('واتساب غير مربوط! فتح الإعدادات؟')) return; openWhatsappSettings(); return; }
+  if(wa.requireConfirm&&!confirm(`سيتم إرسال ${supIds.length} رسائل للموردين:\n${supIds.map(id=>bySupplier[id].supplier.companyName).join('، ')}\n\nمتابعة؟`)) return;
+
+  for(let idx=0; idx<supIds.length; idx++){
+    const sid=supIds[idx]; const data=bySupplier[sid]; const sup=data.supplier; if(!sup) continue; const phone=cleanPhone(sup.whatsapp||sup.phone);
+    let itemsList=''; data.items.forEach(({cat,unit,item})=>{ itemsList+=`• ${cat.name} - الكمية: ${item.qty} (حد: ${item.minThreshold||cat.minThreshold}) - ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}\n`; });
+    let msg=wa.template||DEFAULT_WA_SETTINGS.template; msg=msg.replace('{repName}',sup.repName||'').replace('{companyName}',sup.companyName).replace('{itemsList}',itemsList).replace('{date}',new Date().toLocaleDateString('ar-JO'));
+    if(wa.apiMode==='cloud_api'){
+      const result=await sendViaCloudApi(phone, msg);
+      if(!result.success){
+        alert(`❌ فشل API لـ ${sup.companyName}: ${result.error}\nسيتم فتح wa.me`);
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+      }else{
+        console.log(`✅ API sent to ${sup.companyName}`, result.data);
+      }
+    }else{
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+      await new Promise(r=>setTimeout(r,1300));
+    }
+  }
+  if(state.settings.whatsapp.apiMode==='cloud_api') alert('✅ تم إرسال جميع الطلبات عبر WhatsApp Cloud API تلقائياً!');
+}
+
+function openWhatsappSettings(){
+  const wa=state.settings.whatsapp;
+  document.getElementById('waClinicNumber').value=wa.clinicNumber||'';
+  document.getElementById('waAutoEnabled').checked=!!wa.autoEnabled;
+  document.getElementById('waRequireConfirm').checked=wa.requireConfirm!==false;
+  document.getElementById('waSoundEnabled').checked=wa.soundEnabled!==false;
+  document.getElementById('waDelay').value=wa.delay||5;
+  document.getElementById('waTemplate').value=wa.template||DEFAULT_WA_SETTINGS.template;
+  document.getElementById('waPhoneNumberId').value=wa.phoneNumberId||'';
+  document.getElementById('waAccessToken').value=wa.accessToken||'';
+  document.getElementById('waBusinessId').value=wa.businessId||'';
+  document.querySelectorAll('input[name="waMode"]').forEach(r=>{ r.checked=r.value===wa.apiMode; });
+  updateWhatsappStatusBar();
+  document.getElementById('whatsappModal').classList.remove('hidden');
+}
+function saveWhatsappSettings(){
+  const wa=state.settings.whatsapp;
+  const clinicNum=document.getElementById('waClinicNumber').value.trim();
+  if(!clinicNum){ alert('أدخل رقم واتساب العيادة'); return; }
+  wa.clinicNumber=clinicNum;
+  wa.autoEnabled=document.getElementById('waAutoEnabled').checked;
+  wa.requireConfirm=document.getElementById('waRequireConfirm').checked;
+  wa.soundEnabled=document.getElementById('waSoundEnabled').checked;
+  wa.delay=parseInt(document.getElementById('waDelay').value)||5;
+  wa.template=document.getElementById('waTemplate').value;
+  wa.apiMode=document.querySelector('input[name="waMode"]:checked')?.value||'wa_me';
+  wa.phoneNumberId=document.getElementById('waPhoneNumberId').value.trim();
+  wa.accessToken=document.getElementById('waAccessToken').value.trim();
+  wa.businessId=document.getElementById('waBusinessId').value.trim();
+  if(wa.apiMode==='cloud_api'&&(!wa.phoneNumberId||!wa.accessToken)){
+    if(!confirm('⚠️ وضع Cloud API يحتاج Phone Number ID و Access Token. حفظ بدونها؟ سيتم استخدام wa.me كبديل حتى إدخالها.')) return;
+  }
+  if(!wa.connected){ wa.connected=true; wa.permissionGranted=true; wa.lastConnected=new Date().toISOString(); }
+  saveState();
+  alert(`✅ تم حفظ إعدادات واتساب!
+
+📱 رقم العيادة: ${clinicNum}
+⚙️ الوضع: ${wa.apiMode==='cloud_api'?'🤖 API تلقائي كامل':'🔗 wa.me عادي'}
+🤖 تلقائي: ${wa.autoEnabled?'مفعل':'معطل'}
+${wa.apiMode==='cloud_api'?'☁️ Cloud API جاهز للإرسال التلقائي بدون فتح المتصفح!':''}`);
+  document.getElementById('whatsappModal').classList.add('hidden');
+}
+function grantWhatsappPermission(){
+  const clinicNum=document.getElementById('waClinicNumber').value.trim();
+  if(!clinicNum){ alert('أدخل رقم واتساب العيادة أولاً'); document.getElementById('waClinicNumber').focus(); return; }
+  const wa=state.settings.whatsapp;
+  wa.clinicNumber=clinicNum; wa.connected=true; wa.permissionGranted=true; wa.lastConnected=new Date().toISOString();
+  wa.autoEnabled=document.getElementById('waAutoEnabled').checked;
+  wa.apiMode=document.querySelector('input[name="waMode"]:checked')?.value||'wa_me';
+  wa.phoneNumberId=document.getElementById('waPhoneNumberId').value.trim();
+  wa.accessToken=document.getElementById('waAccessToken').value.trim();
+  saveState();
+  if(wa.apiMode==='cloud_api'){
+    alert(`✅ تم تفعيل وضع Cloud API التلقائي!
+
+سيتم الآن إرسال الرسائل تلقائياً عبر Meta API بدون فتح واتساب.
+
+تأكد من:
+1. Phone Number ID صحيح
+2. Access Token ساري
+3. رقم المورد بصيغة دولية 9627...
+
+يمكنك اختبار الإرسال بزر 🧪 اختبار API`);
+  }else{
+    window.open('https://web.whatsapp.com','_blank');
+    setTimeout(()=>{ alert(`✅ تم ربط واتساب العادي!
+
+1. تأكد تسجيل دخول واتساب ويب: ${clinicNum}
+2. المتصفح مسموح له بفتح wa.me
+3. تلقائي: ${wa.autoEnabled?'مفعل':'معطل'}`); },800);
+  }
+}
+function testWhatsapp(){
+  const wa=state.settings.whatsapp;
+  const clinicNum=wa.clinicNumber||document.getElementById('waClinicNumber').value.trim();
+  if(!clinicNum){ alert('أدخل رقم العيادة'); return; }
+  const phone=cleanPhone(clinicNum);
+  const msg=`🧪 اختبار واتساب عادي - نظام الجرد
+
+✅ رقم العيادة: ${clinicNum}
+📅 ${new Date().toLocaleString('ar-JO')}
+⚙️ الوضع: ${wa.apiMode}
+🤖 تلقائي: ${wa.autoEnabled?'مفعل':'معطل'}
+
+الربط ناجح!`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+async function testApi(){
+  const wa=state.settings.whatsapp;
+  const phoneNumberId=document.getElementById('waPhoneNumberId').value.trim()||wa.phoneNumberId;
+  const token=document.getElementById('waAccessToken').value.trim()||wa.accessToken;
+  const clinicNum=document.getElementById('waClinicNumber').value.trim()||wa.clinicNumber;
+  if(!phoneNumberId||!token||!clinicNum){ alert('أدخل Phone Number ID و Access Token ورقم العيادة'); return; }
+  const resultBox=document.getElementById('apiTestResult');
+  resultBox.style.display='block'; resultBox.style.background='#f1f5f9'; resultBox.textContent='⏳ جاري الإرسال عبر Cloud API...';
+  const phone=cleanPhone(clinicNum);
+  const msg=`🧪 اختبار WhatsApp Cloud API
+
+✅ هذا اختبار تلقائي من نظام جرد عيادة الأسنان
+📱 رقم العيادة: ${clinicNum}
+📅 ${new Date().toLocaleString('ar-JO')}
+🔧 Phone ID: ${phoneNumberId}
+
+إذا وصلك، فالـ API يعمل بنجاح ويمكنك تفعيل الإرسال التلقائي الكامل!`;
+  const url=`https://graph.facebook.com/v20.0/${phoneNumberId}/messages`;
+  try{
+    const res=await fetch(url,{method:'POST',headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({messaging_product:'whatsapp',to:phone,type:'text',text:{preview_url:false,body:msg}})});
+    const data=await res.json();
+    if(data.error){
+      resultBox.style.background='#fee2e2'; resultBox.style.color='#991b1b';
+      resultBox.textContent=`❌ فشل: ${data.error.message}\n\nCode: ${data.error.code}\nType: ${data.error.type}\n\nتأكد من Token و Phone ID و أن الرقم مسموح في Meta.`;
+    }else{
+      resultBox.style.background='#dcfce7'; resultBox.style.color='#166534';
+      resultBox.textContent=`✅ نجح الإرسال عبر Cloud API!
+
+Message ID: ${data.messages?.[0]?.id||'--'}
+To: ${phone}
+وضع الإرسال التلقائي الكامل يعمل الآن بدون فتح المتصفح!`;
+      // save
+      wa.phoneNumberId=phoneNumberId; wa.accessToken=token; wa.businessId=document.getElementById('waBusinessId').value.trim(); wa.connected=true; wa.apiMode='cloud_api'; saveState();
+    }
+  }catch(err){
+    resultBox.style.background='#fee2e2'; resultBox.style.color='#991b1b';
+    resultBox.textContent=`❌ خطأ شبكة/CORS: ${err.message}\n\nملاحظة: Meta API قد يمنع الطلب من المتصفح مباشرة (CORS). في الإنتاج، يجب إرساله عبر خادم وسيط (backend).\n\nكبديل، استخدم وضع wa.me العادي الذي يعمل دائماً.`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadState(); renderGrid(); initMaterialForm(); renderMaterialsList(); renderSuppliersList(); updateStats(); renderLowStockPanel(); updateWhatsappStatusBar();
+  document.getElementById('toggleLabels').addEventListener('change',renderGrid);
+  document.getElementById('btnMaterials').addEventListener('click',()=>{ renderMaterialsList(); document.getElementById('materialsModal').classList.remove('hidden'); });
+  document.getElementById('btnCloseMaterials').addEventListener('click',()=>document.getElementById('materialsModal').classList.add('hidden'));
+  document.getElementById('btnSuppliers').addEventListener('click',()=>{ renderSuppliersList(); document.getElementById('suppliersModal').classList.remove('hidden'); });
+  document.getElementById('btnCloseSuppliers').addEventListener('click',()=>document.getElementById('suppliersModal').classList.add('hidden'));
+  document.getElementById('btnWhatsapp').addEventListener('click',openWhatsappSettings);
+  document.getElementById('btnQuickConnectWa').addEventListener('click',openWhatsappSettings);
+  document.getElementById('btnOpenWaWeb').addEventListener('click',()=>window.open('https://web.whatsapp.com','_blank'));
+  document.getElementById('btnCloseWhatsapp').addEventListener('click',()=>document.getElementById('whatsappModal').classList.add('hidden'));
+  document.getElementById('btnSaveWhatsapp').addEventListener('click',saveWhatsappSettings);
+  document.getElementById('btnGrantWhatsapp').addEventListener('click',grantWhatsappPermission);
+  document.getElementById('btnOpenWhatsappWeb').addEventListener('click',()=>window.open('https://web.whatsapp.com','_blank'));
+  document.getElementById('btnTestWhatsapp').addEventListener('click',testWhatsapp);
+  document.getElementById('btnTestApi').addEventListener('click',testApi);
+  document.getElementById('btnToggleToken').addEventListener('click',()=>{ const inp=document.getElementById('waAccessToken'); inp.type=inp.type==='password'?'text':'password'; });
+  document.getElementById('btnOpenMetaDocs').addEventListener('click',()=>window.open('https://developers.facebook.com/docs/whatsapp/cloud-api/get-started','_blank'));
+  document.querySelectorAll('input[name="waMode"]').forEach(r=>{ r.addEventListener('change',(e)=>{ state.settings.whatsapp.apiMode=e.target.value; updateWhatsappStatusBar(); }); });
+  document.getElementById('btnReport').addEventListener('click',openReport);
+  document.getElementById('btnCloseReport').addEventListener('click',()=>document.getElementById('reportModal').classList.add('hidden'));
+  document.getElementById('btnCloseUnit').addEventListener('click',closeUnit);
+  document.getElementById('btnClearUnit').addEventListener('click',()=>{ if(confirm('تفريغ هذا الجرار/الخزانة بالكامل؟')){ const unit=state.units.find(u=>u.id===currentUnitId); if(unit){ unit.items=[]; saveState(); renderItemsLayer(); document.getElementById('unitCountBadge').textContent='0 عنصر'; } }});
+  document.getElementById('unitNameInput').addEventListener('change',(e)=>{ const unit=state.units.find(u=>u.id===currentUnitId); if(unit){ unit.name=e.target.value; saveState(); renderGrid(); }});
+  document.getElementById('catalogSearch').addEventListener('input',renderCatalogList);
+  document.getElementById('btnSaveMat').addEventListener('click',saveMaterial);
+  document.getElementById('btnCancelMat').addEventListener('click',()=>{ document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; });
+  document.getElementById('btnRemoveMatImage').addEventListener('click',()=>{ tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; });
+  document.getElementById('matImageUpload').addEventListener('click',()=>document.getElementById('matImageInput').click());
+  document.getElementById('matImageInput').addEventListener('change',(e)=>{ if(e.target.files[0]) handleMatImageUpload(e.target.files[0]); });
+  document.getElementById('btnOpenMatFromUnit').addEventListener('click',()=>{ document.getElementById('materialsModal').classList.remove('hidden'); });
+  document.getElementById('btnPrintReport').addEventListener('click',()=>window.print());
+  document.getElementById('btnExport').addEventListener('click',exportData);
+  document.getElementById('btnImport').addEventListener('click',()=>document.getElementById('importFile').click());
+  document.getElementById('importFile').addEventListener('change',(e)=>{ if(e.target.files[0]) importData(e.target.files[0]); });
+  document.getElementById('btnSaveSup').addEventListener('click',saveSupplier);
+  document.getElementById('btnCancelSup').addEventListener('click',()=>{ document.getElementById('supEditId').value=''; document.getElementById('supCompany').value=''; document.getElementById('supRep').value=''; document.getElementById('supPhone').value=''; document.getElementById('supWhatsapp').value=''; document.getElementById('supEmail').value=''; document.getElementById('supAddress').value=''; document.getElementById('supNotes').value=''; });
+  document.getElementById('btnCloseItemEdit').addEventListener('click',()=>document.getElementById('itemEditModal').classList.add('hidden'));
+  document.getElementById('btnSaveItemEdit').addEventListener('click',saveItemEdit);
+  document.getElementById('btnDeleteItemFromDrawer').addEventListener('click',()=>{ const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); if(unit&&confirm('حذف من هذا الجرار فقط؟')){ unit.items=unit.items.filter(i=>i.id!==itemId); saveState(); renderItemsLayer(); renderGrid(); document.getElementById('itemEditModal').classList.add('hidden'); }});
+  document.getElementById('btnDeleteItemCompletely').addEventListener('click',()=>{ const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return; const cat=state.catalog.find(c=>c.id===item.catalogId); if(confirm(`حذف "${cat?.name}" نهائياً من العيادة؟`)){ state.catalog=state.catalog.filter(c=>c.id!==item.catalogId); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==item.catalogId); }); saveState(); renderItemsLayer(); renderGrid(); renderMaterialsList(); renderCatalogList(); document.getElementById('itemEditModal').classList.add('hidden'); }});
+  document.getElementById('btnCallSupplier').addEventListener('click',()=>{ const itemId=document.getElementById('itemEditItemId').value; const unitId=document.getElementById('itemEditUnitId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); const cat=state.catalog.find(c=>c.id===item?.catalogId); const supId=item?.supplierId||cat?.supplierId; const sup=state.suppliers.find(s=>s.id===supId); if(!sup){ alert('لا يوجد مورد'); return; } callSupplier(sup.phone); });
+  document.getElementById('btnWhatsappSupplier').addEventListener('click',()=>{ const itemId=document.getElementById('itemEditItemId').value; const unitId=document.getElementById('itemEditUnitId').value; openWhatsappForItem(itemId,unitId); });
+  document.getElementById('btnSendWhatsappOrders').addEventListener('click',sendAllWhatsappOrders);
+  document.getElementById('btnDismissAlerts').addEventListener('click',()=>document.getElementById('lowStockSection').classList.remove('has-alerts'));
+  document.getElementById('btnCloseQty').addEventListener('click',()=>document.getElementById('qtyModal').classList.add('hidden'));
+  document.getElementById('btnCancelQty').addEventListener('click',()=>document.getElementById('qtyModal').classList.add('hidden'));
+  document.getElementById('btnSaveQty').addEventListener('click',()=>{ const unitId=qtyEdit.unitId,itemId=qtyEdit.itemId; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(item){ const v=parseInt(document.getElementById('qtyInput').value); if(!isNaN(v)&&v>=0){ item.qty=v; if(v===0&&confirm('الكمية صفر، حذف؟')) unit.items=unit.items.filter(i=>i.id!==itemId); saveState(); renderItemsLayer(); renderGrid(); } } document.getElementById('qtyModal').classList.add('hidden'); });
+  document.querySelectorAll('.modal').forEach(m=>{ m.addEventListener('click',(e)=>{ if(e.target===m) m.classList.add('hidden'); }); });
+  document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); }});
+});
+</script>
+</body>
+</html>
