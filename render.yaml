@@ -2,8 +2,7 @@ services:
   - type: web
     name: dental-inventory
     env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
+    staticPublishPath: ./
     routes:
       - type: rewrite
         source: /*
