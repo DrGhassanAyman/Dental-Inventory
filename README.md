@@ -14,6 +14,22 @@
 1. افتح index.html في المتصفح (Chrome يفضل)
 2. لا يحتاج خادم - يعمل مباشرة
 3. أو شغل خادم محلي: python -m http.server 8000
+4. أو: npm start (يشغل server.js بدون أي مكتبات خارجية)
+
+## النشر على Render
+المشروع موقع ثابت (Static Site) — لا يحتاج أي خطوة بناء (build). لديك طريقتان:
+
+### الطريقة 1: كموقع ثابت (الموصى بها - مجانية)
+- عبر Blueprint: New → Blueprint واختر المستودع، وسيتعرف Render على render.yaml تلقائياً
+- أو يدوياً: New → Static Site ثم:
+  - Build Command: اتركه **فارغاً** (أو `npm run build` — يعمل أيضاً ولا يفعل شيئاً)
+  - Publish Directory: `./`
+
+### الطريقة 2: كخادم Node.js (إذا أردت خادم واتساب الوسيط أيضاً)
+- New → Web Service ثم:
+  - Build Command: `npm install && npm run build`
+  - Start Command: `npm start`
+- server.js يخدم الملفات الثابتة ويوفر نقطة نهاية اختيارية `/api/send-whatsapp` لتجاوز CORS
 
 ## ربط واتساب Business API (للإرسال التلقائي الكامل)
 1. اذهب لـ https://developers.facebook.com

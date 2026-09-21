@@ -1,0 +1,14 @@
+{
+  "name": "dental-inventory",
+  "version": "1.0.0",
+  "private": true,
+  "description": "نظام جرد عيادة الأسنان - Dental clinic inventory system (static single-page app, no build step required)",
+  "main": "server.js",
+  "scripts": {
+    "build": "node -e \"console.log('Static site: no build step required. Files are served as-is.')\"",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
