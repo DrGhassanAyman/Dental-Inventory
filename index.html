@@ -115,7 +115,7 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 .materials-list{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow:auto;padding:3px}
 .mat-row{display:flex;align-items:center;gap:9px;padding:9px;background:#fff;border:1px solid var(--border);border-radius:10px;transition:.15s}
 .mat-row:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}.mat-row .actions{margin-right:auto;display:flex;gap:4px}
-.suppliers-list{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow:auto}
+.materials-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.materials-grid{grid-template-columns:1fr}}.suppliers-list{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow:auto}
 .supplier-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:12px;display:flex;gap:10px;align-items:flex-start}
 .supplier-card .sup-icon{width:42px;height:42px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .supplier-card .sup-info{flex:1;min-width:0}.supplier-card .sup-info b{font-size:12px;display:block}.supplier-card .sup-info span{font-size:10px;color:var(--text-light);display:block;margin-top:2px}
@@ -332,7 +332,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 
 <!-- Materials Modal -->
 <div id="materialsModal" class="modal hidden">
-  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><inputية</option><option value="أدوات">🔧 أدوات</option><option value="تخدير">💉 تخدير</option><option value="حشوات">🦷 حشوات</option><option value="تعقيم">🧼 تعقيم</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option></select></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
+  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><input id="matName" placeholder="مثال: كمبوزيت A2"></div><div class="form-row"><div class="form-group"><label>الفئة</label><select id="matCategory"><option value="حشوات">🦷 حشوات</option><option value="تخدير">💉 تخدير</option><option value="تعقيم">🧼 تعقيم</option><option value="أدوات">🔧 أدوات</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option><option value="جراحة">🩸 جراحة</option><option value="تركيبات">👑 تركيبات</option><option value="عامة">📦 عامة</option></select></div><div class="form-group"><label>📅 تاريخ الانتهاء</label><input id="matExpiry" type="date"></div></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
 </div>
 
 <!-- Suppliers Modal -->
@@ -414,7 +414,7 @@ Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body
   <div class="modal-content" style="max-width:520px">
     <div class="modal-header"><h3>✏️ تعديل المادة</h3><button class="btn btn-light btn-sm" id="btnCloseItemEdit">✕</button></div>
     <div class="modal-body">
-      <div class="item-edit-preview" id="itemEditPreview"><span class="no-image">لا توجد صورة</span></div>
+      <div class="item-edit-preview" id="itemEditPreview" style="cursor:pointer" title="اضغط لتغيير الصورة"><span class="no-image">لا توجد صورة</span></div><input type="file" id="itemEditImageInput" accept="image/*" style="display:none"><div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn btn-light btn-sm" id="btnChangeItemImage" style="flex:1">📷 تغيير الصورة</button><button class="btn btn-light btn-sm" id="btnRemoveItemImage" style="display:none">🗑️ حذف الصورة</button></div>
       <input type="hidden" id="itemEditUnitId"><input type="hidden" id="itemEditItemId">
       <div class="form-group"><label>اسم المادة</label><input id="itemEditName" disabled style="background:#f1f5f9"></div>
       <div class="form-row"><div class="form-group"><label>الكمية *</label><input id="itemEditQty" type="number" min="0" style="font-weight:800;font-size:16px;text-align:center"></div><div class="form-group"><label>حد التنبيه</label><input id="itemEditThreshold" type="number" min="0" placeholder="افتراضي"></div></div>
@@ -435,14 +435,14 @@ Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body
 const COLORS=['#fef3c7','#dbeafe','#dcfce7','#fce7f3','#e0e7ff','#ffedd5','#f3e8ff','#ccfbf1','#fecaca','#f1f5f9'];
 const ICONS=['🦷','🔧','💉','🧴','🩹','🧤','😷','🪥','🔬','📦','🧼','🩺','💊','🧪','⚙️','🔩','📷','✂️','🪛','🧫'];
 const DEFAULT_CATALOG=[
-  {id:'c1',name:'كمبوزيت A2',cat:'حشوات',color:'#fef3c7',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0},
-  {id:'c2',name:'كمبوزيت A3',cat:'حشوات',color:'#ffedd5',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0},
-  {id:'c3',name:'بوند',cat:'حشوات',color:'#dbeafe',icon:'🧴',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0},
-  {id:'c4',name:'إيتش 37%',cat:'حشوات',color:'#dbeafe',icon:'🧪',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0},
-  {id:'c5',name:'بنج ليدوكائين',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:5,autoWhatsapp:1},
-  {id:'c6',name:'إبر بنج',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:10,autoWhatsapp:1},
-  {id:'c7',name:'قفازات M',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1},
-  {id:'c8',name:'قفازات L',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1},
+  {id:'c1',name:'كمبوزيت A2',cat:'حشوات',color:'#fef3c7',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0,expiryDate:''},
+  {id:'c2',name:'كمبوزيت A3',cat:'حشوات',color:'#ffedd5',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0,expiryDate:''},
+  {id:'c3',name:'بوند',cat:'حشوات',color:'#dbeafe',icon:'🧴',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0,expiryDate:''},
+  {id:'c4',name:'إيتش 37%',cat:'حشوات',color:'#dbeafe',icon:'🧪',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0,expiryDate:''},
+  {id:'c5',name:'بنج ليدوكائين',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:5,autoWhatsapp:1,expiryDate:''},
+  {id:'c6',name:'إبر بنج',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:10,autoWhatsapp:1,expiryDate:''},
+  {id:'c7',name:'قفازات M',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1,expiryDate:''},
+  {id:'c8',name:'قفازات L',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1,expiryDate:''},
 ];
 const DEFAULT_UNITS=[
   {id:'d1',type:'drawer',name:'جرار علوي يسار - صغير',pos:{left:0,top:0,width:20.6,height:21.8},items:[]},
@@ -482,6 +482,7 @@ const DEFAULT_WA_SETTINGS={
 let state={catalog:[],units:[],suppliers:[],settings:{whatsapp:DEFAULT_WA_SETTINGS}};
 let currentUnitId=null,dragState=null,resizeState=null,selectedItemId=null,qtyEdit={unitId:null,itemId:null};
 let tempMatImage='';
+let tempItemEditImage='';
 
 function loadStateLocal(){
   try{
@@ -492,13 +493,13 @@ function loadStateLocal(){
       if(!state.settings) state.settings={whatsapp:DEFAULT_WA_SETTINGS};
       if(!state.settings.whatsapp) state.settings.whatsapp=DEFAULT_WA_SETTINGS;
       state.settings.whatsapp={...DEFAULT_WA_SETTINGS,...state.settings.whatsapp};
-      state.catalog.forEach(c=>{ if(c.minThreshold===undefined) c.minThreshold=3; if(c.autoWhatsapp===undefined) c.autoWhatsapp=0; if(c.image===undefined) c.image=''; });
+      state.catalog.forEach(c=>{ if(c.minThreshold===undefined) c.minThreshold=3; if(c.autoWhatsapp===undefined) c.autoWhatsapp=0; if(c.image===undefined) c.image=''; if(c.expiryDate===undefined||c.expiryDate===null) c.expiryDate=''; });
       state.units.forEach(u=>{ u.items.forEach(it=>{ if(it.expiryDate===undefined) it.expiryDate=''; if(it.minThreshold===undefined) it.minThreshold=null; if(it.supplierId===undefined) it.supplierId=''; }); });
     }else{
       const old=localStorage.getItem('dental_inventory_v4');
       if(old){
         const o=JSON.parse(old);
-        state.catalog=(o.catalog||DEFAULT_CATALOG).map(c=>({...c,image:c.image||'',supplierId:c.supplierId||'',minThreshold:c.minThreshold||3,autoWhatsapp:c.autoWhatsapp||0}));
+        state.catalog=(o.catalog||DEFAULT_CATALOG).map(c=>({...c,image:c.image||'',supplierId:c.supplierId||'',minThreshold:c.minThreshold||3,autoWhatsapp:c.autoWhatsapp||0,expiryDate:c.expiryDate||''}));
         state.units=o.units||DEFAULT_UNITS;
         state.suppliers=o.suppliers||DEFAULT_SUPPLIERS;
         state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(o.settings?.whatsapp||{})}};
@@ -719,7 +720,7 @@ function addItemToUnit(catalogId,qty){
   const existing=unit.items.find(i=>i.catalogId===catalogId);
   if(existing){ existing.qty+=qty; saveState(); renderItemsLayer(); openItemEdit(unit.id,existing.id); }
   else{
-    const newItem={id:'i_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),catalogId,qty,x:10+Math.random()*40,y:10+Math.random()*50,w:unit.type==='drawer'?24:38,h:unit.type==='drawer'?28:16,expiryDate:'',supplierId:'',minThreshold:null,notes:''};
+    const catDef=state.catalog.find(c=>c.id===catalogId); const newItem={id:'i_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),catalogId,qty,x:10+Math.random()*40,y:10+Math.random()*50,w:unit.type==='drawer'?24:38,h:unit.type==='drawer'?28:16,expiryDate:(catDef&&catDef.expiryDate)||'',supplierId:'',minThreshold:null,notes:''};
     unit.items.push(newItem); selectedItemId=newItem.id; saveState(); renderItemsLayer(); document.getElementById('unitCountBadge').textContent=unit.items.length+' عنصر'; setTimeout(()=>openItemEdit(unit.id,newItem.id),200);
   }
 }
@@ -741,7 +742,7 @@ function renderMaterialsList(){
   state.catalog.forEach(cat=>{
     const sup=state.suppliers.find(s=>s.id===cat.supplierId);
     const row=document.createElement('div'); row.className='mat-row';
-    row.innerHTML=`<div style="width:40px;height:40px;border-radius:8px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0">${cat.image?`<img src="${cat.image}" style="width:100%;height:100%;object-fit:cover">`:cat.icon}</div><div style="flex:1;min-width:0"><b style="font-size:11.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat.name}</b><span style="font-size:10px;color:#64748b">${cat.cat} • حد ${cat.minThreshold} ${sup?'• '+sup.companyName:''} ${cat.autoWhatsapp?'• 🤖':''}</span></div><div class="actions"><button class="btn btn-light btn-sm">✏️</button><button class="btn btn-light btn-sm">🗑️</button></div>`;
+    row.innerHTML=`<div style="width:40px;height:40px;border-radius:8px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0">${cat.image?`<img src="${cat.image}" style="width:100%;height:100%;object-fit:cover">`:cat.icon}</div><div style="flex:1;min-width:0"><b style="font-size:11.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat.name}</b><span style="font-size:10px;color:#64748b">${cat.cat} • حد ${cat.minThreshold} ${sup?'• '+sup.companyName:''} ${cat.autoWhatsapp?'• 🤖':''} ${cat.expiryDate?'• 📅 '+cat.expiryDate:''}</span></div><div class="actions"><button class="btn btn-light btn-sm">✏️</button><button class="btn btn-light btn-sm">🗑️</button></div>`;
     row.querySelectorAll('button')[0].addEventListener('click',()=>editMaterial(cat.id));
     row.querySelectorAll('button')[1].addEventListener('click',()=>deleteMaterial(cat.id));
     list.appendChild(row);
@@ -749,11 +750,11 @@ function renderMaterialsList(){
 }
 function editMaterial(id){
   const cat=state.catalog.find(c=>c.id===id); if(!cat) return;
-  document.getElementById('matEditId').value=cat.id; document.getElementById('matName').value=cat.name; document.getElementById('matCategory').value=cat.cat; document.getElementById('matSupplier').value=cat.supplierId||''; document.getElementById('matMinThreshold').value=cat.minThreshold||3; document.getElementById('matAutoWhatsapp').value=cat.autoWhatsapp?1:0;
   selectedColor=cat.color; selectedIcon=cat.icon; tempMatImage=cat.image||'';
+  initMaterialForm();
+  document.getElementById('matEditId').value=cat.id; document.getElementById('matName').value=cat.name; document.getElementById('matCategory').value=cat.cat; document.getElementById('matSupplier').value=cat.supplierId||''; document.getElementById('matMinThreshold').value=cat.minThreshold||3; document.getElementById('matAutoWhatsapp').value=cat.autoWhatsapp?1:0; document.getElementById('matExpiry').value=cat.expiryDate||'';
   const preview=document.getElementById('matImagePreview'); const upload=document.getElementById('matImageUpload');
   if(tempMatImage){ preview.src=tempMatImage; upload.classList.add('has-image'); document.getElementById('btnRemoveMatImage').style.display='inline-flex'; } else { preview.src=''; upload.classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; }
-  initMaterialForm();
 }
 function deleteMaterial(id){
   const cat=state.catalog.find(c=>c.id===id); if(!cat) return;
@@ -761,11 +762,11 @@ function deleteMaterial(id){
   state.catalog=state.catalog.filter(c=>c.id!==id); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==id); }); saveState(); renderMaterialsList(); renderGrid(); renderCatalogList(); if(currentUnitId) renderItemsLayer();
 }
 function saveMaterial(){
-  const editId=document.getElementById('matEditId').value; const name=document.getElementById('matName').value.trim(); const cat=document.getElementById('matCategory').value; const supplierId=document.getElementById('matSupplier').value; const minThreshold=parseInt(document.getElementById('matMinThreshold').value)||3; const autoWhatsapp=parseInt(document.getElementById('matAutoWhatsapp').value)||0;
+  const editId=document.getElementById('matEditId').value; const name=document.getElementById('matName').value.trim(); const cat=document.getElementById('matCategory').value; const supplierId=document.getElementById('matSupplier').value; const minThreshold=parseInt(document.getElementById('matMinThreshold').value)||3; const expiryDate=document.getElementById('matExpiry').value||''; const autoWhatsapp=parseInt(document.getElementById('matAutoWhatsapp').value)||0;
   if(!name){ alert('أدخل اسم المادة'); return; }
-  if(editId){ const ex=state.catalog.find(c=>c.id===editId); if(ex){ ex.name=name; ex.cat=cat; ex.color=selectedColor; ex.icon=selectedIcon; ex.image=tempMatImage; ex.supplierId=supplierId; ex.minThreshold=minThreshold; ex.autoWhatsapp=autoWhatsapp; } }
-  else{ state.catalog.push({id:'c_'+Date.now(),name,cat,color:selectedColor,icon:selectedIcon,image:tempMatImage,supplierId,minThreshold,autoWhatsapp}); }
-  document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; saveState(); renderMaterialsList(); renderCatalogList();
+  if(editId){ const ex=state.catalog.find(c=>c.id===editId); if(ex){ ex.name=name; ex.cat=cat; ex.color=selectedColor; ex.icon=selectedIcon; ex.image=tempMatImage; ex.supplierId=supplierId; ex.minThreshold=minThreshold; ex.autoWhatsapp=autoWhatsapp; ex.expiryDate=expiryDate; } }
+  else{ state.catalog.push({id:'c_'+Date.now(),name,cat,color:selectedColor,icon:selectedIcon,image:tempMatImage,supplierId,minThreshold,autoWhatsapp,expiryDate}); }
+  document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; document.getElementById('matExpiry').value=''; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; saveState(); renderMaterialsList(); renderCatalogList();
 }
 function handleMatImageUpload(file){
   if(!file) return; if(file.size>5*1024*1024){ alert('حجم الصورة كبير'); return; }
@@ -789,15 +790,28 @@ function openItemEdit(unitId,itemId){
   const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return; const cat=state.catalog.find(c=>c.id===item.catalogId); if(!cat) return;
   document.getElementById('itemEditUnitId').value=unitId; document.getElementById('itemEditItemId').value=itemId; document.getElementById('itemEditName').value=cat.name; document.getElementById('itemEditQty').value=item.qty; document.getElementById('itemEditThreshold').value=item.minThreshold||''; document.getElementById('itemEditExpiry').value=item.expiryDate||''; document.getElementById('itemEditNotes').value=item.notes||'';
   const supSelect=document.getElementById('itemEditSupplier'); supSelect.innerHTML='<option value="">-- نفس مورد المادة ('+(state.suppliers.find(s=>s.id===cat.supplierId)?.companyName||'بدون')+') --</option>'; state.suppliers.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.companyName; supSelect.appendChild(o); }); supSelect.value=item.supplierId||'';
-  const preview=document.getElementById('itemEditPreview'); if(cat.image){ preview.innerHTML=`<img src="${cat.image}" alt="${cat.name}">`; } else { preview.innerHTML=`<div style="width:80px;height:80px;border-radius:12px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:36px">${cat.icon}</div><div style="margin-right:12px"><b>${cat.name}</b><br><span style="font-size:11px;color:#64748b">${cat.cat}</span></div>`; preview.style.display='flex'; preview.style.alignItems='center'; preview.style.justifyContent='center'; }
+  tempItemEditImage=cat.image||''; renderItemEditPreview(cat);
   const low=isLowStock(item,cat); const exp=isExpired(item.expiryDate); const near=isNearExpiry(item.expiryDate); const alertBox=document.getElementById('itemEditAlertBox'); const alertText=document.getElementById('itemEditAlertText');
   if(low||exp||near){ alertBox.style.display='block'; let txt=''; if(low) txt+=`الكمية ${item.qty} وصلت حد التنبيه. `; if(exp) txt+=`منتهية منذ ${item.expiryDate}. `; else if(near) txt+=`قارب الانتهاء (${item.expiryDate}). `; alertText.textContent=txt; } else alertBox.style.display='none';
   document.getElementById('itemEditModal').classList.remove('hidden');
 }
 function saveItemEdit(){
   const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return;
-  const qty=parseInt(document.getElementById('itemEditQty').value); if(isNaN(qty)||qty<0){ alert('كمية غير صحيحة'); return; } item.qty=qty; const th=document.getElementById('itemEditThreshold').value; item.minThreshold=th===''?null:parseInt(th); item.expiryDate=document.getElementById('itemEditExpiry').value; item.supplierId=document.getElementById('itemEditSupplier').value; item.notes=document.getElementById('itemEditNotes').value; saveState(); renderItemsLayer(); renderGrid(); renderLowStockPanel(); document.getElementById('itemEditModal').classList.add('hidden');
+  const qty=parseInt(document.getElementById('itemEditQty').value); if(isNaN(qty)||qty<0){ alert('كمية غير صحيحة'); return; } item.qty=qty; const th=document.getElementById('itemEditThreshold').value; item.minThreshold=th===''?null:parseInt(th); item.expiryDate=document.getElementById('itemEditExpiry').value; item.supplierId=document.getElementById('itemEditSupplier').value; item.notes=document.getElementById('itemEditNotes').value; const catDef=state.catalog.find(cc=>cc.id===item.catalogId); if(catDef) catDef.image=tempItemEditImage||''; tempItemEditImage=''; const _ie=document.getElementById('itemEditImageInput'); if(_ie) _ie.value=''; saveState(); renderItemsLayer(); renderGrid(); renderLowStockPanel(); renderMaterialsList(); renderCatalogList(); document.getElementById('itemEditModal').classList.add('hidden');
   // 🤖 الإرسال التلقائي عند الحد الأدنى يتم عبر محرك المراقبة (scheduleAutoSend داخل saveState) — يعمل على كل تغيير وليس فقط من هذه الشاشة
+}
+function renderItemEditPreview(cat){
+  const preview=document.getElementById('itemEditPreview'); if(!preview) return;
+  preview.style.display='flex'; preview.style.alignItems='center'; preview.style.justifyContent='center';
+  if(tempItemEditImage){ preview.innerHTML=`<img src="${tempItemEditImage}" alt="">`; }
+  else if(cat&&cat.image){ preview.innerHTML=`<img src="${cat.image}" alt="">`; }
+  else if(cat){ preview.innerHTML=`<div style="width:80px;height:80px;border-radius:12px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:36px">${cat.icon}</div><div style="margin-right:12px"><b>${cat.name}</b><br><span style="font-size:11px;color:#64748b">${cat.cat}</span></div>`; }
+  else{ preview.innerHTML='<span class="no-image">لا توجد صورة</span>'; }
+  const rm=document.getElementById('btnRemoveItemImage'); if(rm) rm.style.display=tempItemEditImage?'inline-flex':'none';
+}
+function handleItemEditImageUpload(file){
+  if(!file) return; if(file.size>5*1024*1024){ alert('حجم الصورة كبير'); return; }
+  const reader=new FileReader(); reader.onload=e=>{ const img=new Image(); img.onload=()=>{ const canvas=document.createElement('canvas'); const max=400; let w=img.width,h=img.height; if(w>max||h>max){ if(w>h){ h=h*(max/w); w=max; } else { w=w*(max/h); h=max; } } canvas.width=w; canvas.height=h; const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h); tempItemEditImage=canvas.toDataURL('image/jpeg',0.8); renderItemEditPreview(null); }; img.src=e.target.result; }; reader.readAsDataURL(file);
 }
 
 function openReport(){
@@ -812,7 +826,7 @@ function openReport(){
   html+=`</tbody></table></div></div>`; body.innerHTML=html; document.getElementById('reportModal').classList.remove('hidden');
 }
 function exportData(){ const dataStr=JSON.stringify(state,null,2); const blob=new Blob([dataStr],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dental-inventory-'+((state.clinic&&state.clinic.username)||'clinic')+'-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url); }
-function importData(file){ const reader=new FileReader(); reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(imported.catalog&&imported.units){ state.catalog=imported.catalog.map(c=>({image:'',supplierId:'',minThreshold:3,autoWhatsapp:0,...c})); state.units=(imported.units||[]).map(u=>Object.assign({image:'',items:[],pos:{left:5,top:5,width:20,height:15}},u)); state.suppliers=imported.suppliers||DEFAULT_SUPPLIERS; state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(imported.settings?.whatsapp||{})}}; if(imported.storageImage!==undefined) state.storageImage=imported.storageImage||''; if(imported.notified) state.notified=imported.notified; ensureStateShape(); saveState(); renderGrid(); renderMaterialsList(); renderSuppliersList(); renderLowStockPanel(); alert('تم الاستيراد ✅'); }else alert('ملف غير صالح'); }catch(err){ alert('خطأ: '+err.message); } }; reader.readAsText(file); }
+function importData(file){ const reader=new FileReader(); reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(imported.catalog&&imported.units){ state.catalog=imported.catalog.map(c=>({image:'',supplierId:'',minThreshold:3,autoWhatsapp:0,expiryDate:'',...c})); state.units=(imported.units||[]).map(u=>Object.assign({image:'',items:[],pos:{left:5,top:5,width:20,height:15}},u)); state.suppliers=imported.suppliers||DEFAULT_SUPPLIERS; state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(imported.settings?.whatsapp||{})}}; if(imported.storageImage!==undefined) state.storageImage=imported.storageImage||''; if(imported.notified) state.notified=imported.notified; ensureStateShape(); saveState(); renderGrid(); renderMaterialsList(); renderSuppliersList(); renderLowStockPanel(); alert('تم الاستيراد ✅'); }else alert('ملف غير صالح'); }catch(err){ alert('خطأ: '+err.message); } }; reader.readAsText(file); }
 function updateStats(){ document.getElementById('statTotalItems').textContent=state.units.reduce((s,u)=>s+u.items.reduce((a,i)=>a+i.qty,0),0); document.getElementById('statMaterials').textContent=state.catalog.length; document.getElementById('statLow').textContent=state.units.reduce((s,u)=>s+u.items.filter(i=>{const c=state.catalog.find(cc=>cc.id===i.catalogId);return isLowStock(i,c)||isExpired(i.expiryDate);}).length,0); document.getElementById('statSuppliers').textContent=state.suppliers.length; }
 
 async function sendAllWhatsappOrders(){
@@ -988,7 +1002,7 @@ function initAppUI(){
   document.getElementById('unitNameInput').addEventListener('change',(e)=>{ const unit=state.units.find(u=>u.id===currentUnitId); if(unit){ unit.name=e.target.value; saveState(); renderGrid(); }});
   document.getElementById('catalogSearch').addEventListener('input',renderCatalogList);
   document.getElementById('btnSaveMat').addEventListener('click',saveMaterial);
-  document.getElementById('btnCancelMat').addEventListener('click',()=>{ document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; });
+  document.getElementById('btnCancelMat').addEventListener('click',()=>{ document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; document.getElementById('matExpiry').value=''; document.getElementById('matSupplier').value=''; document.getElementById('matMinThreshold').value='3'; document.getElementById('matAutoWhatsapp').value='0'; tempMatImage=''; selectedColor=COLORS[0]; selectedIcon=ICONS[0]; initMaterialForm(); document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; });
   document.getElementById('btnRemoveMatImage').addEventListener('click',()=>{ tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; });
   document.getElementById('matImageUpload').addEventListener('click',()=>document.getElementById('matImageInput').click());
   document.getElementById('matImageInput').addEventListener('change',(e)=>{ if(e.target.files[0]) handleMatImageUpload(e.target.files[0]); });
@@ -999,7 +1013,11 @@ function initAppUI(){
   document.getElementById('importFile').addEventListener('change',(e)=>{ if(e.target.files[0]) importData(e.target.files[0]); });
   document.getElementById('btnSaveSup').addEventListener('click',saveSupplier);
   document.getElementById('btnCancelSup').addEventListener('click',()=>{ document.getElementById('supEditId').value=''; document.getElementById('supCompany').value=''; document.getElementById('supRep').value=''; document.getElementById('supPhone').value=''; document.getElementById('supWhatsapp').value=''; document.getElementById('supEmail').value=''; document.getElementById('supAddress').value=''; document.getElementById('supNotes').value=''; });
-  document.getElementById('btnCloseItemEdit').addEventListener('click',()=>document.getElementById('itemEditModal').classList.add('hidden'));
+  document.getElementById('btnCloseItemEdit').addEventListener('click',()=>{ tempItemEditImage=''; const _ie=document.getElementById('itemEditImageInput'); if(_ie) _ie.value=''; document.getElementById('itemEditModal').classList.add('hidden'); });
+  document.getElementById('btnChangeItemImage').addEventListener('click',()=>document.getElementById('itemEditImageInput').click());
+  document.getElementById('itemEditPreview').addEventListener('click',()=>document.getElementById('itemEditImageInput').click());
+  document.getElementById('itemEditImageInput').addEventListener('change',(e)=>{ if(e.target.files[0]) handleItemEditImageUpload(e.target.files[0]); });
+  document.getElementById('btnRemoveItemImage').addEventListener('click',()=>{ tempItemEditImage=''; const _ie2=document.getElementById('itemEditImageInput'); if(_ie2) _ie2.value=''; const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); const cat=state.catalog.find(cc=>cc.id===item?.catalogId); renderItemEditPreview(cat?{...cat,image:''}:null); });
   document.getElementById('btnSaveItemEdit').addEventListener('click',saveItemEdit);
   document.getElementById('btnDeleteItemFromDrawer').addEventListener('click',()=>{ const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); if(unit&&confirm('حذف من هذا الجرار فقط؟')){ unit.items=unit.items.filter(i=>i.id!==itemId); saveState(); renderItemsLayer(); renderGrid(); document.getElementById('itemEditModal').classList.add('hidden'); }});
   document.getElementById('btnDeleteItemCompletely').addEventListener('click',()=>{ const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return; const cat=state.catalog.find(c=>c.id===item.catalogId); if(confirm(`حذف "${cat?.name}" نهائياً من العيادة؟`)){ state.catalog=state.catalog.filter(c=>c.id!==item.catalogId); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==item.catalogId); }); saveState(); renderItemsLayer(); renderGrid(); renderMaterialsList(); renderCatalogList(); document.getElementById('itemEditModal').classList.add('hidden'); }});
@@ -1124,6 +1142,7 @@ function ensureStateShape(){
   if(!state.notified||typeof state.notified!=='object') state.notified={};
   if(!state.clinic||typeof state.clinic!=='object') state.clinic={};
   if(currentUser){ state.clinic.id=currentUser.id; state.clinic.clinicName=currentUser.clinicName||state.clinic.clinicName||''; state.clinic.username=currentUser.username||state.clinic.username||''; }
+  state.catalog.forEach(c=>{ if(c.image===undefined||c.image===null) c.image=''; if(c.expiryDate===undefined||c.expiryDate===null) c.expiryDate=''; if(c.supplierId===undefined||c.supplierId===null) c.supplierId=''; if(c.minThreshold===undefined||c.minThreshold===null) c.minThreshold=3; if(c.autoWhatsapp===undefined||c.autoWhatsapp===null) c.autoWhatsapp=0; });
   state.units.forEach(u=>{
     if(!u.pos||typeof u.pos!=='object') u.pos={left:5,top:5,width:20,height:15};
     ['left','top','width','height'].forEach(k=>{ u.pos[k]=Math.max(0,Math.min(100,parseFloat(u.pos[k])||0)); });
