@@ -137,12 +137,67 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:before{transform:translateX(20px)}
 .api-box{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px;font-family:monospace;font-size:11px;direction:ltr;text-align:left;overflow:auto}
 @media(max-width:900px){.unit-editor{grid-template-columns:1fr;grid-template-rows:1fr 340px}.form-row{grid-template-columns:1fr}}
+/* ===== Multi-clinic accounts + storage designer + auto-send engine ===== */
+.clinic-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:20px;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#authOverlay{position:fixed;inset:0;z-index:500;background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#0f766e 100%);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+#authOverlay.hidden{display:none}
+.auth-card{background:#fff;border-radius:20px;max-width:440px;width:100%;padding:26px 24px;box-shadow:0 24px 70px rgba(0,0,0,.4);animation:pop .35s cubic-bezier(.34,1.56,.64,1);margin:auto}
+.auth-logo{width:64px;height:64px;background:linear-gradient(135deg,#60a5fa,#2563eb);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 10px;box-shadow:0 8px 24px rgba(37,99,235,.4)}
+.auth-card h2{text-align:center;font-size:18px}
+.auth-card .sub{text-align:center;font-size:11.5px;color:var(--text-light);margin:4px 0 12px}
+.auth-mode-badge{text-align:center;margin-bottom:12px}
+.auth-tabs{display:flex;background:#f1f5f9;border-radius:10px;padding:4px;margin-bottom:14px}
+.auth-tabs button{flex:1;border:none;background:transparent;padding:9px;border-radius:8px;font-weight:800;font-size:12.5px;cursor:pointer;color:var(--text-light)}
+.auth-tabs button.active{background:#fff;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.auth-error{background:#fee2e2;border:1px solid #fecaca;color:#991b1b;font-size:11.5px;padding:9px 12px;border-radius:9px;margin-bottom:10px;display:none;line-height:1.6}
+.auth-error.show{display:block}
+.auth-success{background:#dcfce7;border:1px solid #bbf7d0;color:#166534;font-size:11.5px;padding:9px 12px;border-radius:9px;margin-bottom:10px;display:none}
+.auth-success.show{display:block}
+.local-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.local-chips button{border:1px solid var(--border);background:#f8fafc;border-radius:20px;padding:5px 11px;font-size:11px;cursor:pointer;font-weight:700}
+.local-chips button:hover{border-color:var(--primary);background:#eff6ff}
+.auth-features{margin-top:14px;background:#f8fafc;border:1px solid var(--border);border-radius:11px;padding:10px 14px;font-size:10.5px;color:#475569;line-height:1.9}
+.designer-layout{display:grid;grid-template-columns:1fr 300px;gap:0;flex:1;min-height:0;overflow:hidden}
+.designer-canvas-area{background:#0f172a;padding:12px;overflow:auto;display:flex;align-items:center;justify-content:center;position:relative}
+.designer-canvas-wrap{position:relative;display:inline-block;max-width:100%;box-shadow:0 12px 40px rgba(0,0,0,.5);border-radius:8px;overflow:hidden;line-height:0}
+.designer-canvas-wrap img{max-width:100%;max-height:66vh;display:block;user-select:none;-webkit-user-drag:none}
+#designerZones{position:absolute;inset:0}
+.dzone{position:absolute;border:2px dashed rgba(59,130,246,.95);background:rgba(59,130,246,.14);border-radius:6px;cursor:move;display:flex;align-items:flex-end;justify-content:center;padding:4px;touch-action:none;line-height:1.3}
+.dzone.cabinet{border-color:rgba(16,185,129,.95);background:rgba(16,185,129,.14)}
+.dzone.selected{border-style:solid;box-shadow:0 0 0 3px rgba(59,130,246,.35);z-index:5}
+.dzone .dz-label{background:rgba(15,23,42,.9);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:12px;max-width:96%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.dzone .dz-count{position:absolute;top:3px;right:3px;background:#0f172a;color:#fff;font-size:9px;font-weight:800;padding:1px 6px;border-radius:10px;pointer-events:none}
+.dzone .dz-resize{position:absolute;bottom:-7px;left:-7px;width:16px;height:16px;background:var(--primary);border:2px solid #fff;border-radius:50%;cursor:nwse-resize;box-shadow:0 1px 5px rgba(0,0,0,.4)}
+.dzone .dz-del{position:absolute;top:-9px;left:-9px;width:20px;height:20px;background:var(--danger);color:#fff;border:2px solid #fff;border-radius:50%;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 5px rgba(0,0,0,.4);padding:0}
+.dzone-draw{position:absolute;border:2px solid #22c55e;background:rgba(34,197,94,.2);border-radius:4px;pointer-events:none}
+.designer-canvas-wrap.add-mode{cursor:crosshair}
+.designer-side{background:#f8fafc;border-right:1px solid var(--border);overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.designer-side h4{font-size:12px}
+.dz-list{display:flex;flex-direction:column;gap:5px;max-height:180px;overflow:auto}
+.dz-list-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 9px;font-size:11px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.dz-list-item.selected{border-color:var(--primary);background:#eff6ff}
+.dz-grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dz-grid2 input,.designer-side input[type=number],.designer-side input[type=text]{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:7px;font-size:11.5px}
+.mini-label{font-size:10px;font-weight:700;color:#475569;margin-bottom:3px;display:block}
+.toast-container{position:fixed;bottom:16px;left:16px;z-index:600;display:flex;flex-direction:column;gap:8px;max-width:min(380px,90vw)}
+.toast{background:#0f172a;color:#fff;border-radius:12px;padding:11px 14px;font-size:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:flex;gap:10px;align-items:center;animation:toastIn .3s ease;line-height:1.6}
+.toast.success{border-right:4px solid #22c55e}.toast.error{border-right:4px solid #ef4444}.toast.info{border-right:4px solid #3b82f6}.toast.warning{border-right:4px solid #f59e0b}
+.toast button{flex-shrink:0}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.toast.out{opacity:0;transform:translateY(8px);transition:.3s}
+.wa-log-list{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow:auto}
+.wa-log-item{background:#fff;border:1px solid var(--border);border-radius:9px;padding:8px 10px;font-size:10.5px;display:flex;gap:8px;align-items:flex-start;line-height:1.6}
+.wa-log-item .st{font-weight:900}
+.wa-log-item.ok .st{color:#166534}.wa-log-item.fail .st{color:#991b1b}
+.low-stock-section.pulse{animation:alertPulse 1.4s ease 3}
+@keyframes alertPulse{0%,100%{box-shadow:0 4px 16px rgba(220,38,38,.08)}50%{box-shadow:0 0 0 4px rgba(220,38,38,.35)}}
+@media(max-width:900px){.designer-layout{grid-template-columns:1fr;grid-template-rows:1fr auto}.designer-side{border-right:none;border-top:1px solid var(--border);max-height:300px}}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="brand-logo">🦷</div><div><h1>جرد عيادة الأسنان - واتساب API</h1><p>صور حقيقية • تنبيهات • واتساب تلقائي كامل</p></div></div>
+  <div class="brand"><div class="brand-logo">🦷</div><div><h1>جرد عيادات الأسنان</h1><p>حسابات مستقلة • مخزن مخصص • واتساب تلقائي</p></div></div>
   <div class="actions">
     <button class="btn btn-ghost" id="btnMaterials">📦 المواد</button>
     <button class="btn btn-ghost" id="btnSuppliers">🏢 الموردين</button>
@@ -150,12 +205,16 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
     <button class="btn btn-ghost" id="btnReport">📊 التقرير</button>
     <button class="btn btn-ghost" id="btnImport">📥 استيراد</button>
     <button class="btn btn-primary" id="btnExport">💾 تصدير</button>
+    <span class="clinic-badge" id="clinicBadge">🏥</span>
+    <button class="btn btn-ghost" id="btnDesigner">🎨 مخزني</button>
+    <button class="btn btn-ghost" id="btnAccount">👤 حسابي</button>
+    <button class="btn btn-ghost" id="btnLogout">🚪 خروج</button>
   </div>
 </header>
 
 <div class="container">
   <div class="intro">
-    <div><h2>نظام الجرد مع واتساب Business API - إرسال تلقائي 100%</h2><p>وضعان: <b>wa.me العادي</b> (يفتح واتساب) و <b>Cloud API التلقائي</b> (يرسل بدون تدخل). اربط حسابك وفعّل الإرسال التلقائي.</p></div>
+    <div><h2>نظام الجرد متعدد العيادات — مخزنك الخاص وواتساب تلقائي</h2><p>كل عيادة بحساب مستقل: ارفع صورة مخزنك وحدد الجرارات من <b>🎨 مخزني</b>. الإرسال التلقائي: <b>wa.me</b> (بضغطة واحدة) أو <b>Cloud API</b> (تلقائي 100% بدون تدخل).</p></div>
     <div class="stats">
       <div class="stat"><b id="statTotalItems">0</b><span>إجمالي القطع</span></div>
       <div class="stat"><b id="statMaterials">0</b><span>نوع مادة</span></div>
@@ -181,10 +240,87 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
   </div>
 
   <div class="storage-wrapper">
-    <div class="storage-header"><h3>🖼️ المخزن الحقيقي - اضغط على أي جرار/خزانة</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="hint">🔵 جرارات • 🟢 خزائن • 🔴 تنبيه</span><label style="font-size:10px;display:flex;align-items:center;gap:4px;background:#fff;padding:4px 8px;border-radius:20px;border:1px solid var(--border);cursor:pointer"><input type="checkbox" id="toggleLabels" checked> إظهار الأسماء</label></div></div>
+    <div class="storage-header"><h3>🖼️ المخزن الحقيقي - اضغط على أي جرار/خزانة</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="hint">🔵 جرارات • 🟢 خزائن • 🔴 تنبيه</span><button class="btn btn-light btn-sm" id="btnDesigner2">🎨 تصميم المخزن</button><label style="font-size:10px;display:flex;align-items:center;gap:4px;background:#fff;padding:4px 8px;border-radius:20px;border:1px solid var(--border);cursor:pointer"><input type="checkbox" id="toggleLabels" checked> إظهار الأسماء</label></div></div>
     <div class="real-storage-container" id="realStorageContainer"><img src="images/full.jpg" class="main-img" alt="المخزن" id="mainStorageImg" draggable="false"><div class="hotspots-layer" id="hotspotsLayer"></div></div>
   </div>
 </div>
+
+<!-- Auth Overlay: per-clinic accounts -->
+<div id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-logo">🦷</div>
+    <h2>نظام جرد عيادات الأسنان</h2>
+    <p class="sub">حساب مستقل لكل عيادة • مخزن مخصص • تنبيهات واتساب تلقائية</p>
+    <div class="auth-mode-badge"><span id="authModeBadge" class="badge badge-blue">...</span></div>
+    <div class="auth-tabs">
+      <button id="tabLogin" class="active" type="button">🔑 تسجيل الدخول</button>
+      <button id="tabRegister" type="button">➕ حساب عيادة جديد</button>
+    </div>
+    <div id="authError" class="auth-error"></div>
+    <div id="authSuccess" class="auth-success"></div>
+    <form id="loginForm">
+      <div class="form-group"><label>اسم المستخدم</label><input id="loginUsername" autocomplete="username" placeholder="مثال: clinic_aman" dir="ltr"></div>
+      <div class="form-group"><label>كلمة المرور</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px">🔑 دخول</button>
+      <div id="localUsersBox" style="display:none;margin-top:10px"><span class="mini-label">👥 حسابات مسجلة على هذا الجهاز — اضغط للتعبئة السريعة:</span><div class="local-chips" id="localUsersChips"></div></div>
+    </form>
+    <form id="registerForm" style="display:none">
+      <div class="form-group"><label>اسم العيادة *</label><input id="regClinicName" placeholder="مثال: عيادة الابتسامة - عمان"></div>
+      <div class="form-row"><div class="form-group"><label>اسم المستخدم *</label><input id="regUsername" dir="ltr" placeholder="حروف إنجليزية وأرقام"></div><div class="form-group"><label>رقم الهاتف</label><input id="regPhone" dir="ltr" placeholder="07XXXXXXXX"></div></div>
+      <div class="form-row"><div class="form-group"><label>كلمة المرور * (6+ أحرف)</label><input id="regPassword" type="password" autocomplete="new-password"></div><div class="form-group"><label>تأكيد كلمة المرور *</label><input id="regPassword2" type="password" autocomplete="new-password"></div></div>
+      <button type="submit" class="btn btn-whatsapp" style="width:100%;justify-content:center;padding:11px">➕ إنشاء حساب العيادة</button>
+    </form>
+    <div class="auth-features">✅ كل عيادة لها بيانات مستقلة تماماً<br>✅ ارفع صورة مخزنك وحدد الجرارات والخزائن عليها<br>✅ رسائل واتساب تلقائية للموردين عند الحد الأدنى</div>
+  </div>
+</div>
+
+<!-- Storage Designer Modal: upload storage photo & define drawers/cabinets -->
+<div id="designerModal" class="modal hidden" style="z-index:240">
+  <div class="modal-content large" style="height:92vh">
+    <div class="modal-header"><h3>🎨 تصميم مخزن العيادة — حدد الجرارات والخزائن على صورتك</h3><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-light btn-sm" id="btnDesignerUpload">🖼️ رفع صورة المخزن</button><button class="btn btn-light btn-sm" id="btnDesignerReset">↩️ الافتراضي</button><button class="btn btn-primary btn-sm" id="btnDesignerSave">💾 حفظ وإغلاق</button><button class="btn btn-light btn-sm" id="btnDesignerClose">✕</button></div></div>
+    <div style="padding:8px 14px;background:#fffbeb;border-bottom:1px solid #fde68a;font-size:11px;color:#92400e;line-height:1.7">📸 ارفع صورة الخزانة/المخزن الحقيقي في عيادتك، ثم اضغط <b>«➕ وضع الإضافة»</b> واسحب بالفأرة على الصورة لرسم كل جرار/خزانة. اسحب المناطق لنقلها، واسحب النقطة الزرقاء لتغيير الحجم. نقرة مزدوجة على أي منطقة لتعديل اسمها.</div>
+    <div class="designer-layout">
+      <div class="designer-canvas-area"><div class="designer-canvas-wrap" id="designerWrap"><img id="designerImg" src="images/full.jpg" alt="المخزن" draggable="false"><div id="designerZones"></div></div></div>
+      <div class="designer-side">
+        <button class="btn btn-whatsapp btn-sm" id="btnDesignerAddMode" style="justify-content:center">➕ وضع الإضافة: متوقف</button>
+        <div><h4>📍 المناطق (<span id="dzCount">0</span>)</h4><div class="dz-list" id="dzList" style="margin-top:6px"></div></div>
+        <div id="dzEditor" style="display:none;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px">
+          <h4>✏️ تعديل المنطقة</h4>
+          <div style="margin-top:8px"><span class="mini-label">الاسم</span><input type="text" id="dzName"></div>
+          <div style="margin-top:6px"><span class="mini-label">النوع</span><select id="dzType" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:7px;font-size:11.5px"><option value="drawer">🗄️ جرار</option><option value="cabinet">🚪 خزانة</option></select></div>
+          <div class="dz-grid2" style="margin-top:6px"><div><span class="mini-label">الموقع الأفقي %</span><input type="number" id="dzLeft" min="0" max="95" step="0.5"></div><div><span class="mini-label">الموقع العمودي %</span><input type="number" id="dzTop" min="0" max="95" step="0.5"></div></div>
+          <div class="dz-grid2" style="margin-top:6px"><div><span class="mini-label">العرض %</span><input type="number" id="dzWidth" min="3" max="100" step="0.5"></div><div><span class="mini-label">الارتفاع %</span><input type="number" id="dzHeight" min="3" max="100" step="0.5"></div></div>
+          <div style="margin-top:8px"><span class="mini-label">صورة داخل الجرار/الخزانة (اختياري)</span><div style="display:flex;gap:5px"><button class="btn btn-light btn-sm" id="btnDzUnitImage" style="flex:1">🖼️ رفع صورة</button><button class="btn btn-light btn-sm" id="btnDzUnitImageClear">🗑️</button></div><img id="dzUnitImagePreview" style="width:100%;max-height:110px;object-fit:cover;border-radius:8px;margin-top:6px;display:none;border:1px solid var(--border)"></div>
+          <button class="btn btn-danger btn-sm" id="btnDzDelete" style="width:100%;justify-content:center;margin-top:10px">🗑️ حذف المنطقة (ومحتوياتها)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="file" id="designerImageInput" accept="image/*" style="display:none">
+<input type="file" id="dzUnitImageInput" accept="image/*" style="display:none">
+
+<!-- Account Modal -->
+<div id="accountModal" class="modal hidden" style="z-index:240">
+  <div class="modal-content" style="max-width:520px">
+    <div class="modal-header"><h3>👤 حساب العيادة</h3><button class="btn btn-light btn-sm" id="btnCloseAccount">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>اسم العيادة</label><input id="accClinicName"></div>
+      <div class="form-row"><div class="form-group"><label>اسم المستخدم</label><input id="accUsername" disabled style="background:#f1f5f9" dir="ltr"></div><div class="form-group"><label>رقم الهاتف</label><input id="accPhone" dir="ltr"></div></div>
+      <div class="form-group"><label>العنوان</label><input id="accAddress"></div>
+      <div style="display:flex;gap:6px;margin-bottom:6px"><button class="btn btn-primary btn-sm" id="btnSaveAccount" style="flex:1">💾 حفظ البيانات</button></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+      <h4 style="font-size:12px;margin-bottom:8px">🔑 تغيير كلمة المرور</h4>
+      <div class="form-group"><label>كلمة المرور الحالية</label><input id="accCurrentPass" type="password"></div>
+      <div class="form-row"><div class="form-group"><label>الجديدة (6+ أحرف)</label><input id="accNewPass" type="password"></div><div class="form-group"><label>تأكيد الجديدة</label><input id="accNewPass2" type="password"></div></div>
+      <button class="btn btn-light btn-sm" id="btnChangePass" style="width:100%;justify-content:center">🔑 تغيير كلمة المرور</button>
+      <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+      <h4 style="font-size:12px;margin-bottom:8px;color:#991b1b">⚠️ منطقة الخطر</h4>
+      <button class="btn btn-danger btn-sm" id="btnDeleteAccount" style="width:100%;justify-content:center">🗑️ حذف حساب العيادة نهائياً (مع كل بياناته)</button>
+    </div>
+  </div>
+</div>
+<div id="toastContainer" class="toast-container"></div>
 
 <!-- Unit Modal -->
 <div id="unitModal" class="modal hidden">
@@ -196,7 +332,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 
 <!-- Materials Modal -->
 <div id="materialsModal" class="modal hidden">
-  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><input id="matName" placeholder="كمبوزيت A2"></div><div class="form-row"><div class="form-group"><label>الفئة</label><select id="matCategory"><option value="استهلاكية">🧴 استهلاكية</option><option value="أدوات">🔧 أدوات</option><option value="تخدير">💉 تخدير</option><option value="حشوات">🦷 حشوات</option><option value="تعقيم">🧼 تعقيم</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option></select></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
+  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><inputية</option><option value="أدوات">🔧 أدوات</option><option value="تخدير">💉 تخدير</option><option value="حشوات">🦷 حشوات</option><option value="تعقيم">🧼 تعقيم</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option></select></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
 </div>
 
 <!-- Suppliers Modal -->
@@ -223,6 +359,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
         <div class="wa-card" style="flex:1;margin-bottom:0">
           <div class="form-group"><label>📱 رقم واتساب العيادة *</label><input id="waClinicNumber" placeholder="07XXXXXXXX" dir="ltr" style="font-weight:700;text-align:center;font-size:14px"></div>
           <div class="form-group"><label>⏰ تأخير التلقائي</label><select id="waDelay"><option value="0">فوري</option><option value="5" selected>5 ثواني</option><option value="10">10 ثواني</option><option value="30">30 ثانية</option></select></div>
+          <div class="form-group"><label>🔁 إعادة التنبيه لنفس المادة</label><select id="waReNotify"><option value="1">كل ساعة</option><option value="6">كل 6 ساعات</option><option value="24">كل 24 ساعة</option><option value="168">كل أسبوع</option></select></div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b style="font-size:11px">🤖 تفعيل تلقائي</b></div><label class="switch"><input type="checkbox" id="waAutoEnabled"><span class="slider"></span></label></div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b style="font-size:11px">✅ تأكيد قبل الإرسال</b></div><label class="switch"><input type="checkbox" id="waRequireConfirm" checked><span class="slider"></span></label></div>
           <div style="display:flex;justify-content:space-between;align-items:center"><div><b style="font-size:11px">🔔 صوت تنبيه</b></div><label class="switch"><input type="checkbox" id="waSoundEnabled" checked><span class="slider"></span></label></div>
@@ -234,7 +371,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 
 {itemsList}
 
-📍 العيادة: عمان
+📍 العيادة: {clinicName}
 📅 {date}
 📱 من نظام الجرد</textarea></div>
         </div>
@@ -251,6 +388,13 @@ Headers: Authorization: Bearer {token}
 Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body":"..."}}</div>
         <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-whatsapp btn-sm" id="btnTestApi">🧪 اختبار API</button><button class="btn btn-light btn-sm" id="btnOpenMetaDocs">📚 فتح دليل Meta</button></div>
         <div id="apiTestResult" style="margin-top:8px;font-size:11px;padding:8px;border-radius:8px;display:none"></div>
+      </div>
+
+      <div class="wa-card" style="border:2px solid #0f172a;background:#f8fafc">
+        <h4 style="font-size:12px;margin-bottom:6px">🤖 الإرسال التلقائي عند الحد الأدنى — كيف يعمل؟</h4>
+        <p style="font-size:10.5px;color:#475569;line-height:1.7">عند تفعيل «تفعيل تلقائي» بالأعلى، يراقب النظام الكميات باستمرار: أي مادة مفعّل لها «واتساب تلقائي» ووصلت للحد الأدنى تُرسل رسالة تلقائية للمورد المعتمد لها — عبر <b>Cloud API</b> بدون أي تدخل (إذا عطّلت «تأكيد قبل الإرسال»)، أو عبر <b>wa.me</b> بضغطة واحدة من التنبيه (المتصفح يمنع الفتح التلقائي الكامل بدون ضغطة). لن تُعاد نفس الرسالة قبل مدة «إعادة التنبيه» إلا إذا تغيرت الكمية.</p>
+        <h4 style="font-size:12px;margin:10px 0 6px">📜 سجل الإرسال التلقائي <button class="btn btn-light btn-sm" id="btnClearWaLog" style="margin-right:6px">🗑️ مسح</button></h4>
+        <div id="waLogList" class="wa-log-list"><div class="empty-state" style="padding:10px"><p>لا توجد رسائل مرسلة بعد</p></div></div>
       </div>
 
       <div class="wa-card" style="background:#fffbeb;border-color:#fde68a"><b style="font-size:11px">🔐 الصلاحيات:</b><ul style="font-size:10.5px;color:#92400e;margin:8px 16px 0 0;line-height:1.7"><li>الوضع العادي: السماح بفتح wa.me + تسجيل دخول واتساب ويب</li><li>وضع API: يحتاج Meta Business Account + رقم واتساب بيزنس مفعل</li><li>الـ Token يبقى في جهازك فقط</li></ul></div>
@@ -320,14 +464,14 @@ const DEFAULT_SUPPLIERS=[
 ];
 const DEFAULT_WA_SETTINGS={
   clinicNumber:'',autoEnabled:false,requireConfirm:true,soundEnabled:true,delay:5,
-  apiMode:'wa_me',phoneNumberId:'',accessToken:'',businessId:'',
+  apiMode:'wa_me',phoneNumberId:'',accessToken:'',businessId:'',reNotifyHours:24,sendLog:[],
   template:`مرحبا {repName} - {companyName}،
 
 نحتاج طلب مستلزمات عاجل لعيادة الأسنان:
 
 {itemsList}
 
-📍 العيادة: عيادة الأسنان - عمان
+📍 العيادة: {clinicName}
 📅 التاريخ: {date}
 📱 مرسل من نظام الجرد التلقائي
 
@@ -339,9 +483,9 @@ let state={catalog:[],units:[],suppliers:[],settings:{whatsapp:DEFAULT_WA_SETTIN
 let currentUnitId=null,dragState=null,resizeState=null,selectedItemId=null,qtyEdit={unitId:null,itemId:null};
 let tempMatImage='';
 
-function loadState(){
+function loadStateLocal(){
   try{
-    const saved=localStorage.getItem('dental_inventory_v5');
+    const saved=localStorage.getItem(storageKey());
     if(saved){
       state=JSON.parse(saved);
       if(!state.suppliers) state.suppliers=DEFAULT_SUPPLIERS;
@@ -373,7 +517,8 @@ function loadState(){
     state.settings={whatsapp:JSON.parse(JSON.stringify(DEFAULT_WA_SETTINGS))};
   }
 }
-function saveState(){ localStorage.setItem('dental_inventory_v5', JSON.stringify(state)); updateStats(); renderLowStockPanel(); updateWhatsappStatusBar(); }
+function saveStateLocal(){ try{ localStorage.setItem(storageKey(), JSON.stringify(state)); }catch(err){ if(!window.__quotaWarned){ window.__quotaWarned=true; toast('⚠️ مساحة التخزين ممتلئة — احذف صوراً كبيرة أو صدّر نسخة احتياطية','error',null,null,9000); } } updateStats(); renderLowStockPanel(); updateWhatsappStatusBar(); }
+function saveState(){ saveStateLocal(); scheduleServerSync(); scheduleAutoSend(); }
 
 function cleanPhone(phone){ if(!phone) return ''; let p=phone.replace(/\D/g,''); if(p.startsWith('0')) p='962'+p.substring(1); if(p.startsWith('9620')) p='962'+p.substring(4); if(!p.startsWith('962')&&p.length===9) p='962'+p; return p; }
 function isLowStock(item,catalog){ const threshold=(item.minThreshold!==null&&item.minThreshold!==''&&item.minThreshold!==undefined)?parseInt(item.minThreshold):(catalog?parseInt(catalog.minThreshold):3); return item.qty<=threshold; }
@@ -408,6 +553,7 @@ function updateWhatsappStatusBar(){
       mDot.classList.add('off'); mStatus.textContent='غير مربوط'; mBadge.textContent='غير مفعل'; mBadge.className='badge badge-yellow';
     }
   }
+  try{ renderWaLog(); updateClinicBadge(); }catch(_){}
   // show/hide api box
   const apiBox=document.getElementById('apiSettingsBox');
   if(apiBox){
@@ -418,6 +564,7 @@ function updateWhatsappStatusBar(){
 
 function renderGrid(){
   const layer=document.getElementById('hotspotsLayer'); layer.innerHTML='';
+  const mainImg=document.getElementById('mainStorageImg'); if(mainImg){ const src=(state&&state.storageImage)||'images/full.jpg'; if(mainImg.getAttribute('src')!==src){ mainImg.onerror=()=>{ mainImg.onerror=null; mainImg.src='images/full.jpg'; }; mainImg.src=src; } }
   const showLabels=document.getElementById('toggleLabels')?.checked??true;
   state.units.forEach(u=>{
     const div=document.createElement('div'); div.className=`hotspot ${u.type}`; div.dataset.id=u.id;
@@ -446,15 +593,33 @@ function renderLowStockPanel(){
   });
 }
 
-async function sendViaCloudApi(toPhone, message){
+async function sendViaCloudApi(toPhone, message, opts){
   const wa=state.settings.whatsapp;
   if(!wa.phoneNumberId||!wa.accessToken){
-    alert('❌ بيانات Cloud API ناقصة! أدخل Phone Number ID و Access Token في إعدادات واتساب.');
-    openWhatsappSettings();
+    if(!(opts&&opts.silent)){
+      alert('❌ بيانات Cloud API ناقصة! أدخل Phone Number ID و Access Token في إعدادات واتساب.');
+      openWhatsappSettings();
+    }
     return {success:false, error:'بيانات API ناقصة'};
   }
-  const url=`https://graph.facebook.com/v20.0/${wa.phoneNumberId}/messages`;
+  // 1) جرّب وسيط الخادم الداخلي أولاً (يعمل عند التشغيل عبر npm start — يتجاوز CORS)
   try{
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),9000);
+    const proxyRes=await fetch('/api/send-whatsapp',{method:'POST',headers:{'Content-Type':'application/json'},signal:ctrl.signal,body:JSON.stringify({phoneNumberId:wa.phoneNumberId,accessToken:wa.accessToken,to:toPhone,message:message})});
+    clearTimeout(t);
+    const ct=proxyRes.headers.get('content-type')||'';
+    if(ct.indexOf('application/json')>=0){
+      let pj=null; try{ pj=await proxyRes.json(); }catch(_){}
+      if(pj){
+        if(pj.success&&pj.data){ pj.data._via='proxy'; return {success:true, data:pj.data}; }
+        if(pj.error){ return {success:false, error:(typeof pj.error==='string'?pj.error:(pj.error.message||JSON.stringify(pj.error)))}; }
+        if(pj.data&&pj.data.error){ return {success:false, error:pj.data.error.message||JSON.stringify(pj.data.error)}; }
+      }
+    }
+  }catch(_){ /* لا يوجد وسيط — نتابع مباشرة */ }
+  // 2) إرسال مباشر إلى Meta (قد يواجه CORS من المتصفح)
+  try{
+    const url=`https://graph.facebook.com/v20.0/${wa.phoneNumberId}/messages`;
     const res=await fetch(url,{
       method:'POST',
       headers:{'Authorization':`Bearer ${wa.accessToken}`,'Content-Type':'application/json'},
@@ -465,6 +630,7 @@ async function sendViaCloudApi(toPhone, message){
       console.error('WhatsApp API Error:', data.error);
       return {success:false, error:data.error.message||JSON.stringify(data.error)};
     }
+    data._via='direct';
     return {success:true, data};
   }catch(err){
     console.error(err);
@@ -480,21 +646,25 @@ async function openWhatsappForItem(itemId,unitId){
   if(!wa.connected){ if(!confirm('⚠️ واتساب غير مربوط! فتح إعدادات الربط؟')) return; openWhatsappSettings(); return; }
   const phone=cleanPhone(sup.whatsapp||sup.phone);
   const itemsList=`• ${cat.name} - الكمية: ${item.qty} (حد: ${item.minThreshold||cat.minThreshold}) - المكان: ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}`;
-  let msg=wa.template||DEFAULT_WA_SETTINGS.template;
-  msg=msg.replace('{repName}',sup.repName||'').replace('{companyName}',sup.companyName).replace('{itemsList}',itemsList).replace('{date}',new Date().toLocaleDateString('ar-JO'));
+  const msg=buildMsg(sup,itemsList);
 
   if(wa.apiMode==='cloud_api'){
     if(wa.requireConfirm&&!confirm(`سيتم إرسال رسالة تلقائية عبر Cloud API لـ ${sup.companyName}:\n\n${msg}\n\nمتابعة؟`)) return;
     const result=await sendViaCloudApi(phone, msg);
     if(result.success){
+      markNotified(unitId,itemId,item.qty); saveStateLocal();
+      logWaSend({supplier:sup.companyName,material:cat.name,qty:item.qty,mode:'cloud_api/manual',status:'success',messageId:(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''});
       alert(`✅ تم إرسال رسالة واتساب تلقائياً عبر API لـ ${sup.companyName} بنجاح!\n\nID: ${result.data.messages?.[0]?.id||'--'}`);
     }else{
+      logWaSend({supplier:sup.companyName,material:cat.name,qty:item.qty,mode:'cloud_api/manual',status:'fail',error:result.error||'فشل الإرسال'});
       alert(`❌ فشل الإرسال عبر API: ${result.error}\n\nسيتم فتح wa.me كبديل.`);
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
     }
   }else{
     if(wa.requireConfirm&&!confirm(`سيتم فتح واتساب وإرسال:\n\n${msg}\n\nمتابعة؟`)) return;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+    markNotified(unitId,itemId,item.qty); saveStateLocal();
+    logWaSend({supplier:sup.companyName,material:cat.name,qty:item.qty,mode:'wa.me',status:'success'});
   }
 }
 function callSupplier(phone){ if(!phone) return; window.open(`tel:${phone}`,'_self'); }
@@ -509,7 +679,7 @@ function openUnit(id){
   const lowCount=unit.items.filter(it=>{ const c=state.catalog.find(cc=>cc.id===it.catalogId); return isLowStock(it,c); }).length;
   const alertBadge=document.getElementById('unitAlertBadge');
   if(lowCount>0){ alertBadge.style.display='inline-block'; alertBadge.textContent=`⚠️ ${lowCount} تنبيه`; } else alertBadge.style.display='none';
-  const canvasImg=document.getElementById('canvasImg'); canvasImg.src=unit.type==='drawer'?'images/drawer.jpg':'images/cabinet.jpg';
+  const canvasImg=document.getElementById('canvasImg'); canvasImg.src=unit.image||(unit.type==='drawer'?'images/drawer.jpg':'images/cabinet.jpg');
   document.getElementById('unitModal').classList.remove('hidden'); renderItemsLayer(); renderCatalogList();
 }
 function closeUnit(){ document.getElementById('unitModal').classList.add('hidden'); currentUnitId=null; selectedItemId=null; renderGrid(); }
@@ -627,11 +797,7 @@ function openItemEdit(unitId,itemId){
 function saveItemEdit(){
   const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return;
   const qty=parseInt(document.getElementById('itemEditQty').value); if(isNaN(qty)||qty<0){ alert('كمية غير صحيحة'); return; } item.qty=qty; const th=document.getElementById('itemEditThreshold').value; item.minThreshold=th===''?null:parseInt(th); item.expiryDate=document.getElementById('itemEditExpiry').value; item.supplierId=document.getElementById('itemEditSupplier').value; item.notes=document.getElementById('itemEditNotes').value; saveState(); renderItemsLayer(); renderGrid(); renderLowStockPanel(); document.getElementById('itemEditModal').classList.add('hidden');
-  const cat=state.catalog.find(c=>c.id===item.catalogId); const wa=state.settings.whatsapp;
-  if(cat&&cat.autoWhatsapp&&isLowStock(item,cat)&&wa.connected&&wa.autoEnabled){
-    const delay=(parseInt(wa.delay)||5)*1000;
-    setTimeout(()=>{ if(confirm(`المادة "${cat.name}" وصلت حد التنبيه. إرسال واتساب تلقائي الآن؟`)){ openWhatsappForItem(itemId,unitId); } },delay);
-  }
+  // 🤖 الإرسال التلقائي عند الحد الأدنى يتم عبر محرك المراقبة (scheduleAutoSend داخل saveState) — يعمل على كل تغيير وليس فقط من هذه الشاشة
 }
 
 function openReport(){
@@ -645,8 +811,8 @@ function openReport(){
   });
   html+=`</tbody></table></div></div>`; body.innerHTML=html; document.getElementById('reportModal').classList.remove('hidden');
 }
-function exportData(){ const dataStr=JSON.stringify(state,null,2); const blob=new Blob([dataStr],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dental-inventory-full-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url); }
-function importData(file){ const reader=new FileReader(); reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(imported.catalog&&imported.units){ const newUnits=JSON.parse(JSON.stringify(DEFAULT_UNITS)); imported.units.forEach(ou=>{ const target=newUnits.find(nu=>nu.id===ou.id); if(target){ target.items=ou.items||[]; target.name=ou.name||target.name; } }); state.catalog=imported.catalog.map(c=>({image:'',supplierId:'',minThreshold:3,autoWhatsapp:0,...c})); state.units=newUnits; state.suppliers=imported.suppliers||DEFAULT_SUPPLIERS; state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(imported.settings?.whatsapp||{})}}; saveState(); renderGrid(); renderMaterialsList(); renderSuppliersList(); renderLowStockPanel(); alert('تم الاستيراد ✅'); }else alert('ملف غير صالح'); }catch(err){ alert('خطأ: '+err.message); } }; reader.readAsText(file); }
+function exportData(){ const dataStr=JSON.stringify(state,null,2); const blob=new Blob([dataStr],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dental-inventory-'+((state.clinic&&state.clinic.username)||'clinic')+'-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url); }
+function importData(file){ const reader=new FileReader(); reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(imported.catalog&&imported.units){ state.catalog=imported.catalog.map(c=>({image:'',supplierId:'',minThreshold:3,autoWhatsapp:0,...c})); state.units=(imported.units||[]).map(u=>Object.assign({image:'',items:[],pos:{left:5,top:5,width:20,height:15}},u)); state.suppliers=imported.suppliers||DEFAULT_SUPPLIERS; state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(imported.settings?.whatsapp||{})}}; if(imported.storageImage!==undefined) state.storageImage=imported.storageImage||''; if(imported.notified) state.notified=imported.notified; ensureStateShape(); saveState(); renderGrid(); renderMaterialsList(); renderSuppliersList(); renderLowStockPanel(); alert('تم الاستيراد ✅'); }else alert('ملف غير صالح'); }catch(err){ alert('خطأ: '+err.message); } }; reader.readAsText(file); }
 function updateStats(){ document.getElementById('statTotalItems').textContent=state.units.reduce((s,u)=>s+u.items.reduce((a,i)=>a+i.qty,0),0); document.getElementById('statMaterials').textContent=state.catalog.length; document.getElementById('statLow').textContent=state.units.reduce((s,u)=>s+u.items.filter(i=>{const c=state.catalog.find(cc=>cc.id===i.catalogId);return isLowStock(i,c)||isExpired(i.expiryDate);}).length,0); document.getElementById('statSuppliers').textContent=state.suppliers.length; }
 
 async function sendAllWhatsappOrders(){
@@ -659,20 +825,25 @@ async function sendAllWhatsappOrders(){
   for(let idx=0; idx<supIds.length; idx++){
     const sid=supIds[idx]; const data=bySupplier[sid]; const sup=data.supplier; if(!sup) continue; const phone=cleanPhone(sup.whatsapp||sup.phone);
     let itemsList=''; data.items.forEach(({cat,unit,item})=>{ itemsList+=`• ${cat.name} - الكمية: ${item.qty} (حد: ${item.minThreshold||cat.minThreshold}) - ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}\n`; });
-    let msg=wa.template||DEFAULT_WA_SETTINGS.template; msg=msg.replace('{repName}',sup.repName||'').replace('{companyName}',sup.companyName).replace('{itemsList}',itemsList).replace('{date}',new Date().toLocaleDateString('ar-JO'));
+    const msg=buildMsg(sup,itemsList);
     if(wa.apiMode==='cloud_api'){
       const result=await sendViaCloudApi(phone, msg);
       if(!result.success){
+        logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),mode:'cloud_api/manual',status:'fail',error:result.error||'فشل الإرسال'});
         alert(`❌ فشل API لـ ${sup.companyName}: ${result.error}\nسيتم فتح wa.me`);
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
       }else{
-        console.log(`✅ API sent to ${sup.companyName}`, result.data);
+        data.items.forEach(({unit,item})=>markNotified(unit.id,item.id,item.qty));
+        logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),mode:'cloud_api/manual',status:'success',messageId:(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''});
       }
     }else{
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
+      data.items.forEach(({unit,item})=>markNotified(unit.id,item.id,item.qty));
+      logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),mode:'wa.me',status:'success'});
       await new Promise(r=>setTimeout(r,1300));
     }
   }
+  saveStateLocal(); scheduleServerSync();
   if(state.settings.whatsapp.apiMode==='cloud_api') alert('✅ تم إرسال جميع الطلبات عبر WhatsApp Cloud API تلقائياً!');
 }
 
@@ -683,6 +854,7 @@ function openWhatsappSettings(){
   document.getElementById('waRequireConfirm').checked=wa.requireConfirm!==false;
   document.getElementById('waSoundEnabled').checked=wa.soundEnabled!==false;
   document.getElementById('waDelay').value=wa.delay||5;
+  document.getElementById('waReNotify').value=wa.reNotifyHours||24;
   document.getElementById('waTemplate').value=wa.template||DEFAULT_WA_SETTINGS.template;
   document.getElementById('waPhoneNumberId').value=wa.phoneNumberId||'';
   document.getElementById('waAccessToken').value=wa.accessToken||'';
@@ -700,6 +872,7 @@ function saveWhatsappSettings(){
   wa.requireConfirm=document.getElementById('waRequireConfirm').checked;
   wa.soundEnabled=document.getElementById('waSoundEnabled').checked;
   wa.delay=parseInt(document.getElementById('waDelay').value)||5;
+  wa.reNotifyHours=parseInt(document.getElementById('waReNotify').value)||24;
   wa.template=document.getElementById('waTemplate').value;
   wa.apiMode=document.querySelector('input[name="waMode"]:checked')?.value||'wa_me';
   wa.phoneNumberId=document.getElementById('waPhoneNumberId').value.trim();
@@ -772,38 +945,24 @@ async function testApi(){
   const resultBox=document.getElementById('apiTestResult');
   resultBox.style.display='block'; resultBox.style.background='#f1f5f9'; resultBox.textContent='⏳ جاري الإرسال عبر Cloud API...';
   const phone=cleanPhone(clinicNum);
-  const msg=`🧪 اختبار WhatsApp Cloud API
-
-✅ هذا اختبار تلقائي من نظام جرد عيادة الأسنان
-📱 رقم العيادة: ${clinicNum}
-📅 ${new Date().toLocaleString('ar-JO')}
-🔧 Phone ID: ${phoneNumberId}
-
-إذا وصلك، فالـ API يعمل بنجاح ويمكنك تفعيل الإرسال التلقائي الكامل!`;
-  const url=`https://graph.facebook.com/v20.0/${phoneNumberId}/messages`;
-  try{
-    const res=await fetch(url,{method:'POST',headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({messaging_product:'whatsapp',to:phone,type:'text',text:{preview_url:false,body:msg}})});
-    const data=await res.json();
-    if(data.error){
-      resultBox.style.background='#fee2e2'; resultBox.style.color='#991b1b';
-      resultBox.textContent=`❌ فشل: ${data.error.message}\n\nCode: ${data.error.code}\nType: ${data.error.type}\n\nتأكد من Token و Phone ID و أن الرقم مسموح في Meta.`;
-    }else{
-      resultBox.style.background='#dcfce7'; resultBox.style.color='#166534';
-      resultBox.textContent=`✅ نجح الإرسال عبر Cloud API!
-
-Message ID: ${data.messages?.[0]?.id||'--'}
-To: ${phone}
-وضع الإرسال التلقائي الكامل يعمل الآن بدون فتح المتصفح!`;
-      // save
-      wa.phoneNumberId=phoneNumberId; wa.accessToken=token; wa.businessId=document.getElementById('waBusinessId').value.trim(); wa.connected=true; wa.apiMode='cloud_api'; saveState();
-    }
-  }catch(err){
+  const msg=`🧪 اختبار WhatsApp Cloud API\n\n✅ هذا اختبار تلقائي من نظام جرد عيادة الأسنان\n📱 رقم العيادة: ${clinicNum}\n📅 ${new Date().toLocaleString('ar-JO')}\n🔧 Phone ID: ${phoneNumberId}\n\nإذا وصلك، فالـ API يعمل بنجاح ويمكنك تفعيل الإرسال التلقائي الكامل!`;
+  wa.phoneNumberId=phoneNumberId; wa.accessToken=token; // تجهيز البيانات لدالة الإرسال الموحدة (وسيط الخادم ثم المباشر)
+  const result=await sendViaCloudApi(phone,msg);
+  if(result.success){
+    const data=result.data||{};
+    resultBox.style.background='#dcfce7'; resultBox.style.color='#166534';
+    resultBox.textContent=`✅ نجح الإرسال عبر Cloud API${(data._via==='proxy')?' (عبر خادم العيادة — بدون CORS)':''}!\n\nMessage ID: ${(data.messages&&data.messages[0]&&data.messages[0].id)||'--'}\nTo: ${phone}\nوضع الإرسال التلقائي الكامل يعمل الآن بدون فتح المتصفح!`;
+    wa.businessId=document.getElementById('waBusinessId').value.trim(); wa.connected=true; wa.apiMode='cloud_api'; saveState();
+    logWaSend({supplier:'اختبار — رقم العيادة',material:'رسالة اختبار',mode:'cloud_api/test',status:'success',messageId:(data.messages&&data.messages[0]&&data.messages[0].id)||''});
+  }else{
     resultBox.style.background='#fee2e2'; resultBox.style.color='#991b1b';
-    resultBox.textContent=`❌ خطأ شبكة/CORS: ${err.message}\n\nملاحظة: Meta API قد يمنع الطلب من المتصفح مباشرة (CORS). في الإنتاج، يجب إرساله عبر خادم وسيط (backend).\n\nكبديل، استخدم وضع wa.me العادي الذي يعمل دائماً.`;
+    resultBox.textContent=`❌ فشل: ${result.error}\n\nتأكد من Token و Phone ID وأن الرقم مسموح في Meta.\n\nملاحظة: عند التشغيل عبر خادم العيادة (npm start) يتم الإرسال عبر وسيط داخلي بدون مشاكل CORS.`;
+    logWaSend({supplier:'اختبار — رقم العيادة',material:'رسالة اختبار',mode:'cloud_api/test',status:'fail',error:result.error||'فشل الإرسال'});
   }
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
+function initAppUI(){
+  if(window.__appReady) return; window.__appReady=true;
   loadState(); renderGrid(); initMaterialForm(); renderMaterialsList(); renderSuppliersList(); updateStats(); renderLowStockPanel(); updateWhatsappStatusBar();
   document.getElementById('toggleLabels').addEventListener('change',renderGrid);
   document.getElementById('btnMaterials').addEventListener('click',()=>{ renderMaterialsList(); document.getElementById('materialsModal').classList.remove('hidden'); });
@@ -853,7 +1012,645 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('btnSaveQty').addEventListener('click',()=>{ const unitId=qtyEdit.unitId,itemId=qtyEdit.itemId; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(item){ const v=parseInt(document.getElementById('qtyInput').value); if(!isNaN(v)&&v>=0){ item.qty=v; if(v===0&&confirm('الكمية صفر، حذف؟')) unit.items=unit.items.filter(i=>i.id!==itemId); saveState(); renderItemsLayer(); renderGrid(); } } document.getElementById('qtyModal').classList.add('hidden'); });
   document.querySelectorAll('.modal').forEach(m=>{ m.addEventListener('click',(e)=>{ if(e.target===m) m.classList.add('hidden'); }); });
   document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); }});
-});
+  bindNewUI();
+}
+
+/* ============================================================
+   NEW: Multi-clinic accounts + custom storage designer + auto-send engine
+   - حساب مستقل لكل عيادة (وضع محلي على الجهاز أو وضع خادم مشترك)
+   - رفع صورة المخزن وتحديد الجرارات/الخزائن عليها
+   - مراقبة مستمرة للحد الأدنى وإرسال تلقائي للمورد المعتمد
+   ============================================================ */
+const $=id=>document.getElementById(id);
+function escHtml(s){ return String(s===undefined||s===null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function uid(prefix){ return (prefix||'id')+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7); }
+function toast(msg,type,actionLabel,actionFn,timeout){
+  const box=$('toastContainer'); if(!box){ alert(msg); return null; }
+  const t=document.createElement('div'); t.className='toast '+(type||'info');
+  const span=document.createElement('span'); span.style.flex='1'; span.textContent=msg; t.appendChild(span);
+  if(actionLabel){ const b=document.createElement('button'); b.className='btn btn-whatsapp btn-sm'; b.textContent=actionLabel; b.addEventListener('click',()=>{ try{ if(actionFn) actionFn(); }catch(e){} dismiss(); }); t.appendChild(b); }
+  const x=document.createElement('button'); x.className='btn btn-ghost btn-sm'; x.textContent='✕'; x.addEventListener('click',dismiss); t.appendChild(x);
+  box.appendChild(t);
+  let gone=false;
+  function dismiss(){ if(gone) return; gone=true; t.classList.add('out'); setTimeout(()=>t.remove(),320); }
+  setTimeout(dismiss,timeout||7000);
+  return dismiss;
+}
+function compressImageFile(file,maxDim,quality){
+  return new Promise((resolve,reject)=>{
+    if(!file) return reject(new Error('no file'));
+    if(file.size>12*1024*1024) return reject(new Error('حجم الصورة كبير جداً (الحد 12MB)'));
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        try{
+          const max=maxDim||1200; let w=img.width,h=img.height;
+          if(w>max||h>max){ if(w>h){ h=Math.round(h*(max/w)); w=max; } else { w=Math.round(w*(max/h)); h=max; } }
+          const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+          canvas.getContext('2d').drawImage(img,0,0,w,h);
+          resolve(canvas.toDataURL('image/jpeg',quality||0.8));
+        }catch(err){ reject(err); }
+      };
+      img.onerror=()=>reject(new Error('تعذر قراءة الصورة'));
+      img.src=e.target.result;
+    };
+    reader.onerror=()=>reject(new Error('تعذر قراءة الملف'));
+    reader.readAsDataURL(file);
+  });
+}
+async function hashPassword(password,salt){
+  const input=(salt||'')+'::'+password;
+  try{
+    if(window.crypto&&crypto.subtle&&window.isSecureContext!==false){
+      const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input));
+      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+  }catch(e){ /* fallback below */ }
+  let h1=0xdeadbeef,h2=0x41c6ce57;
+  const str='salt:'+input+':pepper-dental';
+  for(let r=0;r<3;r++){ for(let i=0;i<str.length;i++){ const ch=str.charCodeAt(i); h1=Math.imul(h1^ch,2654435761); h2=Math.imul(h2^ch,1597334677); } }
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return 'f_'+(4294967296*(2097151&h2)+(h1>>>0)).toString(16);
+}
+
+/* ---------- Server API (when running via node server.js) ---------- */
+async function apiFetch(path,options){
+  const opt=Object.assign({headers:{}},options||{});
+  opt.headers=Object.assign({'Content-Type':'application/json'},opt.headers||{});
+  const token=localStorage.getItem('dental_token_v1');
+  if(token) opt.headers['Authorization']='Bearer '+token;
+  const res=await fetch(path,opt);
+  let data=null;
+  try{ data=await res.json(); }catch(e){ data=null; }
+  if(!res.ok) throw new Error((data&&data.error)||('خطأ '+res.status));
+  return data;
+}
+
+/* ---------- Auth state: server mode or local mode ---------- */
+let currentUser=null;
+let authMode='local';
+let serverAvailable=false;
+const LS_USERS='dental_users_v1';
+const LS_SESSION='dental_session_v1';
+function getLocalUsers(){ try{ return JSON.parse(localStorage.getItem(LS_USERS)||'[]'); }catch(e){ return []; } }
+function saveLocalUsers(users){ localStorage.setItem(LS_USERS,JSON.stringify(users)); }
+function validUsername(u){ return /^[a-zA-Z0-9_.-]{3,30}$/.test(u||''); }
+
+/* ---------- Per-clinic storage ---------- */
+function storageKey(){ return currentUser?('dental_inventory_user_'+currentUser.id):'dental_inventory_v5'; }
+function migrateLegacyIfNeeded(){
+  if(!currentUser) return;
+  try{
+    const key=storageKey();
+    if(localStorage.getItem(key)) return;
+    const legacy=localStorage.getItem('dental_inventory_v5');
+    if(!legacy) return;
+    let otherExists=false;
+    for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.indexOf('dental_inventory_user_')===0){ otherExists=true; break; } }
+    if(!otherExists){ localStorage.setItem(key,legacy); setTimeout(()=>toast('تم نقل بياناتك السابقة إلى حساب '+currentUser.clinicName+' ✅','success'),800); }
+  }catch(e){}
+}
+function ensureStateShape(){
+  if(!state||typeof state!=='object') state={catalog:[],units:[],suppliers:[],settings:{whatsapp:{}}};
+  if(!Array.isArray(state.catalog)) state.catalog=JSON.parse(JSON.stringify(DEFAULT_CATALOG));
+  if(!Array.isArray(state.units)) state.units=JSON.parse(JSON.stringify(DEFAULT_UNITS));
+  if(!Array.isArray(state.suppliers)) state.suppliers=JSON.parse(JSON.stringify(DEFAULT_SUPPLIERS));
+  if(!state.settings||typeof state.settings!=='object') state.settings={};
+  state.settings.whatsapp=Object.assign({},DEFAULT_WA_SETTINGS,state.settings.whatsapp||{});
+  state.settings.whatsapp.sendLog=Array.isArray(state.settings.whatsapp.sendLog)?state.settings.whatsapp.sendLog.slice(0,60):[];
+  if(state.storageImage===undefined||state.storageImage===null) state.storageImage='';
+  if(!state.notified||typeof state.notified!=='object') state.notified={};
+  if(!state.clinic||typeof state.clinic!=='object') state.clinic={};
+  if(currentUser){ state.clinic.id=currentUser.id; state.clinic.clinicName=currentUser.clinicName||state.clinic.clinicName||''; state.clinic.username=currentUser.username||state.clinic.username||''; }
+  state.units.forEach(u=>{
+    if(!u.pos||typeof u.pos!=='object') u.pos={left:5,top:5,width:20,height:15};
+    ['left','top','width','height'].forEach(k=>{ u.pos[k]=Math.max(0,Math.min(100,parseFloat(u.pos[k])||0)); });
+    if(u.pos.width<2) u.pos.width=20; if(u.pos.height<2) u.pos.height=15;
+    if(u.type!=='cabinet') u.type='drawer';
+    if(!Array.isArray(u.items)) u.items=[];
+    if(u.image===undefined||u.image===null) u.image='';
+  });
+}
+function loadState(){ migrateLegacyIfNeeded(); loadStateLocal(); ensureStateShape(); }
+
+/* ---------- Server sync (server mode) ---------- */
+let serverSyncTimer=null, serverSyncFailed=false;
+function scheduleServerSync(){
+  if(authMode!=='server'||!currentUser) return;
+  if(serverSyncTimer) clearTimeout(serverSyncTimer);
+  serverSyncTimer=setTimeout(syncNowToServer,1200);
+}
+async function syncNowToServer(){
+  if(authMode!=='server'||!currentUser) return;
+  try{
+    await apiFetch('/api/data',{method:'PUT',body:JSON.stringify({data:state})});
+    serverSyncFailed=false;
+  }catch(err){
+    if(!serverSyncFailed){ serverSyncFailed=true; toast('تعذر المزامنة مع الخادم — سيتم الحفظ محلياً مؤقتاً','warning'); }
+  }
+}
+
+/* ---------- WhatsApp message builder + send log ---------- */
+function buildMsg(sup,itemsList){
+  const wa=state.settings.whatsapp;
+  let msg=wa.template||DEFAULT_WA_SETTINGS.template;
+  const clinicName=(currentUser&&currentUser.clinicName)||(state.clinic&&state.clinic.clinicName)||'عيادتنا';
+  msg=msg.split('{repName}').join(sup.repName||'').split('{companyName}').join(sup.companyName).split('{itemsList}').join(itemsList).split('{date}').join(new Date().toLocaleDateString('ar-JO')).split('{clinicName}').join(clinicName);
+  return msg;
+}
+function logWaSend(entry){
+  try{
+    const wa=state.settings.whatsapp;
+    if(!Array.isArray(wa.sendLog)) wa.sendLog=[];
+    wa.sendLog.unshift(Object.assign({id:uid('log'),time:new Date().toISOString()},entry));
+    if(wa.sendLog.length>60) wa.sendLog.length=60;
+    saveStateLocal();
+    scheduleServerSync();
+    renderWaLog();
+  }catch(e){}
+}
+function renderWaLog(){
+  const box=$('waLogList'); if(!box) return;
+  const log=(state.settings&&state.settings.whatsapp&&state.settings.whatsapp.sendLog)||[];
+  if(!log.length){ box.innerHTML='<div class="empty-state" style="padding:10px"><p>لا توجد رسائل مرسلة بعد</p></div>'; return; }
+  box.innerHTML='';
+  log.slice(0,30).forEach(en=>{
+    const div=document.createElement('div'); div.className='wa-log-item '+((en.status==='success')?'ok':'fail');
+    const d=new Date(en.time); const when=isNaN(d.getTime())?'':d.toLocaleString('ar-JO');
+    const modeAr=(en.mode||'').indexOf('cloud_api')===0?'🤖 تلقائي API':((en.mode||'').indexOf('wa.me')===0?'🔗 wa.me':escHtml(en.mode||''));
+    div.innerHTML='<span class="st">'+((en.status==='success')?'✅':'❌')+'</span><div style="flex:1"><b>'+escHtml(en.supplier||'')+'</b> — '+escHtml(en.material||'')+(en.qty!==undefined?(' (كمية: '+en.qty+')'):'')+'<br><span style="color:#64748b">'+modeAr+' • '+escHtml(when)+(en.messageId?(' • ID: '+escHtml(en.messageId)):'')+(en.error?(' • '+escHtml(en.error)):'')+'</span></div>';
+    box.appendChild(div);
+  });
+}
+function notifiedKey(unitId,itemId){ return unitId+'__'+itemId; }
+function markNotified(unitId,itemId,qty){ try{ state.notified[notifiedKey(unitId,itemId)]={qty:qty,time:Date.now()}; }catch(e){} }
+function isNotifiedRecently(unitId,itemId,qty){
+  try{
+    const wa=state.settings.whatsapp;
+    const hours=parseInt(wa.reNotifyHours)||24;
+    const rec=state.notified[notifiedKey(unitId,itemId)];
+    if(!rec) return false;
+    if(rec.qty!==qty) return false;
+    return (Date.now()-(rec.time||0))<hours*3600*1000;
+  }catch(e){ return false; }
+}
+
+/* ---------- Auto-send engine: watches every change ---------- */
+function getLowStockCandidates(){
+  const out=[];
+  try{
+    state.units.forEach(u=>{ (u.items||[]).forEach(it=>{
+      const cat=state.catalog.find(c=>c.id===it.catalogId); if(!cat) return;
+      if(!isLowStock(it,cat)) return;
+      if(!cat.autoWhatsapp) return;
+      const supId=it.supplierId||cat.supplierId; if(!supId) return;
+      const sup=state.suppliers.find(s=>s.id===supId); if(!sup) return;
+      out.push({unit:u,item:it,cat:cat,sup:sup});
+    }); });
+  }catch(e){}
+  return out;
+}
+let autoSendTimer=null;
+function scheduleAutoSend(){ if(autoSendTimer) clearTimeout(autoSendTimer); autoSendTimer=setTimeout(runAutoSend,1200); }
+function queueAutoSendCheck(){ scheduleAutoSend(); }
+async function runAutoSend(){
+  if(!window.__appReady) return;
+  try{
+    const wa=state.settings.whatsapp;
+    if(!wa.connected||!wa.autoEnabled) return;
+    const fresh=getLowStockCandidates().filter(c=>!isNotifiedRecently(c.unit.id,c.item.id,c.item.qty));
+    if(!fresh.length) return;
+    const bySup={}; fresh.forEach(c=>{ (bySup[c.sup.id]=bySup[c.sup.id]||{sup:c.sup,items:[]}).items.push(c); });
+    const names=Object.keys(bySup).map(k=>bySup[k].sup.companyName).join('، ');
+    const pulse=()=>{ const sec=$('lowStockSection'); if(sec){ sec.classList.remove('pulse'); void sec.offsetWidth; sec.classList.add('pulse'); } };
+    if(wa.apiMode==='cloud_api'){
+      if(wa.requireConfirm){
+        toast('🤖 '+fresh.length+' مواد وصلت الحد الأدنى ('+names+') — جاهزة للإرسال التلقائي','warning','إرسال الآن',()=>{ sendAutoBatch(fresh,false); },15000);
+        pulse();
+      }else{
+        const delayMs=(parseInt(wa.delay)||0)*1000;
+        setTimeout(()=>sendAutoBatch(null,true),delayMs);
+      }
+    }else{
+      toast('🔔 '+fresh.length+' مواد وصلت الحد الأدنى وتحتاج طلب من: '+names,'warning','💬 فتح واتساب وإرسال',()=>{ sendWaMeBatch(fresh); },20000);
+      pulse();
+    }
+  }catch(e){ console.error(e); }
+}
+async function sendAutoBatch(precomputed,isFullyAuto){
+  try{
+    const wa=state.settings.whatsapp;
+    const list=(precomputed||getLowStockCandidates().filter(c=>!isNotifiedRecently(c.unit.id,c.item.id,c.item.qty)));
+    if(!list.length){ if(!isFullyAuto) toast('لا توجد مواد جديدة تحتاج إرسال','info'); return; }
+    if(!isFullyAuto&&wa.requireConfirm){
+      const names=list.map(c=>c.sup.companyName).filter((v,i,a)=>a.indexOf(v)===i).join('، ');
+      if(!confirm('سيتم إرسال رسائل تلقائية عبر Cloud API للموردين:\n'+names+'\n\nعدد المواد: '+list.length+'\n\nمتابعة؟')) return;
+    }
+    const bySup={}; list.forEach(c=>{ (bySup[c.sup.id]=bySup[c.sup.id]||{sup:c.sup,items:[]}).items.push(c); });
+    let ok=0,fail=0;
+    const supIds=Object.keys(bySup);
+    for(let i=0;i<supIds.length;i++){
+      const g=bySup[supIds[i]]; const phone=cleanPhone(g.sup.whatsapp||g.sup.phone);
+      let itemsList=''; g.items.forEach(entry=>{ itemsList+='• '+entry.cat.name+' - الكمية: '+entry.item.qty+' (حد: '+(entry.item.minThreshold||entry.cat.minThreshold)+') - '+entry.unit.name+(entry.item.expiryDate?(' - انتهاء: '+entry.item.expiryDate):'')+'\n'; });
+      const msg=buildMsg(g.sup,itemsList);
+      const result=await sendViaCloudApi(phone,msg,{silent:isFullyAuto});
+      if(result.success){
+        ok++;
+        g.items.forEach(entry=>markNotified(entry.unit.id,entry.item.id,entry.item.qty));
+        logWaSend({supplier:g.sup.companyName,material:g.items.map(x=>x.cat.name).join('، '),qty:g.items.reduce((s,x)=>s+x.item.qty,0),mode:'cloud_api'+(isFullyAuto?'/auto':'/manual'),status:'success',messageId:(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''});
+      }else{
+        fail++;
+        logWaSend({supplier:g.sup.companyName,material:g.items.map(x=>x.cat.name).join('، '),mode:'cloud_api',status:'fail',error:result.error||'فشل الإرسال'});
+      }
+      await new Promise(r=>setTimeout(r,700));
+    }
+    saveStateLocal(); scheduleServerSync();
+    if(ok&&!fail) toast('✅ تم إرسال '+ok+' رسائل تلقائية للموردين عبر API','success');
+    else if(ok&&fail) toast('تم إرسال '+ok+' بنجاح وفشل '+fail+' — راجع السجل','warning');
+    else toast('❌ فشل الإرسال التلقائي — راجع سجل واتساب','error');
+  }catch(e){ console.error(e); toast('❌ خطأ في الإرسال التلقائي: '+e.message,'error'); }
+}
+async function sendWaMeBatch(list){
+  try{
+    const bySup={}; list.forEach(c=>{ (bySup[c.sup.id]=bySup[c.sup.id]||{sup:c.sup,items:[]}).items.push(c); });
+    const supIds=Object.keys(bySup);
+    for(let i=0;i<supIds.length;i++){
+      const g=bySup[supIds[i]]; const phone=cleanPhone(g.sup.whatsapp||g.sup.phone);
+      let itemsList=''; g.items.forEach(entry=>{ itemsList+='• '+entry.cat.name+' - الكمية: '+entry.item.qty+' - '+entry.unit.name+'\n'; });
+      const msg=buildMsg(g.sup,itemsList);
+      window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');
+      g.items.forEach(entry=>markNotified(entry.unit.id,entry.item.id,entry.item.qty));
+      logWaSend({supplier:g.sup.companyName,material:g.items.map(x=>x.cat.name).join('، '),mode:'wa.me',status:'success'});
+      await new Promise(r=>setTimeout(r,1400));
+    }
+    saveStateLocal(); scheduleServerSync();
+    toast('📱 تم فتح محادثات واتساب — اضغط إرسال في كل محادثة','info');
+  }catch(e){ toast('❌ خطأ: '+e.message,'error'); }
+}
+
+/* ---------- Storage designer: upload photo & draw zones ---------- */
+const DZ={addMode:false,selectedId:null,drawStart:null,drawEl:null,moveInfo:null,resizeInfo:null};
+function openDesigner(){
+  renderDesigner();
+  updateAddModeBtn();
+  $('designerModal').classList.remove('hidden');
+}
+function closeDesigner(){ $('designerModal').classList.add('hidden'); DZ.addMode=false; DZ.selectedId=null; }
+function renderDesigner(){
+  const img=$('designerImg');
+  img.onerror=()=>{ img.onerror=null; img.src='images/full.jpg'; };
+  img.src=state.storageImage||'images/full.jpg';
+  renderDesignerZones(); renderDzList(); renderDzEditor();
+}
+function renderDesignerZones(){
+  const layer=$('designerZones'); layer.innerHTML='';
+  state.units.forEach(u=>{
+    const d=document.createElement('div');
+    d.className='dzone '+(u.type==='cabinet'?'cabinet':'')+(DZ.selectedId===u.id?' selected':'');
+    d.dataset.id=u.id;
+    d.style.left=u.pos.left+'%'; d.style.top=u.pos.top+'%'; d.style.width=u.pos.width+'%'; d.style.height=u.pos.height+'%';
+    d.innerHTML='<span class="dz-count">'+u.items.length+'</span><span class="dz-label">'+escHtml(u.name)+'</span><span class="dz-resize"></span><button class="dz-del">✕</button>';
+    d.addEventListener('pointerdown',e=>dzPointerDown(e,u.id));
+    d.addEventListener('dblclick',e=>{ e.stopPropagation(); DZ.selectedId=u.id; renderDesignerZones(); renderDzList(); renderDzEditor(); const nn=prompt('اسم المنطقة:',u.name); if(nn&&nn.trim()){ u.name=nn.trim(); saveStateLocal(); renderDesignerZones(); renderDzEditor(); renderDzList(); } });
+    d.querySelector('.dz-del').addEventListener('click',e=>{ e.stopPropagation(); deleteZone(u.id); });
+    layer.appendChild(d);
+  });
+  $('dzCount').textContent=state.units.length;
+}
+function renderDzList(){
+  const list=$('dzList'); list.innerHTML='';
+  if(!state.units.length){ list.innerHTML='<div class="empty-state" style="padding:8px"><p>لا توجد مناطق — ارسم مناطق جديدة</p></div>'; return; }
+  state.units.forEach(u=>{
+    const row=document.createElement('div'); row.className='dz-list-item'+(DZ.selectedId===u.id?' selected':'');
+    row.innerHTML='<span>'+(u.type==='cabinet'?'🚪':'🗄️')+' '+escHtml(u.name)+'</span><span class="badge '+((u.items.length)?'badge-blue':'badge-yellow')+'">'+u.items.length+'</span>';
+    row.addEventListener('click',()=>{ DZ.selectedId=u.id; renderDesignerZones(); renderDzList(); renderDzEditor(); });
+    list.appendChild(row);
+  });
+}
+function renderDzEditor(){
+  const u=state.units.find(x=>x.id===DZ.selectedId);
+  $('dzEditor').style.display=u?'block':'none';
+  if(!u) return;
+  $('dzName').value=u.name; $('dzType').value=u.type;
+  $('dzLeft').value=+u.pos.left.toFixed(1); $('dzTop').value=+u.pos.top.toFixed(1);
+  $('dzWidth').value=+u.pos.width.toFixed(1); $('dzHeight').value=+u.pos.height.toFixed(1);
+  const prev=$('dzUnitImagePreview');
+  if(u.image){ prev.src=u.image; prev.style.display='block'; } else { prev.src=''; prev.style.display='none'; }
+}
+function designerPerc(e){
+  const wrap=$('designerWrap'); const r=wrap.getBoundingClientRect();
+  const x=((e.clientX-r.left)/r.width)*100, y=((e.clientY-r.top)/r.height)*100;
+  return {x:Math.max(0,Math.min(100,x)),y:Math.max(0,Math.min(100,y))};
+}
+function dzPointerDown(e,unitId){
+  if(e.target.classList.contains('dz-del')) return;
+  e.preventDefault(); e.stopPropagation();
+  DZ.selectedId=unitId; renderDesignerZones(); renderDzList(); renderDzEditor();
+  const u=state.units.find(x=>x.id===unitId); if(!u) return;
+  if(e.target.classList.contains('dz-resize')){
+    DZ.resizeInfo={id:unitId,startX:e.clientX,startY:e.clientY,orig:{left:u.pos.left,top:u.pos.top,width:u.pos.width,height:u.pos.height},rect:$('designerWrap').getBoundingClientRect()};
+    document.addEventListener('pointermove',dzResizeMove); document.addEventListener('pointerup',dzEndAll);
+  }else{
+    DZ.moveInfo={id:unitId,startX:e.clientX,startY:e.clientY,orig:{left:u.pos.left,top:u.pos.top,width:u.pos.width,height:u.pos.height},rect:$('designerWrap').getBoundingClientRect(),moved:false};
+    document.addEventListener('pointermove',dzMoveMove); document.addEventListener('pointerup',dzEndAll);
+  }
+}
+function dzMoveMove(e){
+  if(!DZ.moveInfo) return;
+  const u=state.units.find(x=>x.id===DZ.moveInfo.id); if(!u) return;
+  const dx=((e.clientX-DZ.moveInfo.startX)/DZ.moveInfo.rect.width)*100;
+  const dy=((e.clientY-DZ.moveInfo.startY)/DZ.moveInfo.rect.height)*100;
+  if(Math.abs(dx)+Math.abs(dy)>0.3) DZ.moveInfo.moved=true;
+  u.pos.left=Math.max(0,Math.min(100-u.pos.width,DZ.moveInfo.orig.left+dx));
+  u.pos.top=Math.max(0,Math.min(100-u.pos.height,DZ.moveInfo.orig.top+dy));
+  const el=document.querySelector('.dzone[data-id="'+u.id+'"]');
+  if(el){ el.style.left=u.pos.left+'%'; el.style.top=u.pos.top+'%'; }
+}
+function dzResizeMove(e){
+  if(!DZ.resizeInfo) return;
+  const u=state.units.find(x=>x.id===DZ.resizeInfo.id); if(!u) return;
+  const dw=((e.clientX-DZ.resizeInfo.startX)/DZ.resizeInfo.rect.width)*100;
+  const dh=((e.clientY-DZ.resizeInfo.startY)/DZ.resizeInfo.rect.height)*100;
+  u.pos.width=Math.max(3,Math.min(100-u.pos.left,DZ.resizeInfo.orig.width+dw));
+  u.pos.height=Math.max(3,Math.min(100-u.pos.top,DZ.resizeInfo.orig.height+dh));
+  const el=document.querySelector('.dzone[data-id="'+u.id+'"]');
+  if(el){ el.style.width=u.pos.width+'%'; el.style.height=u.pos.height+'%'; }
+}
+function dzEndAll(){
+  document.removeEventListener('pointermove',dzMoveMove); document.removeEventListener('pointermove',dzResizeMove); document.removeEventListener('pointerup',dzEndAll);
+  if(DZ.moveInfo&&DZ.moveInfo.moved){ saveStateLocal(); renderDzEditor(); }
+  if(DZ.resizeInfo){ saveStateLocal(); renderDzEditor(); }
+  DZ.moveInfo=null; DZ.resizeInfo=null;
+}
+function updateAddModeBtn(){ const b=$('btnDesignerAddMode'); if(b){ b.textContent=DZ.addMode?'🟢 وضع الإضافة: يعمل — اسحب على الصورة':'➕ وضع الإضافة: متوقف'; } const w=$('designerWrap'); if(w) w.classList.toggle('add-mode',DZ.addMode); }
+function deleteZone(id){
+  const u=state.units.find(x=>x.id===id); if(!u) return;
+  if(!confirm('حذف "'+u.name+'"'+(u.items.length?(' مع '+u.items.length+' مواد بداخله'):'')+'؟')) return;
+  state.units=state.units.filter(x=>x.id!==id);
+  if(DZ.selectedId===id) DZ.selectedId=null;
+  saveState(); renderDesignerZones(); renderDzList(); renderDzEditor();
+}
+function bindDesigner(){
+  const wrap=$('designerWrap');
+  wrap.addEventListener('pointerdown',e=>{
+    if(!DZ.addMode) return;
+    e.preventDefault();
+    const p=designerPerc(e);
+    DZ.drawStart=p;
+    const layer=$('designerZones');
+    const el=document.createElement('div'); el.className='dzone-draw';
+    el.style.left=p.x+'%'; el.style.top=p.y+'%'; el.style.width='0%'; el.style.height='0%';
+    layer.appendChild(el); DZ.drawEl=el;
+    const move=ev=>{ if(!DZ.drawStart) return; const q=designerPerc(ev);
+      const l=Math.min(DZ.drawStart.x,q.x),t=Math.min(DZ.drawStart.y,q.y);
+      el.style.left=l+'%'; el.style.top=t+'%'; el.style.width=Math.abs(q.x-DZ.drawStart.x)+'%'; el.style.height=Math.abs(q.y-DZ.drawStart.y)+'%';
+    };
+    const up=ev=>{ document.removeEventListener('pointermove',move); document.removeEventListener('pointerup',up);
+      if(!DZ.drawStart) return; const q=designerPerc(ev);
+      const l=Math.min(DZ.drawStart.x,q.x),t=Math.min(DZ.drawStart.y,q.y),w=Math.abs(q.x-DZ.drawStart.x),h=Math.abs(q.y-DZ.drawStart.y);
+      if(DZ.drawEl) DZ.drawEl.remove(); DZ.drawEl=null; DZ.drawStart=null;
+      if(w<3||h<3){ toast('اسحب مساحة أكبر لرسم المنطقة','warning'); return; }
+      const n=state.units.length+1;
+      const nu={id:uid('u'),type:'drawer',name:'جرار جديد '+n,pos:{left:+l.toFixed(1),top:+t.toFixed(1),width:+w.toFixed(1),height:+h.toFixed(1)},image:'',items:[]};
+      state.units.push(nu); DZ.selectedId=nu.id;
+      saveState(); renderDesignerZones(); renderDzList(); renderDzEditor();
+      toast('✅ تمت إضافة المنطقة — عدّل اسمها ونوعها من اللوحة الجانبية','success');
+    };
+    document.addEventListener('pointermove',move); document.addEventListener('pointerup',up);
+  });
+  $('btnDesignerAddMode').addEventListener('click',()=>{ DZ.addMode=!DZ.addMode; updateAddModeBtn(); });
+  $('btnDesignerUpload').addEventListener('click',()=>$('designerImageInput').click());
+  $('designerImageInput').addEventListener('change',async e=>{
+    const f=e.target.files[0]; e.target.value=''; if(!f) return;
+    try{ const dataUrl=await compressImageFile(f,1400,0.82); state.storageImage=dataUrl; saveState(); renderDesigner(); toast('✅ تم رفع صورة المخزن — حدّد المناطق عليها الآن','success'); }
+    catch(err){ toast('❌ '+err.message,'error'); }
+  });
+  $('btnDesignerReset').addEventListener('click',()=>{
+    if(!confirm('إعادة المخزن للصورة والمناطق الافتراضية؟ (المواد محفوظة — ستُعاد للمناطق المطابقة، والباقي لأول جرار)')) return;
+    const byId={}; state.units.forEach(u=>{ byId[u.id]=u.items||[]; });
+    state.units=JSON.parse(JSON.stringify(DEFAULT_UNITS));
+    const orphans=[];
+    Object.keys(byId).forEach(oldId=>{ const t=state.units.find(nu=>nu.id===oldId); if(t) t.items=byId[oldId]; else orphans.push(...byId[oldId]); });
+    if(orphans.length&&state.units.length) state.units[0].items.push(...orphans);
+    state.storageImage='';
+    saveState(); renderDesigner();
+    toast('↩️ تمت الاستعادة الافتراضية','info');
+  });
+  $('btnDesignerSave').addEventListener('click',()=>{ saveState(); renderGrid(); closeDesigner(); toast('💾 تم حفظ تصميم المخزن','success'); });
+  $('btnDesignerClose').addEventListener('click',()=>{ renderGrid(); closeDesigner(); });
+  ['dzName','dzType','dzLeft','dzTop','dzWidth','dzHeight'].forEach(id=>{
+    $(id).addEventListener('change',()=>{
+      const u=state.units.find(x=>x.id===DZ.selectedId); if(!u) return;
+      u.name=$('dzName').value.trim()||u.name; u.type=$('dzType').value;
+      u.pos.left=Math.max(0,Math.min(95,parseFloat($('dzLeft').value)||0));
+      u.pos.top=Math.max(0,Math.min(95,parseFloat($('dzTop').value)||0));
+      u.pos.width=Math.max(3,Math.min(100-u.pos.left,parseFloat($('dzWidth').value)||10));
+      u.pos.height=Math.max(3,Math.min(100-u.pos.top,parseFloat($('dzHeight').value)||10));
+      saveStateLocal(); renderDesignerZones(); renderDzList(); renderDzEditor();
+    });
+  });
+  $('btnDzDelete').addEventListener('click',()=>{ if(DZ.selectedId) deleteZone(DZ.selectedId); });
+  $('btnDzUnitImage').addEventListener('click',()=>$('dzUnitImageInput').click());
+  $('dzUnitImageInput').addEventListener('change',async e=>{
+    const f=e.target.files[0]; e.target.value=''; if(!f) return;
+    const u=state.units.find(x=>x.id===DZ.selectedId); if(!u) return;
+    try{ u.image=await compressImageFile(f,900,0.8); saveStateLocal(); renderDzEditor(); toast('✅ تم رفع صورة المنطقة','success'); }
+    catch(err){ toast('❌ '+err.message,'error'); }
+  });
+  $('btnDzUnitImageClear').addEventListener('click',()=>{ const u=state.units.find(x=>x.id===DZ.selectedId); if(u){ u.image=''; saveStateLocal(); renderDzEditor(); } });
+}
+
+/* ---------- Account management ---------- */
+function openAccount(){
+  if(!currentUser) return;
+  $('accClinicName').value=currentUser.clinicName||'';
+  $('accUsername').value=currentUser.username||'';
+  $('accPhone').value=currentUser.phone||'';
+  $('accAddress').value=currentUser.address||'';
+  $('accCurrentPass').value=''; $('accNewPass').value=''; $('accNewPass2').value='';
+  $('accountModal').classList.remove('hidden');
+}
+async function saveAccountInfo(){
+  const name=$('accClinicName').value.trim();
+  if(!name){ toast('أدخل اسم العيادة','error'); return; }
+  currentUser.clinicName=name; currentUser.phone=$('accPhone').value.trim(); currentUser.address=$('accAddress').value.trim();
+  if(authMode==='local'){ const users=getLocalUsers(); const i=users.findIndex(u=>u.id===currentUser.id); if(i>=0){ users[i].clinicName=name; users[i].phone=currentUser.phone; users[i].address=currentUser.address; saveLocalUsers(users); } }
+  else { try{ await apiFetch('/api/me',{method:'PUT',body:JSON.stringify({clinicName:name,phone:currentUser.phone,address:currentUser.address})}); }catch(err){ toast('❌ '+err.message,'error'); return; } }
+  if(!state.clinic) state.clinic={};
+  state.clinic.clinicName=name; saveState(); updateClinicBadge();
+  toast('✅ تم حفظ بيانات العيادة','success');
+}
+async function doChangePassword(){
+  const cur=$('accCurrentPass').value, nw=$('accNewPass').value, nw2=$('accNewPass2').value;
+  if(!cur||!nw){ toast('أدخل الحالية والجديدة','error'); return; }
+  if(nw.length<6){ toast('كلمة المرور الجديدة 6 أحرف على الأقل','error'); return; }
+  if(nw!==nw2){ toast('تأكيد كلمة المرور غير متطابق','error'); return; }
+  if(authMode==='local'){
+    const users=getLocalUsers(); const u=users.find(x=>x.id===currentUser.id); if(!u) return;
+    const h=await hashPassword(cur,u.salt);
+    if(h!==u.passwordHash){ toast('كلمة المرور الحالية غير صحيحة','error'); return; }
+    u.passwordHash=await hashPassword(nw,u.salt); saveLocalUsers(users);
+    toast('✅ تم تغيير كلمة المرور','success');
+  }else{
+    try{ await apiFetch('/api/change-password',{method:'POST',body:JSON.stringify({currentPassword:cur,newPassword:nw})}); toast('✅ تم تغيير كلمة المرور','success'); }
+    catch(err){ toast('❌ '+err.message,'error'); return; }
+  }
+  $('accCurrentPass').value=''; $('accNewPass').value=''; $('accNewPass2').value='';
+}
+async function doDeleteAccount(){
+  if(!currentUser) return;
+  if(!confirm('حذف حساب "'+currentUser.clinicName+'" نهائياً مع كل بياناته؟\n\nلا يمكن التراجع!')) return;
+  const typed=prompt('للتأكيد اكتب: حذف');
+  if(typed!=='حذف'){ toast('تم الإلغاء','info'); return; }
+  if(authMode==='local'){
+    const users=getLocalUsers().filter(u=>u.id!==currentUser.id); saveLocalUsers(users);
+    try{ localStorage.removeItem(storageKey()); }catch(e){}
+    localStorage.removeItem(LS_SESSION);
+  }else{
+    try{ await apiFetch('/api/delete-account',{method:'POST'}); }catch(err){ toast('❌ '+err.message,'error'); return; }
+    localStorage.removeItem('dental_token_v1');
+  }
+  location.reload();
+}
+
+/* ---------- Auth UI ---------- */
+function showAuthError(msg){ const e=$('authError'); e.textContent=msg; e.classList.add('show'); $('authSuccess').classList.remove('show'); }
+function showAuthSuccess(msg){ const e=$('authSuccess'); e.textContent=msg; e.classList.add('show'); $('authError').classList.remove('show'); }
+function clearAuthMsg(){ $('authError').classList.remove('show'); $('authSuccess').classList.remove('show'); }
+function switchAuthTab(which){
+  clearAuthMsg();
+  const isLogin=which==='login';
+  $('tabLogin').classList.toggle('active',isLogin);
+  $('tabRegister').classList.toggle('active',!isLogin);
+  $('loginForm').style.display=isLogin?'block':'none';
+  $('registerForm').style.display=isLogin?'none':'block';
+}
+function renderLocalChips(){
+  const box=$('localUsersBox'), chips=$('localUsersChips');
+  if(!box||!chips) return;
+  if(authMode!=='local'){ box.style.display='none'; return; }
+  const users=getLocalUsers();
+  if(!users.length){ box.style.display='none'; return; }
+  box.style.display='block'; chips.innerHTML='';
+  users.forEach(u=>{
+    const b=document.createElement('button'); b.type='button'; b.textContent='🏥 '+u.clinicName;
+    b.addEventListener('click',()=>{ $('loginUsername').value=u.username; $('loginPassword').focus(); });
+    chips.appendChild(b);
+  });
+}
+async function handleLogin(ev){
+  ev.preventDefault(); clearAuthMsg();
+  const username=$('loginUsername').value.trim(), password=$('loginPassword').value;
+  if(!username||!password){ showAuthError('أدخل اسم المستخدم وكلمة المرور'); return; }
+  try{
+    if(authMode==='server'){
+      const r=await apiFetch('/api/login',{method:'POST',body:JSON.stringify({username:username,password:password})});
+      localStorage.setItem('dental_token_v1',r.token);
+      await afterAuthSuccess(r.user,true);
+    }else{
+      const u=getLocalUsers().find(x=>x.username.toLowerCase()===username.toLowerCase());
+      if(!u){ showAuthError('المستخدم غير موجود — تحقق من الاسم أو أنشئ حساباً جديداً'); return; }
+      const h=await hashPassword(password,u.salt);
+      if(h!==u.passwordHash){ showAuthError('كلمة المرور غير صحيحة'); return; }
+      localStorage.setItem(LS_SESSION,u.id);
+      await afterAuthSuccess({id:u.id,clinicName:u.clinicName,username:u.username,phone:u.phone||'',address:u.address||''},false);
+    }
+  }catch(err){ showAuthError(err.message||'فشل الدخول'); }
+}
+async function handleRegister(ev){
+  ev.preventDefault(); clearAuthMsg();
+  const clinicName=$('regClinicName').value.trim(), username=$('regUsername').value.trim(), phone=$('regPhone').value.trim();
+  const p1=$('regPassword').value, p2=$('regPassword2').value;
+  if(!clinicName){ showAuthError('أدخل اسم العيادة'); return; }
+  if(!validUsername(username)){ showAuthError('اسم المستخدم: 3-30 حرف إنجليزي/أرقام (بدون مسافات)'); return; }
+  if(!p1||p1.length<6){ showAuthError('كلمة المرور 6 أحرف على الأقل'); return; }
+  if(p1!==p2){ showAuthError('تأكيد كلمة المرور غير متطابق'); return; }
+  try{
+    if(authMode==='server'){
+      const r=await apiFetch('/api/register',{method:'POST',body:JSON.stringify({clinicName:clinicName,username:username,password:p1,phone:phone})});
+      localStorage.setItem('dental_token_v1',r.token);
+      await afterAuthSuccess(r.user,true);
+    }else{
+      const users=getLocalUsers();
+      if(users.some(x=>x.username.toLowerCase()===username.toLowerCase())){ showAuthError('اسم المستخدم مسجل مسبقاً — اختر اسماً آخر'); return; }
+      const salt=uid('salt');
+      const nu={id:uid('clinic'),clinicName:clinicName,username:username,phone:phone,salt:salt,passwordHash:await hashPassword(p1,salt),createdAt:new Date().toISOString()};
+      users.push(nu); saveLocalUsers(users);
+      localStorage.setItem(LS_SESSION,nu.id);
+      await afterAuthSuccess({id:nu.id,clinicName:clinicName,username:username,phone:phone},false);
+      setTimeout(()=>toast('🎉 تم إنشاء حساب '+clinicName+' — ارفع صورة مخزنك من زر «🎨 مخزني»','success',null,null,10000),600);
+    }
+  }catch(err){ showAuthError(err.message||'فشل إنشاء الحساب'); }
+}
+async function afterAuthSuccess(user,fromServer){
+  currentUser=user;
+  if(fromServer){
+    try{
+      const r=await apiFetch('/api/data',{method:'GET'});
+      if(r&&r.data) localStorage.setItem(storageKey(),JSON.stringify(r.data));
+    }catch(err){ /* لا توجد بيانات بعد — ستُنشأ الافتراضية */ }
+  }
+  $('authOverlay').classList.add('hidden');
+  initAppUI();
+  updateClinicBadge();
+  toast('👋 أهلاً '+currentUser.clinicName,'success');
+}
+function updateClinicBadge(){
+  const b=$('clinicBadge'); if(!b) return;
+  b.textContent=currentUser?('🏥 '+currentUser.clinicName):'🏥';
+  b.title=currentUser?('المستخدم: '+currentUser.username):'';
+}
+function doLogout(){
+  if(authMode==='server') localStorage.removeItem('dental_token_v1');
+  else localStorage.removeItem(LS_SESSION);
+  location.reload();
+}
+function bindAuthUI(){
+  $('tabLogin').addEventListener('click',()=>switchAuthTab('login'));
+  $('tabRegister').addEventListener('click',()=>switchAuthTab('register'));
+  $('loginForm').addEventListener('submit',handleLogin);
+  $('registerForm').addEventListener('submit',handleRegister);
+}
+function bindNewUI(){
+  bindDesigner();
+  $('btnDesigner').addEventListener('click',openDesigner);
+  $('btnDesigner2').addEventListener('click',openDesigner);
+  $('btnAccount').addEventListener('click',openAccount);
+  $('btnCloseAccount').addEventListener('click',()=>$('accountModal').classList.add('hidden'));
+  $('btnSaveAccount').addEventListener('click',saveAccountInfo);
+  $('btnChangePass').addEventListener('click',doChangePassword);
+  $('btnDeleteAccount').addEventListener('click',doDeleteAccount);
+  $('btnLogout').addEventListener('click',()=>{ if(confirm('تسجيل الخروج من حساب '+((currentUser&&currentUser.clinicName)||'')+'؟')) doLogout(); });
+  $('btnClearWaLog').addEventListener('click',()=>{ state.settings.whatsapp.sendLog=[]; saveStateLocal(); scheduleServerSync(); renderWaLog(); });
+  updateClinicBadge();
+}
+async function bootApp(){
+  bindAuthUI();
+  try{
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),1800);
+    const res=await fetch('/api/health',{signal:ctrl.signal});
+    clearTimeout(t);
+    if(res.ok){ const h=await res.json(); if(h&&h.mode==='multi-user'){ serverAvailable=true; authMode='server'; } }
+  }catch(e){ serverAvailable=false; authMode='local'; }
+  const badge=$('authModeBadge');
+  if(authMode==='server'){ badge.textContent='☁️ وضع الخادم — حسابات مشتركة بين الأجهزة'; badge.className='badge badge-green'; }
+  else { badge.textContent='💻 وضع محلي — حسابات مستقلة على هذا الجهاز'; badge.className='badge badge-blue'; }
+  renderLocalChips();
+  try{
+    if(authMode==='server'){
+      const token=localStorage.getItem('dental_token_v1');
+      if(token){ const me=await apiFetch('/api/me',{method:'GET'}); if(me&&me.user){ await afterAuthSuccess(me.user,true); return; } }
+    }else{
+      const sid=localStorage.getItem(LS_SESSION);
+      if(sid){ const u=getLocalUsers().find(x=>x.id===sid); if(u){ await afterAuthSuccess({id:u.id,clinicName:u.clinicName,username:u.username,phone:u.phone||'',address:u.address||''},false); return; } }
+    }
+  }catch(e){ /* عرض شاشة الدخول */ }
+  $('authOverlay').classList.remove('hidden');
+}
+document.addEventListener('DOMContentLoaded',()=>{ bootApp(); });
+
 </script>
 </body>
 </html>
