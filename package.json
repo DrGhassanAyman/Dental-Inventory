@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node -e \"console.log('Static site: no build step required. Files are served as-is.')\"",
     "start": "node server.js",
-    "test": "node tests/bugs.test.js"
+    "test": "node tests/bugs.test.js && node tests/orders.test.js"
   },
   "engines": {
     "node": ">=18"

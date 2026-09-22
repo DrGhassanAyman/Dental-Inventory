@@ -83,7 +83,9 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 .placed-item.expiry{border-color:var(--warning);box-shadow:0 0 0 2px rgba(217,119,6,.32),0 6px 18px rgba(0,0,0,.3)}
 /* بدون صورة: خلفية بلون المادة نفسه حتى لا تظهر أي حافة بيضاء */
 .placed-item.no-image{background:var(--item-color,#fff);box-shadow:0 3px 10px rgba(0,0,0,.24)}
-.placed-item img.item-img{width:100%;height:100%;object-fit:contain;object-position:center;position:absolute;inset:0;z-index:0;background:transparent;border:0;padding:0;display:block;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 3px 7px rgba(0,0,0,.4))}
+.placed-item .item-image-shell{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;pointer-events:none;transform:rotate(var(--item-rotation,0deg));transform-origin:center}
+.placed-item .item-image-shell.quarter-turn{inset:auto;left:50%;top:50%;width:var(--pre-rotate-width,100%);height:var(--pre-rotate-height,100%);transform:translate(-50%,-50%) rotate(var(--item-rotation,90deg))}
+.placed-item img.item-img{width:100%;height:100%;object-fit:contain;object-position:center;background:transparent;border:0;padding:0;display:block;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 3px 7px rgba(0,0,0,.4))}
 .placed-item .item-overlay{position:relative;z-index:1;background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.85) 100%);padding:5px 7px;flex:1;display:flex;flex-direction:column;backdrop-filter:blur(2px)}
 /* when the item has a photo the picture owns the card; the text collapses into a thin strip at the bottom so the whole image stays visible */
 .placed-item.has-image .item-overlay{position:absolute;top:auto;bottom:0;left:0;right:0;flex:0 0 auto;flex-direction:row;align-items:center;justify-content:center;gap:5px;padding:8px 16px 2px;background:linear-gradient(0deg,rgba(255,255,255,.8) 0%,rgba(255,255,255,.46) 52%,rgba(255,255,255,0) 100%);backdrop-filter:none}
@@ -107,6 +109,10 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 .placed-item .delete-btn{position:absolute;top:1px;left:1px;width:16px;height:16px;background:var(--danger);color:#fff;border:none;border-radius:50%;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:.15s;z-index:3}
 .placed-item:hover .delete-btn,.placed-item.selected .delete-btn{opacity:1}
 .placed-item .alert-badge{position:absolute;top:1px;right:1px;background:var(--danger);color:#fff;font-size:8px;font-weight:900;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.placed-item .order-add-btn{position:absolute;bottom:2px;right:2px;width:25px;height:25px;padding:0;border:2px solid #fff;border-radius:50%;background:#0f172a;color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:4;opacity:.92;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:.15s}
+.placed-item .order-add-btn:hover{background:var(--primary);transform:scale(1.1)}
+.placed-item .order-add-btn.in-cart{background:var(--success)}
+.placed-item .order-add-btn.ordered{background:#2563eb}
 .side-panel{background:#f8fafc;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .side-panel-header{padding:12px;border-bottom:1px solid var(--border);background:#fff}.side-panel-header h4{font-size:12px;margin-bottom:7px}
 .search-box{position:relative}.search-box input{width:100%;padding:8px 30px 8px 9px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;background:#fff}
@@ -144,9 +150,31 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 .report-table{width:100%;border-collapse:collapse;font-size:11.5px}.report-table th{background:#f8fafc;padding:8px 9px;text-align:right;font-weight:800;border-bottom:2px solid var(--border);position:sticky;top:0}
 .report-table td{padding:8px 9px;border-bottom:1px solid #f1f5f9}.report-table tr:hover td{background:#f8fafc}
 .badge{padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;display:inline-block}.badge-green{background:#dcfce7;color:#166534}.badge-yellow{background:#fef9c3;color:#854d0e}.badge-red{background:#fee2e2;color:#991b1b}.badge-blue{background:#dbeafe;color:#1e40af}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.cart-nav-btn{position:relative}
+.cart-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:20px;background:#ef4444;color:#fff;font-size:10px;font-weight:900;box-shadow:0 2px 7px rgba(239,68,68,.4)}
+.cart-count.empty{background:rgba(255,255,255,.2);box-shadow:none}
+.order-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.order-summary-card{border:1px solid var(--border);border-radius:11px;padding:9px 11px;background:#f8fafc}
+.order-summary-card b{display:block;font-size:17px}.order-summary-card span{font-size:9.5px;color:var(--text-light)}
+.order-cart-list,.order-history-list{display:flex;flex-direction:column;gap:8px}
+.order-cart-list{max-height:46vh;overflow:auto;padding:2px}
+.order-line{display:grid;grid-template-columns:54px minmax(150px,1fr) 92px 92px auto;gap:9px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:9px;background:#fff;position:relative;overflow:hidden}
+.order-line::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:#ef4444}.order-line.is-ordered::before{background:#2563eb}
+.order-thumb{width:50px;height:50px;border-radius:9px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:22px;flex-shrink:0}
+.order-thumb img{width:100%;height:100%;object-fit:contain}
+.order-info{min-width:0}.order-info b{font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.order-info span{font-size:9.7px;color:var(--text-light);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.order-qty label{font-size:9px;font-weight:700;color:#475569;display:block;margin-bottom:3px}.order-qty input{width:100%;padding:6px;border:1px solid var(--border);border-radius:7px;text-align:center;font-weight:800}
+.order-status{font-size:10px;font-weight:800;padding:5px 8px;border-radius:20px;text-align:center;white-space:nowrap}.order-status.shortage{background:#fee2e2;color:#991b1b}.order-status.ordered{background:#dbeafe;color:#1e40af}.order-status.completed{background:#dcfce7;color:#166534}
+.order-actions{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.order-history-section{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}.order-history-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.order-history-list{max-height:210px;overflow:auto}.history-line{display:flex;gap:9px;align-items:center;border:1px solid #dcfce7;background:#f0fdf4;border-radius:10px;padding:8px 10px}.history-line .order-info{flex:1}
+.rotate-controls{display:flex;align-items:center;justify-content:center;gap:6px;margin:-4px 0 10px}.rotation-value{min-width:54px;text-align:center;font-size:10px;font-weight:800;color:#475569}
+.order-qty-highlight{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:9px 10px;margin-bottom:10px}
+@media(max-width:760px){.order-line{grid-template-columns:48px minmax(0,1fr);align-items:start}.order-line .order-qty,.order-line .order-status,.order-line .order-actions{grid-column:2}.order-actions{justify-content:flex-start}.order-summary{grid-template-columns:1fr 1fr 1fr}}
 .empty-state{text-align:center;padding:28px 14px;color:var(--text-light)}.empty-state .icon{font-size:36px;margin-bottom:8px;opacity:.5}.empty-state p{font-size:11.5px;line-height:1.6}
 /* شفافية الخلفية تظهر بوضوح في معاينة صورة المادة (مربعات رمادية خفيفة بدل الأبيض) */
-.item-edit-preview{background-color:#f8fafc;background-image:linear-gradient(45deg,#e8edf3 25%,transparent 25%,transparent 75%,#e8edf3 75%),linear-gradient(45deg,#e8edf3 25%,transparent 25%,transparent 75%,#e8edf3 75%);background-size:16px 16px;background-position:0 0,8px 8px}
+.item-edit-preview{min-height:155px;max-height:190px;overflow:hidden;border:1px solid var(--border);border-radius:11px;margin-bottom:10px;padding:10px;background-color:#f8fafc;background-image:linear-gradient(45deg,#e8edf3 25%,transparent 25%,transparent 75%,#e8edf3 75%),linear-gradient(45deg,#e8edf3 25%,transparent 25%,transparent 75%,#e8edf3 75%);background-size:16px 16px;background-position:0 0,8px 8px}
 .image-upload{background-color:#fcfcfc;background-image:linear-gradient(45deg,#f1f5f9 25%,transparent 25%,transparent 75%,#f1f5f9 75%),linear-gradient(45deg,#f1f5f9 25%,transparent 25%,transparent 75%,#f1f5f9 75%);background-size:16px 16px;background-position:0 0,8px 8px}
 .image-upload .upload-text{background:rgba(255,255,255,.82);border-radius:8px;padding:4px}
 .item-edit-preview img{max-width:100%;max-height:100%;object-fit:contain}.item-edit-preview .no-image{font-size:12px;color:var(--text-light)}
@@ -224,6 +252,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
   <div class="brand"><div class="brand-logo">🦷</div><div><h1>جرد عيادات الأسنان</h1><p>حسابات مستقلة • مخزن مخصص • واتساب تلقائي</p></div></div>
   <div class="actions">
     <button class="btn btn-ghost" id="btnMaterials">📦 المواد</button>
+    <button class="btn btn-ghost cart-nav-btn" id="btnOrderCart">🛒 سلة الطلبات <span class="cart-count empty" id="orderCartBadge">0</span></button>
     <button class="btn btn-ghost" id="btnSuppliers">🏢 الموردين</button>
     <button class="btn btn-whatsapp" id="btnWhatsapp">📱 ربط واتساب</button>
     <button class="btn btn-ghost" id="btnReport">📊 التقرير</button>
@@ -356,7 +385,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 
 <!-- Materials Modal -->
 <div id="materialsModal" class="modal hidden">
-  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><p style="font-size:10px;color:#475569;line-height:1.6;margin-top:6px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:8px;padding:5px 8px">🪄 تُزال الحواف/الخلفية البيضاء من الصورة تلقائياً، فتظهر المادة داخل الجرار <b>بلا أي إطار</b> وتندمج مع صورة الجرار — واسم المادة يظهر فوق ظل أبيض ليكون واضحاً.</p><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><input id="matName" placeholder="مثال: كمبوزيت A2"></div><div class="form-row"><div class="form-group"><label>الفئة</label><select id="matCategory"><option value="حشوات">🦷 حشوات</option><option value="تخدير">💉 تخدير</option><option value="تعقيم">🧼 تعقيم</option><option value="أدوات">🔧 أدوات</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option><option value="جراحة">🩸 جراحة</option><option value="تركيبات">👑 تركيبات</option><option value="عامة">📦 عامة</option></select></div><div class="form-group"><label>📅 تاريخ الانتهاء</label><input id="matExpiry" type="date"></div></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnExitMaterials" data-close="materialsModal">🚪 خروج</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
+  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><p style="font-size:10px;color:#475569;line-height:1.6;margin-top:6px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:8px;padding:5px 8px">🪄 تُزال الحواف/الخلفية البيضاء من الصورة تلقائياً، فتظهر المادة داخل الجرار <b>بلا أي إطار</b> وتندمج مع صورة الجرار — واسم المادة يظهر فوق ظل أبيض ليكون واضحاً.</p><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><input id="matName" placeholder="مثال: كمبوزيت A2"></div><div class="form-row"><div class="form-group"><label>الفئة</label><select id="matCategory"><option value="حشوات">🦷 حشوات</option><option value="تخدير">💉 تخدير</option><option value="تعقيم">🧼 تعقيم</option><option value="أدوات">🔧 أدوات</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option><option value="جراحة">🩸 جراحة</option><option value="تركيبات">👑 تركيبات</option><option value="عامة">📦 عامة</option></select></div><div class="form-group"><label>📅 تاريخ الانتهاء</label><input id="matExpiry" type="date"></div></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div><div class="form-group order-qty-highlight"><label>🛒 كمية الطلب الافتراضية من المورد</label><input id="matOrderQty" type="number" min="1" value="1" inputmode="numeric"><span style="display:block;font-size:9.5px;color:#9a3412;margin-top:4px">تُستخدم تلقائياً عند إضافة المادة إلى قائمة الطلب.</span></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnExitMaterials" data-close="materialsModal">🚪 خروج</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
 </div>
 
 <!-- Suppliers Modal -->
@@ -365,7 +394,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 </div>
 
 <!-- WhatsApp Modal with Business API -->
-<div id="whatsappModal" class="modal hidden" style="z-index:260">
+<div id="whatsappModal" class="modal hidden" style="z-index:280">
   <div class="modal-content medium" style="max-width:760px">
     <div class="modal-header" style="background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border-bottom:2px solid #bbf7d0"><h3>📱 ربط واتساب - عادي + Business API التلقائي</h3><button class="btn btn-light btn-sm" id="btnCloseWhatsapp">✕</button></div>
     <div class="modal-body">
@@ -439,17 +468,32 @@ Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body
     <div class="modal-header"><h3>✏️ تعديل المادة</h3><button class="btn btn-light btn-sm" id="btnCloseItemEdit">✕</button></div>
     <div class="modal-body">
       <div class="item-edit-preview" id="itemEditPreview" style="cursor:pointer" title="اضغط لتغيير الصورة"><span class="no-image">لا توجد صورة</span></div><input type="file" id="itemEditImageInput" accept="image/*" style="display:none"><div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn btn-light btn-sm" id="btnChangeItemImage" style="flex:1">📷 تغيير الصورة</button><button class="btn btn-light btn-sm" id="btnRemoveItemImage" style="display:none">🗑️ حذف الصورة</button></div>
-      <p style="font-size:10px;color:#475569;line-height:1.6;margin:-4px 0 10px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:8px;padding:5px 8px">🪄 الصورة الجديدة تُجهَّز تلقائياً بلا حواف بيضاء وتُقصّ الفراغات حولها، فتظهر المادة داخل الجرار بدون إطار.</p>
+      <div class="rotate-controls"><button class="btn btn-light btn-sm" id="btnRotateItemLeft" type="button" title="تدوير الصورة 90 درجة إلى اليسار">↶ تدوير يسار</button><span class="rotation-value" id="itemRotationValue">0°</span><button class="btn btn-light btn-sm" id="btnRotateItemRight" type="button" title="تدوير الصورة 90 درجة إلى اليمين">تدوير يمين ↷</button></div>
+      <p style="font-size:10px;color:#475569;line-height:1.6;margin:-4px 0 10px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:8px;padding:5px 8px">🪄 الصورة الجديدة تُجهَّز تلقائياً بلا حواف بيضاء. استخدم زري التدوير لوضع المادة بالاتجاه المناسب داخل الجرار.</p>
       <input type="hidden" id="itemEditUnitId"><input type="hidden" id="itemEditItemId">
       <div class="form-group"><label>اسم المادة</label><input id="itemEditName" disabled style="background:#f1f5f9"></div>
-      <div class="form-row"><div class="form-group"><label>الكمية *</label><input id="itemEditQty" type="number" min="0" style="font-weight:800;font-size:16px;text-align:center"></div><div class="form-group"><label>حد التنبيه</label><input id="itemEditThreshold" type="number" min="0" placeholder="افتراضي"></div></div>
+      <div class="form-row"><div class="form-group"><label>الكمية الموجودة *</label><input id="itemEditQty" type="number" min="0" style="font-weight:800;font-size:16px;text-align:center"></div><div class="form-group"><label>حد التنبيه</label><input id="itemEditThreshold" type="number" min="0" placeholder="افتراضي"></div></div>
+      <div class="form-group order-qty-highlight"><label>🛒 الكمية التي تريد طلبها من المورد *</label><input id="itemEditOrderQty" type="number" min="1" value="1" inputmode="numeric" style="font-weight:800;font-size:16px;text-align:center"><span style="display:block;font-size:9.5px;color:#9a3412;margin-top:4px">ستظهر هذه الكمية في قائمة الطلب ورسالة واتساب للمورد.</span></div>
       <div class="form-row"><div class="form-group"><label>انتهاء</label><input id="itemEditExpiry" type="date"></div><div class="form-group"><label>المورد</label><select id="itemEditSupplier"><option value="">-- نفس مورد المادة --</option></select></div></div>
       <div class="form-group"><label>ملاحظات</label><input id="itemEditNotes"></div>
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 10px;display:none" id="itemEditAlertBox"><b style="font-size:11px;color:#991b1b">⚠️ تنبيه</b><p style="font-size:10px;color:#7f1d1d;margin-top:2px" id="itemEditAlertText"></p></div>
       <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" id="btnSaveItemEdit" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelItemEdit" data-close="itemEditModal">إلغاء</button><button class="btn btn-light" id="btnExitItemEdit" data-close="itemEditModal">🚪 خروج</button></div>
       <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button class="btn btn-light" id="btnDeleteItemFromDrawer">🗑️ حذف من الجرار</button><button class="btn btn-danger btn-sm" id="btnDeleteItemCompletely">❌ حذف نهائي</button></div>
-      <div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-light btn-sm" style="flex:1" id="btnCallSupplier">📞 اتصال</button><button class="btn btn-success btn-sm" style="flex:1" id="btnWhatsappSupplier">💬 واتساب</button></div>
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" style="flex:1" id="btnAddCurrentItemToCart">🛒 إضافة إلى قائمة الطلب</button><button class="btn btn-light btn-sm" style="flex:1" id="btnCallSupplier">📞 اتصال</button><button class="btn btn-success btn-sm" style="flex:1" id="btnWhatsappSupplier">💬 واتساب</button></div>
     </div>
+  </div>
+</div>
+
+<!-- Purchase Order Cart Modal -->
+<div id="orderCartModal" class="modal hidden" style="z-index:270">
+  <div class="modal-content large" style="max-width:1040px">
+    <div class="modal-header"><div><h3>🛒 سلة المواد المطلوب طلبها</h3><p style="font-size:9.5px;color:var(--text-light);margin-top:2px">اجمع المواد، حدّد الكمية، أرسلها للمورد، ثم سجّل وصولها.</p></div><button class="btn btn-light btn-sm" id="btnCloseOrderCart">✕</button></div>
+    <div class="modal-body">
+      <div class="order-summary"><div class="order-summary-card"><b id="orderSummaryTotal">0</b><span>مواد في القائمة</span></div><div class="order-summary-card"><b id="orderSummaryShortage">0</b><span>حالتها نقص</span></div><div class="order-summary-card"><b id="orderSummaryOrdered">0</b><span>تم طلبها</span></div></div>
+      <div id="orderCartList" class="order-cart-list"></div>
+      <div class="order-history-section"><div class="order-history-header"><h4 style="font-size:12px">✅ سجل الطلبيات المكتملة (<span id="orderHistoryCount">0</span>)</h4><button class="btn btn-light btn-sm" id="btnClearOrderHistory">🗑️ مسح السجل</button></div><div id="orderHistoryList" class="order-history-list"></div></div>
+    </div>
+    <div class="modal-footer"><span style="font-size:10px;color:var(--text-light)">تتغير الحالة إلى «تم الطلب» بعد فتح/إرسال رسالة واتساب.</span><div style="display:flex;gap:6px"><button class="btn btn-whatsapp" id="btnSendOrderCartWhatsapp">📱 إرسال الناقص عبر واتساب</button><button class="btn btn-light" data-close="orderCartModal">إغلاق</button></div></div>
   </div>
 </div>
 
@@ -461,14 +505,14 @@ Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body
 const COLORS=['#fef3c7','#dbeafe','#dcfce7','#fce7f3','#e0e7ff','#ffedd5','#f3e8ff','#ccfbf1','#fecaca','#f1f5f9'];
 const ICONS=['🦷','🔧','💉','🧴','🩹','🧤','😷','🪥','🔬','📦','🧼','🩺','💊','🧪','⚙️','🔩','📷','✂️','🪛','🧫'];
 const DEFAULT_CATALOG=[
-  {id:'c1',name:'كمبوزيت A2',cat:'حشوات',color:'#fef3c7',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0,expiryDate:''},
-  {id:'c2',name:'كمبوزيت A3',cat:'حشوات',color:'#ffedd5',icon:'🦷',image:'',supplierId:'',minThreshold:2,autoWhatsapp:0,expiryDate:''},
-  {id:'c3',name:'بوند',cat:'حشوات',color:'#dbeafe',icon:'🧴',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0,expiryDate:''},
-  {id:'c4',name:'إيتش 37%',cat:'حشوات',color:'#dbeafe',icon:'🧪',image:'',supplierId:'',minThreshold:1,autoWhatsapp:0,expiryDate:''},
-  {id:'c5',name:'بنج ليدوكائين',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:5,autoWhatsapp:1,expiryDate:''},
-  {id:'c6',name:'إبر بنج',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:10,autoWhatsapp:1,expiryDate:''},
-  {id:'c7',name:'قفازات M',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1,expiryDate:''},
-  {id:'c8',name:'قفازات L',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,autoWhatsapp:1,expiryDate:''},
+  {id:'c1',name:'كمبوزيت A2',cat:'حشوات',color:'#fef3c7',icon:'🦷',image:'',supplierId:'',minThreshold:2,orderQty:1,autoWhatsapp:0,expiryDate:''},
+  {id:'c2',name:'كمبوزيت A3',cat:'حشوات',color:'#ffedd5',icon:'🦷',image:'',supplierId:'',minThreshold:2,orderQty:1,autoWhatsapp:0,expiryDate:''},
+  {id:'c3',name:'بوند',cat:'حشوات',color:'#dbeafe',icon:'🧴',image:'',supplierId:'',minThreshold:1,orderQty:1,autoWhatsapp:0,expiryDate:''},
+  {id:'c4',name:'إيتش 37%',cat:'حشوات',color:'#dbeafe',icon:'🧪',image:'',supplierId:'',minThreshold:1,orderQty:1,autoWhatsapp:0,expiryDate:''},
+  {id:'c5',name:'بنج ليدوكائين',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:5,orderQty:1,autoWhatsapp:1,expiryDate:''},
+  {id:'c6',name:'إبر بنج',cat:'تخدير',color:'#fce7f3',icon:'💉',image:'',supplierId:'',minThreshold:10,orderQty:1,autoWhatsapp:1,expiryDate:''},
+  {id:'c7',name:'قفازات M',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,orderQty:1,autoWhatsapp:1,expiryDate:''},
+  {id:'c8',name:'قفازات L',cat:'تعقيم',color:'#dcfce7',icon:'🧤',image:'',supplierId:'',minThreshold:20,orderQty:1,autoWhatsapp:1,expiryDate:''},
 ];
 const DEFAULT_UNITS=[
   {id:'d1',type:'drawer',name:'جرار علوي يسار - صغير',pos:{left:0,top:0,width:20.6,height:21.8},items:[]},
@@ -510,6 +554,10 @@ let currentUnitId=null,dragState=null,resizeState=null,selectedItemId=null,qtyEd
 const ITEM_MIN_PCT=12, ITEM_MAX_PCT=80; // size limits for a card inside a jar/cabinet (% of the unit)
 let tempMatImage='';
 let tempItemEditImage='';
+let tempItemImageRemoved=false;
+let tempItemRotation=0;
+const ORDER_STATUS_SHORTAGE='shortage';
+const ORDER_STATUS_ORDERED='ordered';
 
 function loadStateLocal(){
   try{
@@ -545,13 +593,147 @@ function loadStateLocal(){
     state.settings={whatsapp:JSON.parse(JSON.stringify(DEFAULT_WA_SETTINGS))};
   }
 }
-function saveStateLocal(){ try{ localStorage.setItem(storageKey(), JSON.stringify(state)); }catch(err){ if(!window.__quotaWarned){ window.__quotaWarned=true; toast('⚠️ مساحة التخزين ممتلئة — احذف صوراً كبيرة أو صدّر نسخة احتياطية','error',null,null,9000); } } updateStats(); renderLowStockPanel(); updateWhatsappStatusBar(); }
+function saveStateLocal(){ try{ localStorage.setItem(storageKey(), JSON.stringify(state)); }catch(err){ if(!window.__quotaWarned){ window.__quotaWarned=true; toast('⚠️ مساحة التخزين ممتلئة — احذف صوراً كبيرة أو صدّر نسخة احتياطية','error',null,null,9000); } } updateStats(); renderLowStockPanel(); updateWhatsappStatusBar(); renderOrderCart(); }
 function saveState(){ saveStateLocal(); scheduleServerSync(); scheduleAutoSend(); }
 
 function cleanPhone(phone){ if(!phone) return ''; let p=phone.replace(/\D/g,''); if(p.startsWith('0')) p='962'+p.substring(1); if(p.startsWith('9620')) p='962'+p.substring(4); if(!p.startsWith('962')&&p.length===9) p='962'+p; return p; }
 function isLowStock(item,catalog){ const threshold=(item.minThreshold!==null&&item.minThreshold!==''&&item.minThreshold!==undefined)?parseInt(item.minThreshold):(catalog?parseInt(catalog.minThreshold):3); return item.qty<=threshold; }
 function isNearExpiry(d){ if(!d) return false; const today=new Date(); const exp=new Date(d); const diff=(exp-today)/(1000*60*60*24); return diff>=0&&diff<=60; }
 function isExpired(d){ if(!d) return false; return new Date(d)<new Date(); }
+
+/* ---------- Purchase order cart + completed order history ---------- */
+function normalizeRotation(value){ const n=parseInt(value,10)||0; return ((n%360)+360)%360; }
+function wantedOrderQty(item,cat){ return Math.max(1,parseInt(item&&item.orderQty,10)||parseInt(cat&&cat.orderQty,10)||1); }
+function lightweightImageRef(src){ return (typeof src==='string'&&src&&!src.startsWith('data:'))?src:''; }
+function findOrderCartLine(unitId,itemId){ return (state.orderCart||[]).find(line=>line.unitId===unitId&&line.itemId===itemId); }
+function ensureOrderCartLine(unitId,itemId,quantity){
+  const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!unit||!item) return null;
+  const cat=state.catalog.find(c=>c.id===item.catalogId); if(!cat) return null;
+  const qty=Math.max(1,parseInt(quantity,10)||wantedOrderQty(item,cat));
+  item.orderQty=qty;
+  if(!Array.isArray(state.orderCart)) state.orderCart=[];
+  let line=findOrderCartLine(unitId,itemId);
+  const supplierId=item.supplierId||cat.supplierId||''; const sup=state.suppliers.find(s=>s.id===supplierId);
+  if(line){
+    if((line.quantity!==qty||line.supplierId!==supplierId)&&line.status===ORDER_STATUS_ORDERED){ line.status=ORDER_STATUS_SHORTAGE; line.orderedAt=''; line.batchId=''; }
+    line.quantity=qty; line.catalogId=cat.id; line.supplierId=supplierId; line.materialName=cat.name; line.materialImage=lightweightImageRef(cat.image); line.icon=cat.icon||'📦'; line.color=cat.color||'#f1f5f9'; line.unitName=unit.name; line.supplierName=sup?.companyName||'';
+  }else{
+    line={id:uid('cart'),catalogId:cat.id,unitId:unit.id,itemId:item.id,quantity:qty,status:ORDER_STATUS_SHORTAGE,supplierId,materialName:cat.name,materialImage:lightweightImageRef(cat.image),icon:cat.icon||'📦',color:cat.color||'#f1f5f9',unitName:unit.name,supplierName:sup?.companyName||'',addedAt:new Date().toISOString(),orderedAt:''};
+    state.orderCart.unshift(line);
+  }
+  return line;
+}
+function addItemToOrderCart(unitId,itemId,quantity){
+  const wasThere=!!findOrderCartLine(unitId,itemId); const line=ensureOrderCartLine(unitId,itemId,quantity); if(!line) return null;
+  saveState(); renderItemsLayer();
+  toast(wasThere?'🛒 تم تحديث كمية المادة في قائمة الطلب':'🛒 تمت إضافة المادة إلى قائمة الطلب','success','فتح القائمة',openOrderCart,6500);
+  return line;
+}
+function addCurrentItemToOrderCart(){
+  const unitId=document.getElementById('itemEditUnitId').value, itemId=document.getElementById('itemEditItemId').value;
+  const qty=parseInt(document.getElementById('itemEditOrderQty').value,10);
+  if(!Number.isFinite(qty)||qty<1){ alert('أدخل كمية طلب صحيحة (1 أو أكثر)'); return; }
+  const unit=state.units.find(u=>u.id===unitId), item=unit?.items.find(i=>i.id===itemId); if(!item) return;
+  item.orderQty=qty; item.supplierId=document.getElementById('itemEditSupplier').value;
+  addItemToOrderCart(unitId,itemId,qty); updateCurrentItemCartButton();
+}
+function sendCurrentItemWhatsapp(){
+  const unitId=document.getElementById('itemEditUnitId').value, itemId=document.getElementById('itemEditItemId').value, qty=parseInt(document.getElementById('itemEditOrderQty').value,10);
+  const unit=state.units.find(u=>u.id===unitId), item=unit?.items.find(i=>i.id===itemId); if(!item) return;
+  if(!Number.isFinite(qty)||qty<1){ alert('أدخل كمية طلب صحيحة (1 أو أكثر)'); return; }
+  item.orderQty=qty; item.supplierId=document.getElementById('itemEditSupplier').value; openWhatsappForItem(itemId,unitId);
+}
+function updateOrderCartQuantity(lineId,value){
+  const line=(state.orderCart||[]).find(x=>x.id===lineId); const qty=parseInt(value,10); if(!line||!Number.isFinite(qty)||qty<1){ renderOrderCart(); return; }
+  if(line.quantity!==qty&&line.status===ORDER_STATUS_ORDERED){ line.status=ORDER_STATUS_SHORTAGE; line.orderedAt=''; line.batchId=''; }
+  line.quantity=qty;
+  const unit=state.units.find(u=>u.id===line.unitId), item=unit?.items.find(i=>i.id===line.itemId); if(item) item.orderQty=qty;
+  saveState(); renderItemsLayer();
+}
+function removeOrderCartLine(lineId){
+  const line=(state.orderCart||[]).find(x=>x.id===lineId); if(!line) return;
+  if(!confirm('إزالة «'+(line.materialName||'المادة')+'» من قائمة الطلب؟')) return;
+  state.orderCart=state.orderCart.filter(x=>x.id!==lineId); saveState(); renderItemsLayer();
+}
+function markOrderCartLinesOrdered(ids,batchId){
+  const wanted=new Set(ids||[]), now=new Date().toISOString(); let changed=0;
+  (state.orderCart||[]).forEach(line=>{ if(wanted.has(line.id)){ line.status=ORDER_STATUS_ORDERED; line.orderedAt=now; line.batchId=batchId||line.batchId||uid('order'); changed++; } });
+  return changed;
+}
+function markInventoryItemOrdered(unitId,itemId,quantity,batchId){
+  const line=ensureOrderCartLine(unitId,itemId,quantity); if(!line) return null;
+  markOrderCartLinesOrdered([line.id],batchId); return line;
+}
+function markDelivered(lineId){
+  const line=(state.orderCart||[]).find(x=>x.id===lineId); if(!line) return false;
+  if(line.status!==ORDER_STATUS_ORDERED){ toast('أرسل الطلب للمورد أولاً حتى تتغير حالته إلى «تم الطلب»','warning'); return false; }
+  const cat=state.catalog.find(c=>c.id===line.catalogId), sup=state.suppliers.find(s=>s.id===line.supplierId);
+  if(!Array.isArray(state.orderHistory)) state.orderHistory=[];
+  const completed={id:uid('completed'),orderId:line.batchId||uid('order'),cartItemId:line.id,catalogId:line.catalogId,materialName:line.materialName||cat?.name||'مادة',materialImage:lightweightImageRef(line.materialImage||cat?.image||''),icon:line.icon||cat?.icon||'📦',color:line.color||cat?.color||'#f1f5f9',quantity:line.quantity,unitName:line.unitName||'',supplierId:line.supplierId||'',supplierName:line.supplierName||sup?.companyName||'',addedAt:line.addedAt||'',orderedAt:line.orderedAt||'',completedAt:new Date().toISOString(),status:'completed'};
+  state.orderCart=state.orderCart.filter(x=>x.id!==lineId); state.orderHistory.unshift(completed); if(state.orderHistory.length>500) state.orderHistory.length=500;
+  saveState(); renderItemsLayer(); toast('✅ تم تسجيل وصول «'+completed.materialName+'» ونقل الطلب إلى السجل','success'); return true;
+}
+function clearOrderHistory(){ if(!(state.orderHistory||[]).length) return; if(!confirm('مسح سجل الطلبيات المكتملة؟')) return; state.orderHistory=[]; saveState(); }
+function orderThumbHtml(line){ const src=line.materialImage||state.catalog.find(c=>c.id===line.catalogId)?.image||''; const color=line.color||'#f1f5f9', icon=line.icon||'📦'; return src?'<img src="'+escHtml(src)+'" alt="">':'<span style="background:'+escHtml(color)+';width:100%;height:100%;display:flex;align-items:center;justify-content:center">'+escHtml(icon)+'</span>'; }
+function renderOrderCart(){
+  const cart=Array.isArray(state.orderCart)?state.orderCart:[], history=Array.isArray(state.orderHistory)?state.orderHistory:[];
+  const badge=document.getElementById('orderCartBadge'); if(badge){ badge.textContent=cart.length; badge.classList.toggle('empty',cart.length===0); }
+  const list=document.getElementById('orderCartList'); if(!list) return;
+  const shortage=cart.filter(x=>x.status!==ORDER_STATUS_ORDERED).length, ordered=cart.length-shortage;
+  document.getElementById('orderSummaryTotal').textContent=cart.length; document.getElementById('orderSummaryShortage').textContent=shortage; document.getElementById('orderSummaryOrdered').textContent=ordered;
+  list.innerHTML='';
+  if(!cart.length){ list.innerHTML='<div class="empty-state"><div class="icon">🛒</div><p>قائمة الطلب فارغة.<br>افتح أي جرار واضغط زر 🛒 الظاهر على صورة المادة.</p></div>'; }
+  cart.forEach(line=>{
+    const sup=state.suppliers.find(s=>s.id===line.supplierId); const isOrdered=line.status===ORDER_STATUS_ORDERED;
+    const row=document.createElement('div'); row.className='order-line'+(isOrdered?' is-ordered':''); row.dataset.cartId=line.id;
+    row.innerHTML='<div class="order-thumb">'+orderThumbHtml(line)+'</div><div class="order-info"><b>'+escHtml(line.materialName||'مادة')+'</b><span>📍 '+escHtml(line.unitName||'غير محدد')+'</span><span>🏢 '+escHtml(sup?.companyName||line.supplierName||'بدون مورد')+'</span></div><div class="order-qty"><label>الكمية المطلوبة</label><input type="number" min="1" value="'+line.quantity+'" aria-label="الكمية المطلوبة"></div><div class="order-status '+(isOrdered?'ordered':'shortage')+'">'+(isOrdered?'✅ تم الطلب':'⚠️ نقص')+'</div><div class="order-actions"><button class="btn btn-success btn-sm send-one">💬 '+(isOrdered?'إعادة إرسال':'إرسال')+'</button><button class="btn btn-primary btn-sm delivered" '+(isOrdered?'':'disabled title="يُفعّل بعد إرسال الطلب"')+'>📦 تم التوصيل</button><button class="btn btn-light btn-sm remove-line" title="إزالة">🗑️</button></div>';
+    row.querySelector('.order-qty input').addEventListener('change',e=>updateOrderCartQuantity(line.id,e.target.value));
+    row.querySelector('.send-one').addEventListener('click',()=>sendOrderCartWhatsapp([line.id]));
+    row.querySelector('.delivered').addEventListener('click',()=>markDelivered(line.id));
+    row.querySelector('.remove-line').addEventListener('click',()=>removeOrderCartLine(line.id));
+    list.appendChild(row);
+  });
+  const historyList=document.getElementById('orderHistoryList'); document.getElementById('orderHistoryCount').textContent=history.length; historyList.innerHTML='';
+  if(!history.length){ historyList.innerHTML='<div class="empty-state" style="padding:12px"><p>لا توجد طلبيات مكتملة بعد.</p></div>'; }
+  history.forEach(entry=>{
+    const d=new Date(entry.completedAt); const when=isNaN(d.getTime())?'':d.toLocaleString('ar-JO'); const row=document.createElement('div'); row.className='history-line';
+    row.innerHTML='<div class="order-thumb" style="width:42px;height:42px">'+orderThumbHtml(entry)+'</div><div class="order-info"><b>'+escHtml(entry.materialName||'مادة')+' — '+entry.quantity+'</b><span>'+escHtml(entry.supplierName||'بدون مورد')+' • '+escHtml(entry.unitName||'')+'</span><span>اكتمل: '+escHtml(when)+'</span></div><span class="order-status completed">✅ مكتمل</span>';
+    historyList.appendChild(row);
+  });
+  const sendBtn=document.getElementById('btnSendOrderCartWhatsapp'); if(sendBtn) sendBtn.disabled=shortage===0;
+  const editModal=document.getElementById('itemEditModal'); if(editModal&&!editModal.classList.contains('hidden')) updateCurrentItemCartButton();
+}
+function openOrderCart(){ renderOrderCart(); document.getElementById('orderCartModal').classList.remove('hidden'); }
+async function sendOrderCartWhatsapp(ids){
+  const idSet=Array.isArray(ids)?new Set(ids):null;
+  const lines=(state.orderCart||[]).filter(line=>idSet?idSet.has(line.id):line.status!==ORDER_STATUS_ORDERED);
+  if(!lines.length){ toast('لا توجد مواد بحالة «نقص» لإرسالها','info'); return; }
+  const groups={}; const missing=[];
+  lines.forEach(line=>{ const sup=state.suppliers.find(s=>s.id===line.supplierId); if(!sup){ missing.push(line); return; } (groups[sup.id]=groups[sup.id]||{sup,lines:[]}).lines.push(line); });
+  const supplierIds=Object.keys(groups); if(!supplierIds.length){ alert('اربط المواد بمورد لديه رقم واتساب أولاً.'); return; }
+  if(missing.length) toast('⚠️ '+missing.length+' مواد بلا مورد وستبقى بحالة «نقص»','warning');
+  const wa=state.settings.whatsapp;
+  if(!wa.connected){ if(confirm('واتساب غير مربوط. فتح إعدادات الربط الآن؟')) openWhatsappSettings(); return; }
+  if(wa.requireConfirm&&!confirm('سيتم إرسال '+lines.length+' مواد إلى '+supplierIds.length+' مورد/موردين عبر واتساب. متابعة؟')) return;
+  let sentGroups=0;
+  for(let i=0;i<supplierIds.length;i++){
+    const group=groups[supplierIds[i]], sup=group.sup, phone=cleanPhone(sup.whatsapp||sup.phone); if(!phone) continue;
+    const itemsList=group.lines.map(line=>'• '+(line.materialName||'مادة')+' — الكمية المطلوبة: '+line.quantity+(line.unitName?' — المكان: '+line.unitName:'')).join('\n');
+    const msg=buildMsg(sup,itemsList), batchId=uid('order'); let initiated=false, messageId='', sendMode=wa.apiMode+'/order-cart';
+    if(wa.apiMode==='cloud_api'){
+      const result=await sendViaCloudApi(phone,msg);
+      if(result.success){ initiated=true; messageId=(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''; }
+      else{ logWaSend({supplier:sup.companyName,material:group.lines.map(x=>x.materialName).join('، '),mode:'cloud_api/order-cart',status:'fail',error:result.error||'فشل الإرسال'}); alert('تعذر الإرسال التلقائي إلى '+sup.companyName+': '+result.error+'\nسيتم فتح واتساب كبديل.'); window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank'); initiated=true; sendMode='wa.me/fallback/order-cart'; }
+    }else{ window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank'); initiated=true; }
+    if(initiated){
+      markOrderCartLinesOrdered(group.lines.map(x=>x.id),batchId); group.lines.forEach(line=>{ const unit=state.units.find(u=>u.id===line.unitId), item=unit?.items.find(it=>it.id===line.itemId); if(item) markNotified(line.unitId,line.itemId,item.qty); });
+      logWaSend({supplier:sup.companyName,material:group.lines.map(x=>x.materialName).join('، '),qty:group.lines.reduce((n,x)=>n+x.quantity,0),mode:sendMode,status:'success',messageId}); sentGroups++;
+    }
+    if(wa.apiMode!=='cloud_api'&&i<supplierIds.length-1) await new Promise(r=>setTimeout(r,900));
+  }
+  saveState(); renderItemsLayer();
+  if(sentGroups) toast('✅ تم تحديث حالة المواد المرسلة إلى «تم الطلب»','success');
+}
 
 function updateWhatsappStatusBar(){
   const bar=document.getElementById('whatsappStatusBar');
@@ -616,7 +798,7 @@ function renderLowStockPanel(){
   allLow.forEach(entry=>{
     const {unit,item,catalog,low,nearExp,exp}=entry; const sup=state.suppliers.find(s=>s.id==(item.supplierId||catalog.supplierId));
     const div=document.createElement('div'); div.className=`low-stock-card ${exp?'expiry':''}`; const imgSrc=catalog.image||'';
-    div.innerHTML=`${imgSrc?`<img class="thumb" src="${imgSrc}">`:`<div class="thumb" style="width:44px;height:44px;border-radius:8px;background:${catalog.color};display:flex;align-items:center;justify-content:center;font-size:18px">${catalog.icon}</div>`}<div class="info"><b>${catalog.name} ${low?'🔴':''} ${exp?'⛔ منتهي':''} ${nearExp?'🟠 قارب':''}</b><span>📍 ${unit.name} • الكمية: ${item.qty} / حد: ${item.minThreshold||catalog.minThreshold||3}</span><span>📅 انتهاء: ${item.expiryDate||'غير محدد'} • 🏢 ${sup?sup.companyName:'بدون مورد'}</span></div><div class="actions-col"><button class="btn btn-light btn-sm" onclick="openUnit('${unit.id}'); setTimeout(()=>openItemEdit('${unit.id}','${item.id}'),300)">✏️ تعديل</button>${sup?`<button class="btn btn-success btn-sm" onclick="openWhatsappForItem('${item.id}','${unit.id}')">💬 واتساب</button><button class="btn btn-light btn-sm" onclick="callSupplier('${sup.phone}')">📞 اتصال</button>`:''}</div>`;
+    div.innerHTML=`${imgSrc?`<img class="thumb" src="${imgSrc}">`:`<div class="thumb" style="width:44px;height:44px;border-radius:8px;background:${catalog.color};display:flex;align-items:center;justify-content:center;font-size:18px">${catalog.icon}</div>`}<div class="info"><b>${catalog.name} ${low?'🔴':''} ${exp?'⛔ منتهي':''} ${nearExp?'🟠 قارب':''}</b><span>📍 ${unit.name} • الكمية: ${item.qty} / حد: ${item.minThreshold||catalog.minThreshold||3} • المطلوب: ${wantedOrderQty(item,catalog)}</span><span>📅 انتهاء: ${item.expiryDate||'غير محدد'} • 🏢 ${sup?sup.companyName:'بدون مورد'}</span></div><div class="actions-col"><button class="btn btn-light btn-sm" onclick="openUnit('${unit.id}'); setTimeout(()=>openItemEdit('${unit.id}','${item.id}'),300)">✏️ تعديل</button><button class="btn btn-primary btn-sm" onclick="addItemToOrderCart('${unit.id}','${item.id}',${wantedOrderQty(item,catalog)})">🛒 طلب</button>${sup?`<button class="btn btn-success btn-sm" onclick="openWhatsappForItem('${item.id}','${unit.id}')">💬 واتساب</button><button class="btn btn-light btn-sm" onclick="callSupplier('${sup.phone}')">📞 اتصال</button>`:''}</div>`;
     grid.appendChild(div);
   });
 }
@@ -667,32 +849,26 @@ async function sendViaCloudApi(toPhone, message, opts){
 }
 
 async function openWhatsappForItem(itemId,unitId){
-  const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return;
-  const cat=state.catalog.find(c=>c.id===item.catalogId); const supId=item.supplierId||cat?.supplierId; const sup=state.suppliers.find(s=>s.id===supId);
-  if(!sup){ alert('لا يوجد مورد مرتبط.'); return; }
+  const unit=state.units.find(u=>u.id===unitId), item=unit?.items.find(i=>i.id===itemId); if(!item) return;
+  const cat=state.catalog.find(c=>c.id===item.catalogId), supId=item.supplierId||cat?.supplierId, sup=state.suppliers.find(s=>s.id===supId);
+  if(!cat||!sup){ alert('لا يوجد مورد مرتبط.'); return; }
   const wa=state.settings.whatsapp;
   if(!wa.connected){ if(!confirm('⚠️ واتساب غير مربوط! فتح إعدادات الربط؟')) return; openWhatsappSettings(); return; }
-  const phone=cleanPhone(sup.whatsapp||sup.phone);
-  const itemsList=`• ${cat.name} - الكمية: ${item.qty} (حد: ${item.minThreshold||cat.minThreshold}) - المكان: ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}`;
-  const msg=buildMsg(sup,itemsList);
-
+  const phone=cleanPhone(sup.whatsapp||sup.phone), orderQty=wantedOrderQty(item,cat);
+  const itemsList=`• ${cat.name} - الكمية المطلوبة: ${orderQty} - المتوفر حالياً: ${item.qty} - المكان: ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}`;
+  const msg=buildMsg(sup,itemsList), batchId=uid('order'); let initiated=false, messageId='', sendMode=wa.apiMode+'/manual';
   if(wa.apiMode==='cloud_api'){
     if(wa.requireConfirm&&!confirm(`سيتم إرسال رسالة تلقائية عبر Cloud API لـ ${sup.companyName}:\n\n${msg}\n\nمتابعة؟`)) return;
-    const result=await sendViaCloudApi(phone, msg);
-    if(result.success){
-      markNotified(unitId,itemId,item.qty); saveStateLocal();
-      logWaSend({supplier:sup.companyName,material:cat.name,qty:item.qty,mode:'cloud_api/manual',status:'success',messageId:(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''});
-      alert(`✅ تم إرسال رسالة واتساب تلقائياً عبر API لـ ${sup.companyName} بنجاح!\n\nID: ${result.data.messages?.[0]?.id||'--'}`);
-    }else{
-      logWaSend({supplier:sup.companyName,material:cat.name,qty:item.qty,mode:'cloud_api/manual',status:'fail',error:result.error||'فشل الإرسال'});
-      alert(`❌ فشل الإرسال عبر API: ${result.error}\n\nسيتم فتح wa.me كبديل.`);
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-    }
+    const result=await sendViaCloudApi(phone,msg);
+    if(result.success){ initiated=true; messageId=(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''; alert(`✅ تم إرسال رسالة واتساب تلقائياً عبر API لـ ${sup.companyName} بنجاح!\n\nID: ${messageId||'--'}`); }
+    else{ logWaSend({supplier:sup.companyName,material:cat.name,qty:orderQty,mode:'cloud_api/manual',status:'fail',error:result.error||'فشل الإرسال'}); alert(`❌ فشل الإرسال عبر API: ${result.error}\n\nسيتم فتح wa.me كبديل.`); window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank'); initiated=true; sendMode='wa.me/fallback/manual'; }
   }else{
     if(wa.requireConfirm&&!confirm(`سيتم فتح واتساب وإرسال:\n\n${msg}\n\nمتابعة؟`)) return;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-    markNotified(unitId,itemId,item.qty); saveStateLocal();
-    logWaSend({supplier:sup.companyName,material:cat.name,qty:item.qty,mode:'wa.me',status:'success'});
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank'); initiated=true;
+  }
+  if(initiated){
+    markNotified(unitId,itemId,item.qty); markInventoryItemOrdered(unitId,itemId,orderQty,batchId); saveState(); renderItemsLayer(); updateCurrentItemCartButton();
+    logWaSend({supplier:sup.companyName,material:cat.name,qty:orderQty,mode:sendMode,status:'success',messageId});
   }
 }
 function callSupplier(phone){ if(!phone) return; window.open(`tel:${phone}`,'_self'); }
@@ -720,11 +896,17 @@ function renderItemsLayer(){
     const div=document.createElement('div'); div.className='placed-item'+(selectedItemId===it.id?' selected':'')+(low?' alert':'')+(near||exp?' expiry':'')+(cat.image?' has-image':' no-image');
     div.dataset.itemId=it.id; div.style.left=it.x+'%'; div.style.top=it.y+'%'; div.style.width=it.w+'%'; div.style.height=it.h+'%';
     if(!cat.image) div.style.setProperty('--item-color',cat.color||'#e2e8f0'); // بلا صورة → البطاقة بلون المادة، لا أبيض
-    const imgHtml=cat.image?`<img class="item-img" src="${cat.image}" alt="${cat.name}">`:''; const alertIcon=low?'🔴':near?'🟠':exp?'⛔':'';
-    div.innerHTML=`${imgHtml}${low||near||exp?`<div class="alert-badge">${low?'!':near?'⏰':'✕'}</div>`:''}<button class="delete-btn">✕</button><div class="item-overlay"><div class="item-top"><span class="item-icon">${cat.icon}</span><span class="item-qty ${low?'alert-qty':''}">${it.qty}</span></div><div class="item-name">${alertIcon} ${cat.name}</div><div class="item-meta">${it.expiryDate?`<span>📅 ${it.expiryDate.slice(0,7)}</span>`:''}${low?`<span style="background:#fee2e2;color:#991b1b">⚠️ حد ${it.minThreshold||cat.minThreshold}</span>`:''}</div></div><div class="resize-handle">⤡</div>`;
-    div.addEventListener('pointerdown',(e)=>{ if(e.target.classList.contains('delete-btn')||e.target.classList.contains('resize-handle')) return; selectedItemId=it.id; document.querySelectorAll('.placed-item').forEach(el=>el.classList.remove('selected')); div.classList.add('selected'); startDrag(e,it,div); });
+    const rotation=normalizeRotation(it.rotation||0), quarter=rotation===90||rotation===270; const layerRect=layer.getBoundingClientRect();
+    const cardW=Math.max(1,(it.w/100)*(layerRect.width||1000)), cardH=Math.max(1,(it.h/100)*(layerRect.height||600));
+    const shellStyle=`--item-rotation:${rotation}deg;--pre-rotate-width:${(cardH/cardW*100).toFixed(3)}%;--pre-rotate-height:${(cardW/cardH*100).toFixed(3)}%`;
+    const imgHtml=cat.image?`<div class="item-image-shell${quarter?' quarter-turn':''}" style="${shellStyle}"><img class="item-img" src="${cat.image}" alt="${cat.name}"></div>`:''; const alertIcon=low?'🔴':near?'🟠':exp?'⛔':'';
+    const cartLine=findOrderCartLine(unit.id,it.id), cartClass=cartLine?(cartLine.status===ORDER_STATUS_ORDERED?' ordered':' in-cart'):'';
+    div.innerHTML=`${imgHtml}${low||near||exp?`<div class="alert-badge">${low?'!':near?'⏰':'✕'}</div>`:''}<button class="delete-btn" title="حذف من الجرار">✕</button><button class="order-add-btn${cartClass}" title="${cartLine?'تحديث المادة في قائمة الطلب':'إضافة إلى قائمة الطلب'}">${cartLine?(cartLine.status===ORDER_STATUS_ORDERED?'✅':'✓'):'🛒'}</button><div class="item-overlay"><div class="item-top"><span class="item-icon">${cat.icon}</span><span class="item-qty ${low?'alert-qty':''}">${it.qty}</span></div><div class="item-name">${alertIcon} ${cat.name}</div><div class="item-meta">${it.expiryDate?`<span>📅 ${it.expiryDate.slice(0,7)}</span>`:''}${low?`<span style="background:#fee2e2;color:#991b1b">⚠️ حد ${it.minThreshold||cat.minThreshold}</span>`:''}</div></div><div class="resize-handle">⤡</div>`;
+    div.addEventListener('pointerdown',(e)=>{ if(e.target.closest&&e.target.closest('button,.resize-handle')) return; selectedItemId=it.id; document.querySelectorAll('.placed-item').forEach(el=>el.classList.remove('selected')); div.classList.add('selected'); startDrag(e,it,div); });
     div.addEventListener('dblclick',(e)=>{ e.stopPropagation(); openItemEdit(currentUnitId,it.id); });
     div.querySelector('.delete-btn').addEventListener('click',(e)=>{ e.stopPropagation(); if(confirm('حذف من الجرار؟')){ unit.items=unit.items.filter(x=>x.id!==it.id); saveState(); renderItemsLayer(); document.getElementById('unitCountBadge').textContent=unit.items.length+' عنصر'; }});
+    div.querySelector('.order-add-btn').addEventListener('pointerdown',e=>e.stopPropagation());
+    div.querySelector('.order-add-btn').addEventListener('click',(e)=>{ e.stopPropagation(); addItemToOrderCart(unit.id,it.id,wantedOrderQty(it,cat)); });
     div.querySelector('.item-qty').addEventListener('click',(e)=>{ e.stopPropagation(); openItemEdit(currentUnitId,it.id); });
     div.querySelector('.resize-handle').addEventListener('pointerdown',(e)=>{ e.stopPropagation(); startResize(e,it,div); });
     layer.appendChild(div);
@@ -748,7 +930,7 @@ function addItemToUnit(catalogId,qty){
   const existing=unit.items.find(i=>i.catalogId===catalogId);
   if(existing){ existing.qty+=qty; saveState(); renderItemsLayer(); openItemEdit(unit.id,existing.id); }
   else{
-    const catDef=state.catalog.find(c=>c.id===catalogId); const newItem={id:'i_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),catalogId,qty,x:10+Math.random()*40,y:10+Math.random()*50,w:unit.type==='drawer'?24:38,h:unit.type==='drawer'?28:16,expiryDate:(catDef&&catDef.expiryDate)||'',supplierId:'',minThreshold:null,notes:''};
+    const catDef=state.catalog.find(c=>c.id===catalogId); const newItem={id:'i_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),catalogId,qty,x:10+Math.random()*40,y:10+Math.random()*50,w:unit.type==='drawer'?24:38,h:unit.type==='drawer'?28:16,expiryDate:(catDef&&catDef.expiryDate)||'',supplierId:'',minThreshold:null,orderQty:(catDef&&catDef.orderQty)||1,rotation:0,notes:''};
     unit.items.push(newItem); selectedItemId=newItem.id; fitItemToImage(newItem,catDef); saveState(); renderItemsLayer(); document.getElementById('unitCountBadge').textContent=unit.items.length+' عنصر'; setTimeout(()=>openItemEdit(unit.id,newItem.id),200);
   }
 }
@@ -761,6 +943,14 @@ function refitItemsForCatalog(catalogId){
    (no cropping) and keeps that same proportion when the user drags the resize handle.
    trim = the visible (non-transparent) part of the photo, when the white edges were removed,
    so the card is sized/positioned to the material itself — the empty margins don't count. */
+function rotatedImageGeometry(item,w,h,trim){
+  const r=normalizeRotation(item&&item.rotation); if(!trim) return (r===90||r===270)?{w:h,h:w,trim:null}:{w,h,trim:null};
+  let t={...trim};
+  if(r===90) t={x:1-trim.y-trim.h,y:trim.x,w:trim.h,h:trim.w};
+  else if(r===180) t={x:1-trim.x-trim.w,y:1-trim.y-trim.h,w:trim.w,h:trim.h};
+  else if(r===270) t={x:trim.y,y:1-trim.x-trim.w,w:trim.h,h:trim.w};
+  return (r===90||r===270)?{w:h,h:w,trim:t}:{w,h,trim:t};
+}
 function fitItemToImage(item,cat){
   const src=(cat&&cat.image)||''; if(!src) return;
   const trim=getImageTrimMeta(src);
@@ -769,13 +959,13 @@ function fitItemToImage(item,cat){
   img.onload=()=>{
     if(!img.naturalWidth||!img.naturalHeight) return;
     const stillThere=state.units.some(u=>u.items&&u.items.indexOf(item)>=0); if(!stillThere) return;
-    shapeItemLikeImage(item,img.naturalWidth,img.naturalHeight,trim);
+    const g=rotatedImageGeometry(item,img.naturalWidth,img.naturalHeight,trim); shapeItemLikeImage(item,g.w,g.h,g.trim);
   };
   img.onerror=()=>{
     const m=/#trim=([\d.]+),([\d.]+),([\d.]+),([\d.]+)/.exec(src); if(!m) return;
     const stillThere=state.units.some(u=>u.items&&u.items.indexOf(item)>=0); if(!stillThere) return;
     // الأبعاد محفوظة داخل الرابط (نسبة الصورة المخزّنة) والقصاصة إن وُجدت
-    shapeItemLikeImage(item,1000,Math.round(1000*(+m[4]/+m[3])),trim);
+    const g=rotatedImageGeometry(item,1000,Math.round(1000*(+m[4]/+m[3])),trim); shapeItemLikeImage(item,g.w,g.h,g.trim);
   };
   img.src=src;
 }
@@ -892,7 +1082,7 @@ function renderMaterialsList(){
   state.catalog.forEach(cat=>{
     const sup=state.suppliers.find(s=>s.id===cat.supplierId);
     const row=document.createElement('div'); row.className='mat-row';
-    row.innerHTML=`<div style="width:40px;height:40px;border-radius:8px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0">${cat.image?`<img src="${cat.image}" style="width:100%;height:100%;object-fit:cover">`:cat.icon}</div><div style="flex:1;min-width:0"><b style="font-size:11.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat.name}</b><span style="font-size:10px;color:#64748b">${cat.cat} • حد ${cat.minThreshold} ${sup?'• '+sup.companyName:''} ${cat.autoWhatsapp?'• 🤖':''} ${cat.expiryDate?'• 📅 '+cat.expiryDate:''}</span></div><div class="actions"><button class="btn btn-light btn-sm">✏️</button><button class="btn btn-light btn-sm">🗑️</button></div>`;
+    row.innerHTML=`<div style="width:40px;height:40px;border-radius:8px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;flex-shrink:0">${cat.image?`<img src="${cat.image}" style="width:100%;height:100%;object-fit:cover">`:cat.icon}</div><div style="flex:1;min-width:0"><b style="font-size:11.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat.name}</b><span style="font-size:10px;color:#64748b">${cat.cat} • حد ${cat.minThreshold} • 🛒 طلب ${cat.orderQty||1} ${sup?'• '+sup.companyName:''} ${cat.autoWhatsapp?'• 🤖':''} ${cat.expiryDate?'• 📅 '+cat.expiryDate:''}</span></div><div class="actions"><button class="btn btn-light btn-sm">✏️</button><button class="btn btn-light btn-sm">🗑️</button></div>`;
     row.querySelectorAll('button')[0].addEventListener('click',()=>editMaterial(cat.id));
     row.querySelectorAll('button')[1].addEventListener('click',()=>deleteMaterial(cat.id));
     list.appendChild(row);
@@ -902,22 +1092,23 @@ function editMaterial(id){
   const cat=state.catalog.find(c=>c.id===id); if(!cat) return;
   selectedColor=cat.color; selectedIcon=cat.icon; tempMatImage=cat.image||'';
   initMaterialForm();
-  document.getElementById('matEditId').value=cat.id; document.getElementById('matName').value=cat.name; document.getElementById('matCategory').value=cat.cat; document.getElementById('matSupplier').value=cat.supplierId||''; document.getElementById('matMinThreshold').value=cat.minThreshold||3; document.getElementById('matAutoWhatsapp').value=cat.autoWhatsapp?1:0; document.getElementById('matExpiry').value=cat.expiryDate||'';
+  document.getElementById('matEditId').value=cat.id; document.getElementById('matName').value=cat.name; document.getElementById('matCategory').value=cat.cat; document.getElementById('matSupplier').value=cat.supplierId||''; document.getElementById('matMinThreshold').value=cat.minThreshold||3; document.getElementById('matOrderQty').value=cat.orderQty||1; document.getElementById('matAutoWhatsapp').value=cat.autoWhatsapp?1:0; document.getElementById('matExpiry').value=cat.expiryDate||'';
   const preview=document.getElementById('matImagePreview'); const upload=document.getElementById('matImageUpload');
   if(tempMatImage){ preview.src=tempMatImage; upload.classList.add('has-image'); document.getElementById('btnRemoveMatImage').style.display='inline-flex'; } else { preview.src=''; upload.classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; }
 }
 function deleteMaterial(id){
   const cat=state.catalog.find(c=>c.id===id); if(!cat) return;
   if(!confirm(`حذف المادة "${cat.name}" نهائياً؟`)) return;
-  state.catalog=state.catalog.filter(c=>c.id!==id); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==id); }); saveState(); renderMaterialsList(); renderGrid(); renderCatalogList(); if(currentUnitId) renderItemsLayer();
+  state.catalog=state.catalog.filter(c=>c.id!==id); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==id); }); state.orderCart=(state.orderCart||[]).filter(line=>line.catalogId!==id); saveState(); renderMaterialsList(); renderGrid(); renderCatalogList(); if(currentUnitId) renderItemsLayer();
 }
 function saveMaterial(){
-  const editId=document.getElementById('matEditId').value; const name=document.getElementById('matName').value.trim(); const cat=document.getElementById('matCategory').value; const supplierId=document.getElementById('matSupplier').value; const minThreshold=parseInt(document.getElementById('matMinThreshold').value)||3; const expiryDate=document.getElementById('matExpiry').value||''; const autoWhatsapp=parseInt(document.getElementById('matAutoWhatsapp').value)||0;
-  if(!name){ alert('أدخل اسم المادة'); return; }
+  const editId=document.getElementById('matEditId').value; const name=document.getElementById('matName').value.trim(); const cat=document.getElementById('matCategory').value; const supplierId=document.getElementById('matSupplier').value; const minThreshold=parseInt(document.getElementById('matMinThreshold').value)||3; const orderQty=parseInt(document.getElementById('matOrderQty').value,10); const expiryDate=document.getElementById('matExpiry').value||''; const autoWhatsapp=parseInt(document.getElementById('matAutoWhatsapp').value)||0;
+  if(!name){ alert('أدخل اسم المادة'); return; } if(!Number.isFinite(orderQty)||orderQty<1){ alert('كمية الطلب يجب أن تكون 1 أو أكثر'); return; }
   let refitCatalogId=null;
-  if(editId){ const ex=state.catalog.find(c=>c.id===editId); if(ex){ if(ex.image!==tempMatImage&&tempMatImage) refitCatalogId=ex.id; ex.name=name; ex.cat=cat; ex.color=selectedColor; ex.icon=selectedIcon; ex.image=tempMatImage; ex.supplierId=supplierId; ex.minThreshold=minThreshold; ex.autoWhatsapp=autoWhatsapp; ex.expiryDate=expiryDate; } }
-  else{ state.catalog.push({id:'c_'+Date.now(),name,cat,color:selectedColor,icon:selectedIcon,image:tempMatImage,supplierId,minThreshold,autoWhatsapp,expiryDate}); }
-  document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; document.getElementById('matExpiry').value=''; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; saveState(); renderMaterialsList(); renderCatalogList(); if(refitCatalogId) refitItemsForCatalog(refitCatalogId);
+  if(editId){ const ex=state.catalog.find(c=>c.id===editId); if(ex){ if(ex.image!==tempMatImage&&tempMatImage) refitCatalogId=ex.id; ex.name=name; ex.cat=cat; ex.color=selectedColor; ex.icon=selectedIcon; ex.image=tempMatImage; ex.supplierId=supplierId; ex.minThreshold=minThreshold; ex.orderQty=orderQty; ex.autoWhatsapp=autoWhatsapp; ex.expiryDate=expiryDate; } }
+  else{ state.catalog.push({id:'c_'+Date.now(),name,cat,color:selectedColor,icon:selectedIcon,image:tempMatImage,supplierId,minThreshold,orderQty,autoWhatsapp,expiryDate}); }
+  if(editId){ (state.orderCart||[]).filter(line=>line.catalogId===editId).forEach(line=>ensureOrderCartLine(line.unitId,line.itemId,line.quantity)); }
+  document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; document.getElementById('matExpiry').value=''; document.getElementById('matOrderQty').value='1'; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; saveState(); renderMaterialsList(); renderCatalogList(); if(refitCatalogId) refitItemsForCatalog(refitCatalogId);
   toast((editId?'✅ تم تعديل المادة: ':'✅ تم إضافة المادة: ')+name,'success');
 }
 async function handleMatImageUpload(file){
@@ -944,39 +1135,65 @@ function renderSuppliersList(){
   const itemSup=document.getElementById('itemEditSupplier'); if(itemSup){ const val=itemSup.value; itemSup.innerHTML='<option value="">-- نفس مورد المادة --</option>'; state.suppliers.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.companyName; itemSup.appendChild(o); }); itemSup.value=val; }
 }
 function editSupplier(id){ const sup=state.suppliers.find(s=>s.id===id); if(!sup) return; document.getElementById('supEditId').value=sup.id; document.getElementById('supCompany').value=sup.companyName; document.getElementById('supRep').value=sup.repName; document.getElementById('supPhone').value=sup.phone; document.getElementById('supWhatsapp').value=sup.whatsapp; document.getElementById('supEmail').value=sup.email; document.getElementById('supAddress').value=sup.address; document.getElementById('supNotes').value=sup.notes; }
-function deleteSupplier(id){ const sup=state.suppliers.find(s=>s.id===id); if(!sup) return; if(!confirm(`حذف "${sup.companyName}"؟`)) return; state.suppliers=state.suppliers.filter(s=>s.id!==id); state.catalog.forEach(c=>{ if(c.supplierId===id) c.supplierId=''; }); state.units.forEach(u=>{ u.items.forEach(it=>{ if(it.supplierId===id) it.supplierId=''; }); }); saveState(); renderSuppliersList(); renderMaterialsList(); renderCatalogList(); }
+function deleteSupplier(id){ const sup=state.suppliers.find(s=>s.id===id); if(!sup) return; if(!confirm(`حذف "${sup.companyName}"؟`)) return; state.suppliers=state.suppliers.filter(s=>s.id!==id); state.catalog.forEach(c=>{ if(c.supplierId===id) c.supplierId=''; }); state.units.forEach(u=>{ u.items.forEach(it=>{ if(it.supplierId===id) it.supplierId=''; }); }); (state.orderCart||[]).forEach(line=>{ if(line.supplierId===id){ line.supplierId=''; line.supplierName=''; line.status=ORDER_STATUS_SHORTAGE; line.orderedAt=''; line.batchId=''; } }); saveState(); renderSuppliersList(); renderMaterialsList(); renderCatalogList(); }
 function saveSupplier(){ const editId=document.getElementById('supEditId').value; const companyName=document.getElementById('supCompany').value.trim(); const repName=document.getElementById('supRep').value.trim(); const phone=document.getElementById('supPhone').value.trim(); const whatsapp=document.getElementById('supWhatsapp').value.trim()||phone; const email=document.getElementById('supEmail').value.trim(); const address=document.getElementById('supAddress').value.trim(); const notes=document.getElementById('supNotes').value.trim(); if(!companyName||!phone){ alert('اسم الشركة ورقم الهاتف مطلوبان'); return; } if(editId){ const ex=state.suppliers.find(s=>s.id===editId); if(ex){ ex.companyName=companyName; ex.repName=repName; ex.phone=phone; ex.whatsapp=whatsapp; ex.email=email; ex.address=address; ex.notes=notes; } } else { state.suppliers.push({id:'s_'+Date.now(),companyName,repName,phone,whatsapp,email,address,notes}); } document.getElementById('supEditId').value=''; document.getElementById('supCompany').value=''; document.getElementById('supRep').value=''; document.getElementById('supPhone').value=''; document.getElementById('supWhatsapp').value=''; document.getElementById('supEmail').value=''; document.getElementById('supAddress').value=''; document.getElementById('supNotes').value=''; saveState(); renderSuppliersList(); toast((editId?'✅ تم تعديل المورد: ':'✅ تم إضافة المورد: ')+companyName,'success'); }
 
 function openItemEdit(unitId,itemId){
   const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return; const cat=state.catalog.find(c=>c.id===item.catalogId); if(!cat) return;
-  document.getElementById('itemEditUnitId').value=unitId; document.getElementById('itemEditItemId').value=itemId; document.getElementById('itemEditName').value=cat.name; document.getElementById('itemEditQty').value=item.qty; document.getElementById('itemEditThreshold').value=item.minThreshold||''; document.getElementById('itemEditExpiry').value=item.expiryDate||''; document.getElementById('itemEditNotes').value=item.notes||'';
+  document.getElementById('itemEditUnitId').value=unitId; document.getElementById('itemEditItemId').value=itemId; document.getElementById('itemEditName').value=cat.name; document.getElementById('itemEditQty').value=item.qty; document.getElementById('itemEditOrderQty').value=wantedOrderQty(item,cat); document.getElementById('itemEditThreshold').value=item.minThreshold||''; document.getElementById('itemEditExpiry').value=item.expiryDate||''; document.getElementById('itemEditNotes').value=item.notes||'';
   const supSelect=document.getElementById('itemEditSupplier'); supSelect.innerHTML='<option value="">-- نفس مورد المادة ('+(state.suppliers.find(s=>s.id===cat.supplierId)?.companyName||'بدون')+') --</option>'; state.suppliers.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.companyName; supSelect.appendChild(o); }); supSelect.value=item.supplierId||'';
-  tempItemEditImage=cat.image||''; renderItemEditPreview(cat);
+  tempItemEditImage=cat.image||''; tempItemImageRemoved=false; tempItemRotation=normalizeRotation(item.rotation||0); renderItemEditPreview(cat); updateCurrentItemCartButton();
   const low=isLowStock(item,cat); const exp=isExpired(item.expiryDate); const near=isNearExpiry(item.expiryDate); const alertBox=document.getElementById('itemEditAlertBox'); const alertText=document.getElementById('itemEditAlertText');
   if(low||exp||near){ alertBox.style.display='block'; let txt=''; if(low) txt+=`الكمية ${item.qty} وصلت حد التنبيه. `; if(exp) txt+=`منتهية منذ ${item.expiryDate}. `; else if(near) txt+=`قارب الانتهاء (${item.expiryDate}). `; alertText.textContent=txt; } else alertBox.style.display='none';
   document.getElementById('itemEditModal').classList.remove('hidden');
 }
+function updateCurrentItemCartButton(){
+  const btn=document.getElementById('btnAddCurrentItemToCart'); if(!btn) return;
+  const line=findOrderCartLine(document.getElementById('itemEditUnitId').value,document.getElementById('itemEditItemId').value);
+  btn.textContent=line?(line.status===ORDER_STATUS_ORDERED?'✅ موجودة — تم الطلب':'✓ تحديث المادة في قائمة الطلب'):'🛒 إضافة إلى قائمة الطلب';
+}
 function saveItemEdit(){
-  const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return;
-  const qty=parseInt(document.getElementById('itemEditQty').value); if(isNaN(qty)||qty<0){ alert('كمية غير صحيحة'); return; } item.qty=qty; const th=document.getElementById('itemEditThreshold').value; item.minThreshold=th===''?null:parseInt(th); item.expiryDate=document.getElementById('itemEditExpiry').value; item.supplierId=document.getElementById('itemEditSupplier').value; item.notes=document.getElementById('itemEditNotes').value; const catDef=state.catalog.find(cc=>cc.id===item.catalogId); if(catDef){ const newImg=tempItemEditImage||''; const imgChanged=newImg!==catDef.image; catDef.image=newImg; if(imgChanged&&newImg) fitItemToImage(item,catDef); } tempItemEditImage=''; const _ie=document.getElementById('itemEditImageInput'); if(_ie) _ie.value=''; saveState(); renderItemsLayer(); renderGrid(); renderLowStockPanel(); renderMaterialsList(); renderCatalogList(); closeModalById('itemEditModal');
+  const unitId=document.getElementById('itemEditUnitId').value, itemId=document.getElementById('itemEditItemId').value;
+  const unit=state.units.find(u=>u.id===unitId), item=unit?.items.find(i=>i.id===itemId); if(!item) return;
+  const qty=parseInt(document.getElementById('itemEditQty').value,10), orderQty=parseInt(document.getElementById('itemEditOrderQty').value,10);
+  if(!Number.isFinite(qty)||qty<0){ alert('كمية المخزون غير صحيحة'); return; }
+  if(!Number.isFinite(orderQty)||orderQty<1){ alert('كمية الطلب يجب أن تكون 1 أو أكثر'); return; }
+  item.qty=qty; item.orderQty=orderQty;
+  const th=document.getElementById('itemEditThreshold').value; item.minThreshold=th===''?null:parseInt(th,10);
+  item.expiryDate=document.getElementById('itemEditExpiry').value; item.supplierId=document.getElementById('itemEditSupplier').value; item.notes=document.getElementById('itemEditNotes').value;
+  const previousRotation=normalizeRotation(item.rotation||0); item.rotation=normalizeRotation(tempItemRotation);
+  const catDef=state.catalog.find(cc=>cc.id===item.catalogId);
+  if(catDef){
+    const newImg=tempItemImageRemoved?'':(tempItemEditImage||''), imgChanged=newImg!==catDef.image, rotationChanged=previousRotation!==item.rotation; catDef.image=newImg;
+    if((imgChanged||rotationChanged)&&newImg) fitItemToImage(item,catDef);
+  }
+  const cartLine=findOrderCartLine(unitId,itemId);
+  if(cartLine){
+    const qtyChanged=cartLine.quantity!==orderQty; ensureOrderCartLine(unitId,itemId,orderQty);
+    if(qtyChanged&&cartLine.status===ORDER_STATUS_ORDERED){ cartLine.status=ORDER_STATUS_SHORTAGE; cartLine.orderedAt=''; cartLine.batchId=''; }
+  }
+  tempItemEditImage=''; tempItemImageRemoved=false; tempItemRotation=0; const _ie=document.getElementById('itemEditImageInput'); if(_ie) _ie.value='';
+  saveState(); renderItemsLayer(); renderGrid(); renderLowStockPanel(); renderMaterialsList(); renderCatalogList(); closeModalById('itemEditModal');
   // 🤖 الإرسال التلقائي عند الحد الأدنى يتم عبر محرك المراقبة (scheduleAutoSend داخل saveState) — يعمل على كل تغيير وليس فقط من هذه الشاشة
 }
 function renderItemEditPreview(cat){
   const preview=document.getElementById('itemEditPreview'); if(!preview) return;
   preview.style.display='flex'; preview.style.alignItems='center'; preview.style.justifyContent='center';
-  if(tempItemEditImage){ preview.innerHTML=`<img src="${tempItemEditImage}" alt="">`; }
-  else if(cat&&cat.image){ preview.innerHTML=`<img src="${cat.image}" alt="">`; }
+  const src=tempItemImageRemoved?'':(tempItemEditImage||(cat&&cat.image)||''), rotation=normalizeRotation(tempItemRotation);
+  if(src){ const quarter=rotation===90||rotation===270; preview.innerHTML=`<img src="${src}" alt="" style="transform:rotate(${rotation}deg);transition:transform .2s;max-width:${quarter?'72%':'100%'};max-height:${quarter?'72%':'100%'}">`; }
   else if(cat){ preview.innerHTML=`<div style="width:80px;height:80px;border-radius:12px;background:${cat.color};display:flex;align-items:center;justify-content:center;font-size:36px">${cat.icon}</div><div style="margin-right:12px"><b>${cat.name}</b><br><span style="font-size:11px;color:#64748b">${cat.cat}</span></div>`; }
   else{ preview.innerHTML='<span class="no-image">لا توجد صورة</span>'; }
-  const rm=document.getElementById('btnRemoveItemImage'); if(rm) rm.style.display=tempItemEditImage?'inline-flex':'none';
+  const value=document.getElementById('itemRotationValue'); if(value) value.textContent=rotation+'°';
+  const rm=document.getElementById('btnRemoveItemImage'); if(rm) rm.style.display=src?'inline-flex':'none';
 }
+function rotateItemDraft(delta){ tempItemRotation=normalizeRotation(tempItemRotation+delta); const unit=state.units.find(u=>u.id===document.getElementById('itemEditUnitId').value), item=unit?.items.find(i=>i.id===document.getElementById('itemEditItemId').value), cat=state.catalog.find(c=>c.id===item?.catalogId); renderItemEditPreview(cat||null); }
 async function handleItemEditImageUpload(file){
   if(!file) return; if(file.size>5*1024*1024){ alert('حجم الصورة كبير'); return; }
   // نفس المعالجة: بلا حواف بيضاء، وتُعاد هندسة البطاقة داخل الجرار لتناسب حجم المادة الحقيقي
   try{
     const url=await processMaterialImage(file,400,true);
     if(!url) return;
-    tempItemEditImage=url; renderItemEditPreview(null);
+    tempItemEditImage=url; tempItemImageRemoved=false; renderItemEditPreview(null);
     toast('🖼️ تم تجهيز الصورة بلا حواف بيضاء — اضغط 💾 حفظ لتطبيقها داخل الجرار','success');
   }catch(err){ alert('تعذر معالجة الصورة: '+(err&&err.message?err.message:err)); }
 }
@@ -993,39 +1210,32 @@ function openReport(){
   html+=`</tbody></table></div></div>`; body.innerHTML=html; document.getElementById('reportModal').classList.remove('hidden');
 }
 function exportData(){ const dataStr=JSON.stringify(state,null,2); const blob=new Blob([dataStr],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='dental-inventory-'+((state.clinic&&state.clinic.username)||'clinic')+'-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url); }
-function importData(file){ const reader=new FileReader(); reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(imported.catalog&&imported.units){ state.catalog=imported.catalog.map(c=>({image:'',supplierId:'',minThreshold:3,autoWhatsapp:0,expiryDate:'',...c})); state.units=(imported.units||[]).map(u=>Object.assign({image:'',items:[],pos:{left:5,top:5,width:20,height:15}},u)); state.suppliers=imported.suppliers||DEFAULT_SUPPLIERS; state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(imported.settings?.whatsapp||{})}}; if(imported.storageImage!==undefined) state.storageImage=imported.storageImage||''; if(imported.notified) state.notified=imported.notified; ensureStateShape(); saveState(); renderGrid(); renderMaterialsList(); renderSuppliersList(); renderLowStockPanel(); alert('تم الاستيراد ✅'); }else alert('ملف غير صالح'); }catch(err){ alert('خطأ: '+err.message); } }; reader.readAsText(file); }
+function importData(file){ const reader=new FileReader(); reader.onload=e=>{ try{ const imported=JSON.parse(e.target.result); if(imported.catalog&&imported.units){ state.catalog=imported.catalog.map(c=>({image:'',supplierId:'',minThreshold:3,autoWhatsapp:0,expiryDate:'',...c})); state.units=(imported.units||[]).map(u=>Object.assign({image:'',items:[],pos:{left:5,top:5,width:20,height:15}},u)); state.suppliers=imported.suppliers||DEFAULT_SUPPLIERS; state.orderCart=Array.isArray(imported.orderCart)?imported.orderCart:[]; state.orderHistory=Array.isArray(imported.orderHistory)?imported.orderHistory:[]; state.settings={whatsapp:{...DEFAULT_WA_SETTINGS,...(imported.settings?.whatsapp||{})}}; if(imported.storageImage!==undefined) state.storageImage=imported.storageImage||''; if(imported.notified) state.notified=imported.notified; ensureStateShape(); saveState(); renderGrid(); renderMaterialsList(); renderSuppliersList(); renderLowStockPanel(); alert('تم الاستيراد ✅'); }else alert('ملف غير صالح'); }catch(err){ alert('خطأ: '+err.message); } }; reader.readAsText(file); }
 function updateStats(){ document.getElementById('statTotalItems').textContent=state.units.reduce((s,u)=>s+u.items.reduce((a,i)=>a+i.qty,0),0); document.getElementById('statMaterials').textContent=state.catalog.length; document.getElementById('statLow').textContent=state.units.reduce((s,u)=>s+u.items.filter(i=>{const c=state.catalog.find(cc=>cc.id===i.catalogId);return isLowStock(i,c)||isExpired(i.expiryDate);}).length,0); document.getElementById('statSuppliers').textContent=state.suppliers.length; }
 
 async function sendAllWhatsappOrders(){
-  const bySupplier={}; state.units.forEach(u=>{ u.items.forEach(it=>{ const cat=state.catalog.find(c=>c.id===it.catalogId); if(!cat) return; if(!isLowStock(it,cat)) return; const supId=it.supplierId||cat.supplierId; if(!supId) return; if(!bySupplier[supId]) bySupplier[supId]={supplier:state.suppliers.find(s=>s.id===supId),items:[]}; if(bySupplier[supId]) bySupplier[supId].items.push({cat,unit:u,item:it}); }); });
-  const supIds=Object.keys(bySupplier); if(supIds.length===0){ alert('لا توجد مواد ناقصة مرتبطة بموردين.'); return; }
+  const bySupplier={}; state.units.forEach(unit=>{ unit.items.forEach(item=>{ const cat=state.catalog.find(c=>c.id===item.catalogId); if(!cat||!isLowStock(item,cat)) return; const supId=item.supplierId||cat.supplierId, supplier=state.suppliers.find(s=>s.id===supId); if(!supplier) return; (bySupplier[supId]=bySupplier[supId]||{supplier,items:[]}).items.push({cat,unit,item}); }); });
+  const supIds=Object.keys(bySupplier); if(!supIds.length){ alert('لا توجد مواد ناقصة مرتبطة بموردين.'); return; }
   const wa=state.settings.whatsapp;
   if(!wa.connected){ if(!confirm('واتساب غير مربوط! فتح الإعدادات؟')) return; openWhatsappSettings(); return; }
   if(wa.requireConfirm&&!confirm(`سيتم إرسال ${supIds.length} رسائل للموردين:\n${supIds.map(id=>bySupplier[id].supplier.companyName).join('، ')}\n\nمتابعة؟`)) return;
-
-  for(let idx=0; idx<supIds.length; idx++){
-    const sid=supIds[idx]; const data=bySupplier[sid]; const sup=data.supplier; if(!sup) continue; const phone=cleanPhone(sup.whatsapp||sup.phone);
-    let itemsList=''; data.items.forEach(({cat,unit,item})=>{ itemsList+=`• ${cat.name} - الكمية: ${item.qty} (حد: ${item.minThreshold||cat.minThreshold}) - ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}\n`; });
-    const msg=buildMsg(sup,itemsList);
+  for(let idx=0;idx<supIds.length;idx++){
+    const data=bySupplier[supIds[idx]], sup=data.supplier, phone=cleanPhone(sup.whatsapp||sup.phone), batchId=uid('order');
+    const itemsList=data.items.map(({cat,unit,item})=>`• ${cat.name} - الكمية المطلوبة: ${wantedOrderQty(item,cat)} - المتوفر: ${item.qty} - ${unit.name}${item.expiryDate?' - انتهاء: '+item.expiryDate:''}`).join('\n');
+    const msg=buildMsg(sup,itemsList); let initiated=false, messageId='', sendMode=wa.apiMode+'/manual';
     if(wa.apiMode==='cloud_api'){
-      const result=await sendViaCloudApi(phone, msg);
-      if(!result.success){
-        logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),mode:'cloud_api/manual',status:'fail',error:result.error||'فشل الإرسال'});
-        alert(`❌ فشل API لـ ${sup.companyName}: ${result.error}\nسيتم فتح wa.me`);
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-      }else{
-        data.items.forEach(({unit,item})=>markNotified(unit.id,item.id,item.qty));
-        logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),mode:'cloud_api/manual',status:'success',messageId:(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''});
-      }
-    }else{
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank');
-      data.items.forEach(({unit,item})=>markNotified(unit.id,item.id,item.qty));
-      logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),mode:'wa.me',status:'success'});
-      await new Promise(r=>setTimeout(r,1300));
+      const result=await sendViaCloudApi(phone,msg);
+      if(result.success){ initiated=true; messageId=(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''; }
+      else{ logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),mode:'cloud_api/manual',status:'fail',error:result.error||'فشل الإرسال'}); alert(`❌ فشل API لـ ${sup.companyName}: ${result.error}\nسيتم فتح wa.me كبديل`); window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank'); initiated=true; sendMode='wa.me/fallback/manual'; }
+    }else{ window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,'_blank'); initiated=true; }
+    if(initiated){
+      data.items.forEach(({cat,unit,item})=>{ markNotified(unit.id,item.id,item.qty); markInventoryItemOrdered(unit.id,item.id,wantedOrderQty(item,cat),batchId); });
+      logWaSend({supplier:sup.companyName,material:data.items.map(x=>x.cat.name).join('، '),qty:data.items.reduce((n,x)=>n+wantedOrderQty(x.item,x.cat),0),mode:sendMode,status:'success',messageId});
     }
+    if(wa.apiMode!=='cloud_api'&&idx<supIds.length-1) await new Promise(r=>setTimeout(r,900));
   }
-  saveStateLocal(); scheduleServerSync();
-  if(state.settings.whatsapp.apiMode==='cloud_api') alert('✅ تم إرسال جميع الطلبات عبر WhatsApp Cloud API تلقائياً!');
+  saveState(); renderItemsLayer();
+  toast('✅ تم تحديث حالة المواد المرسلة إلى «تم الطلب»','success');
 }
 
 function openWhatsappSettings(){
@@ -1162,7 +1372,7 @@ function topmostModal(){
 }
 function resetMaterialForm(){
   document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; document.getElementById('matExpiry').value='';
-  document.getElementById('matSupplier').value=''; document.getElementById('matMinThreshold').value='3'; document.getElementById('matAutoWhatsapp').value='0';
+  document.getElementById('matSupplier').value=''; document.getElementById('matMinThreshold').value='3'; document.getElementById('matOrderQty').value='1'; document.getElementById('matAutoWhatsapp').value='0';
   tempMatImage=''; selectedColor=COLORS[0]; selectedIcon=ICONS[0]; initMaterialForm();
   document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image');
   document.getElementById('btnRemoveMatImage').style.display='none';
@@ -1172,10 +1382,14 @@ function resetSupplierForm(){
 }
 function initAppUI(){
   if(window.__appReady) return; window.__appReady=true;
-  loadState(); renderGrid(); initMaterialForm(); renderMaterialsList(); renderSuppliersList(); updateStats(); renderLowStockPanel(); updateWhatsappStatusBar();
+  loadState(); renderGrid(); initMaterialForm(); renderMaterialsList(); renderSuppliersList(); updateStats(); renderLowStockPanel(); updateWhatsappStatusBar(); renderOrderCart();
   document.getElementById('toggleLabels').addEventListener('change',renderGrid);
   document.getElementById('btnMaterials').addEventListener('click',()=>{ renderMaterialsList(); document.getElementById('materialsModal').classList.remove('hidden'); });
   document.getElementById('btnCloseMaterials').addEventListener('click',()=>closeModalById('materialsModal'));
+  document.getElementById('btnOrderCart').addEventListener('click',openOrderCart);
+  document.getElementById('btnCloseOrderCart').addEventListener('click',()=>closeModalById('orderCartModal'));
+  document.getElementById('btnSendOrderCartWhatsapp').addEventListener('click',()=>sendOrderCartWhatsapp());
+  document.getElementById('btnClearOrderHistory').addEventListener('click',clearOrderHistory);
   document.getElementById('btnSuppliers').addEventListener('click',()=>{ renderSuppliersList(); document.getElementById('suppliersModal').classList.remove('hidden'); });
   document.getElementById('btnCloseSuppliers').addEventListener('click',()=>closeModalById('suppliersModal'));
   document.getElementById('btnWhatsapp').addEventListener('click',openWhatsappSettings);
@@ -1213,18 +1427,21 @@ function initAppUI(){
   document.getElementById('btnCloseItemEdit').addEventListener('click',_closeItemEdit);
   document.getElementById('btnCancelItemEdit').addEventListener('click',_closeItemEdit);
   document.getElementById('btnExitItemEdit').addEventListener('click',_closeItemEdit);
-  document.getElementById('itemEditModal').addEventListener('modalclosed',()=>{ tempItemEditImage=''; const _ie=document.getElementById('itemEditImageInput'); if(_ie) _ie.value=''; });
+  document.getElementById('itemEditModal').addEventListener('modalclosed',()=>{ tempItemEditImage=''; tempItemImageRemoved=false; tempItemRotation=0; const _ie=document.getElementById('itemEditImageInput'); if(_ie) _ie.value=''; });
   document.getElementById('materialsModal').addEventListener('modalclosed',resetMaterialForm);
   document.getElementById('suppliersModal').addEventListener('modalclosed',resetSupplierForm);
   document.getElementById('btnChangeItemImage').addEventListener('click',()=>document.getElementById('itemEditImageInput').click());
+  document.getElementById('btnRotateItemLeft').addEventListener('click',()=>rotateItemDraft(-90));
+  document.getElementById('btnRotateItemRight').addEventListener('click',()=>rotateItemDraft(90));
+  document.getElementById('btnAddCurrentItemToCart').addEventListener('click',addCurrentItemToOrderCart);
   document.getElementById('itemEditPreview').addEventListener('click',()=>document.getElementById('itemEditImageInput').click());
   document.getElementById('itemEditImageInput').addEventListener('change',(e)=>{ if(e.target.files[0]) handleItemEditImageUpload(e.target.files[0]); });
-  document.getElementById('btnRemoveItemImage').addEventListener('click',()=>{ tempItemEditImage=''; const _ie2=document.getElementById('itemEditImageInput'); if(_ie2) _ie2.value=''; const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); const cat=state.catalog.find(cc=>cc.id===item?.catalogId); renderItemEditPreview(cat?{...cat,image:''}:null); });
+  document.getElementById('btnRemoveItemImage').addEventListener('click',()=>{ tempItemEditImage=''; tempItemImageRemoved=true; const _ie2=document.getElementById('itemEditImageInput'); if(_ie2) _ie2.value=''; const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); const cat=state.catalog.find(cc=>cc.id===item?.catalogId); renderItemEditPreview(cat?{...cat,image:''}:null); });
   document.getElementById('btnSaveItemEdit').addEventListener('click',saveItemEdit);
   document.getElementById('btnDeleteItemFromDrawer').addEventListener('click',()=>{ const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); if(unit&&confirm('حذف من هذا الجرار فقط؟')){ unit.items=unit.items.filter(i=>i.id!==itemId); saveState(); renderItemsLayer(); renderGrid(); closeModalById('itemEditModal'); }});
-  document.getElementById('btnDeleteItemCompletely').addEventListener('click',()=>{ const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return; const cat=state.catalog.find(c=>c.id===item.catalogId); if(confirm(`حذف "${cat?.name}" نهائياً من العيادة؟`)){ state.catalog=state.catalog.filter(c=>c.id!==item.catalogId); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==item.catalogId); }); saveState(); renderItemsLayer(); renderGrid(); renderMaterialsList(); renderCatalogList(); closeModalById('itemEditModal'); }});
+  document.getElementById('btnDeleteItemCompletely').addEventListener('click',()=>{ const unitId=document.getElementById('itemEditUnitId').value; const itemId=document.getElementById('itemEditItemId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); if(!item) return; const cat=state.catalog.find(c=>c.id===item.catalogId); if(confirm(`حذف "${cat?.name}" نهائياً من العيادة؟`)){ state.catalog=state.catalog.filter(c=>c.id!==item.catalogId); state.units.forEach(u=>{ u.items=u.items.filter(i=>i.catalogId!==item.catalogId); }); state.orderCart=(state.orderCart||[]).filter(line=>line.catalogId!==item.catalogId); saveState(); renderItemsLayer(); renderGrid(); renderMaterialsList(); renderCatalogList(); closeModalById('itemEditModal'); }});
   document.getElementById('btnCallSupplier').addEventListener('click',()=>{ const itemId=document.getElementById('itemEditItemId').value; const unitId=document.getElementById('itemEditUnitId').value; const unit=state.units.find(u=>u.id===unitId); const item=unit?.items.find(i=>i.id===itemId); const cat=state.catalog.find(c=>c.id===item?.catalogId); const supId=item?.supplierId||cat?.supplierId; const sup=state.suppliers.find(s=>s.id===supId); if(!sup){ alert('لا يوجد مورد'); return; } callSupplier(sup.phone); });
-  document.getElementById('btnWhatsappSupplier').addEventListener('click',()=>{ const itemId=document.getElementById('itemEditItemId').value; const unitId=document.getElementById('itemEditUnitId').value; openWhatsappForItem(itemId,unitId); });
+  document.getElementById('btnWhatsappSupplier').addEventListener('click',sendCurrentItemWhatsapp);
   document.getElementById('btnSendWhatsappOrders').addEventListener('click',sendAllWhatsappOrders);
   document.getElementById('btnDismissAlerts').addEventListener('click',()=>document.getElementById('lowStockSection').classList.remove('has-alerts'));
   document.getElementById('btnCloseQty').addEventListener('click',()=>closeModalById('qtyModal'));
@@ -1509,6 +1726,8 @@ function ensureStateShape(){
   if(!Array.isArray(state.catalog)) state.catalog=JSON.parse(JSON.stringify(DEFAULT_CATALOG));
   if(!Array.isArray(state.units)) state.units=JSON.parse(JSON.stringify(DEFAULT_UNITS));
   if(!Array.isArray(state.suppliers)) state.suppliers=JSON.parse(JSON.stringify(DEFAULT_SUPPLIERS));
+  if(!Array.isArray(state.orderCart)) state.orderCart=[];
+  if(!Array.isArray(state.orderHistory)) state.orderHistory=[];
   if(!state.settings||typeof state.settings!=='object') state.settings={};
   state.settings.whatsapp=Object.assign({},DEFAULT_WA_SETTINGS,state.settings.whatsapp||{});
   state.settings.whatsapp.sendLog=Array.isArray(state.settings.whatsapp.sendLog)?state.settings.whatsapp.sendLog.slice(0,60):[];
@@ -1516,7 +1735,7 @@ function ensureStateShape(){
   if(!state.notified||typeof state.notified!=='object') state.notified={};
   if(!state.clinic||typeof state.clinic!=='object') state.clinic={};
   if(currentUser){ state.clinic.id=currentUser.id; state.clinic.clinicName=currentUser.clinicName||state.clinic.clinicName||''; state.clinic.username=currentUser.username||state.clinic.username||''; }
-  state.catalog.forEach(c=>{ if(c.image===undefined||c.image===null) c.image=''; if(c.expiryDate===undefined||c.expiryDate===null) c.expiryDate=''; if(c.supplierId===undefined||c.supplierId===null) c.supplierId=''; if(c.minThreshold===undefined||c.minThreshold===null) c.minThreshold=3; if(c.autoWhatsapp===undefined||c.autoWhatsapp===null) c.autoWhatsapp=0; });
+  state.catalog.forEach(c=>{ if(c.image===undefined||c.image===null) c.image=''; if(c.expiryDate===undefined||c.expiryDate===null) c.expiryDate=''; if(c.supplierId===undefined||c.supplierId===null) c.supplierId=''; if(c.minThreshold===undefined||c.minThreshold===null) c.minThreshold=3; if(c.autoWhatsapp===undefined||c.autoWhatsapp===null) c.autoWhatsapp=0; c.orderQty=Math.max(1,parseInt(c.orderQty,10)||1); });
   state.units.forEach(u=>{
     if(!u.pos||typeof u.pos!=='object') u.pos={left:5,top:5,width:20,height:15};
     ['left','top','width','height'].forEach(k=>{ u.pos[k]=Math.max(0,Math.min(100,parseFloat(u.pos[k])||0)); });
@@ -1524,7 +1743,10 @@ function ensureStateShape(){
     if(u.type!=='cabinet') u.type='drawer';
     if(!Array.isArray(u.items)) u.items=[];
     if(u.image===undefined||u.image===null) u.image='';
+    u.items.forEach(it=>{ it.orderQty=Math.max(1,parseInt(it.orderQty,10)||state.catalog.find(c=>c.id===it.catalogId)?.orderQty||1); it.rotation=normalizeRotation(it.rotation||0); });
   });
+  state.orderCart=state.orderCart.filter(Boolean).map(line=>Object.assign({},line,{id:line.id||uid('cart'),quantity:Math.max(1,parseInt(line.quantity??line.orderQty??line.qty,10)||1),status:(line.status===ORDER_STATUS_ORDERED||line.status==='تم الطلب')?ORDER_STATUS_ORDERED:ORDER_STATUS_SHORTAGE,materialImage:lightweightImageRef(line.materialImage||''),addedAt:line.addedAt||new Date().toISOString()}));
+  state.orderHistory=state.orderHistory.filter(Boolean).slice(0,500).map(entry=>Object.assign({},entry,{id:entry.id||uid('completed'),status:'completed',quantity:Math.max(1,parseInt(entry.quantity??entry.orderQty??entry.qty,10)||1),materialImage:lightweightImageRef(entry.materialImage||'')}));
 }
 function loadState(){ migrateLegacyIfNeeded(); loadStateLocal(); ensureStateShape(); }
 
@@ -1578,7 +1800,7 @@ function renderWaLog(){
   });
 }
 function notifiedKey(unitId,itemId){ return unitId+'__'+itemId; }
-function markNotified(unitId,itemId,qty){ try{ state.notified[notifiedKey(unitId,itemId)]={qty:qty,time:Date.now()}; }catch(e){} }
+function markNotified(unitId,itemId,qty){ try{ const unit=state.units.find(u=>u.id===unitId),item=unit?.items.find(i=>i.id===itemId),cat=state.catalog.find(c=>c.id===item?.catalogId); state.notified[notifiedKey(unitId,itemId)]={qty:qty,orderQty:wantedOrderQty(item,cat),time:Date.now()}; }catch(e){} }
 function isNotifiedRecently(unitId,itemId,qty){
   try{
     const wa=state.settings.whatsapp;
@@ -1586,6 +1808,8 @@ function isNotifiedRecently(unitId,itemId,qty){
     const rec=state.notified[notifiedKey(unitId,itemId)];
     if(!rec) return false;
     if(rec.qty!==qty) return false;
+    const unit=state.units.find(u=>u.id===unitId),item=unit?.items.find(i=>i.id===itemId),cat=state.catalog.find(c=>c.id===item?.catalogId);
+    if(rec.orderQty!==undefined&&rec.orderQty!==wantedOrderQty(item,cat)) return false;
     return (Date.now()-(rec.time||0))<hours*3600*1000;
   }catch(e){ return false; }
 }
@@ -1646,13 +1870,13 @@ async function sendAutoBatch(precomputed,isFullyAuto){
     const supIds=Object.keys(bySup);
     for(let i=0;i<supIds.length;i++){
       const g=bySup[supIds[i]]; const phone=cleanPhone(g.sup.whatsapp||g.sup.phone);
-      let itemsList=''; g.items.forEach(entry=>{ itemsList+='• '+entry.cat.name+' - الكمية: '+entry.item.qty+' (حد: '+(entry.item.minThreshold||entry.cat.minThreshold)+') - '+entry.unit.name+(entry.item.expiryDate?(' - انتهاء: '+entry.item.expiryDate):'')+'\n'; });
-      const msg=buildMsg(g.sup,itemsList);
+      let itemsList=''; g.items.forEach(entry=>{ itemsList+='• '+entry.cat.name+' - الكمية المطلوبة: '+wantedOrderQty(entry.item,entry.cat)+' - المتوفر: '+entry.item.qty+' - '+entry.unit.name+(entry.item.expiryDate?(' - انتهاء: '+entry.item.expiryDate):'')+'\n'; });
+      const msg=buildMsg(g.sup,itemsList), orderBatchId=uid('order');
       const result=await sendViaCloudApi(phone,msg,{silent:isFullyAuto});
       if(result.success){
         ok++;
-        g.items.forEach(entry=>markNotified(entry.unit.id,entry.item.id,entry.item.qty));
-        logWaSend({supplier:g.sup.companyName,material:g.items.map(x=>x.cat.name).join('، '),qty:g.items.reduce((s,x)=>s+x.item.qty,0),mode:'cloud_api'+(isFullyAuto?'/auto':'/manual'),status:'success',messageId:(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''});
+        g.items.forEach(entry=>{ markNotified(entry.unit.id,entry.item.id,entry.item.qty); markInventoryItemOrdered(entry.unit.id,entry.item.id,wantedOrderQty(entry.item,entry.cat),orderBatchId); });
+        logWaSend({supplier:g.sup.companyName,material:g.items.map(x=>x.cat.name).join('، '),qty:g.items.reduce((s,x)=>s+wantedOrderQty(x.item,x.cat),0),mode:'cloud_api'+(isFullyAuto?'/auto':'/manual'),status:'success',messageId:(result.data&&result.data.messages&&result.data.messages[0]&&result.data.messages[0].id)||''});
       }else{
         fail++;
         logWaSend({supplier:g.sup.companyName,material:g.items.map(x=>x.cat.name).join('، '),mode:'cloud_api',status:'fail',error:result.error||'فشل الإرسال'});
@@ -1671,10 +1895,10 @@ async function sendWaMeBatch(list){
     const supIds=Object.keys(bySup);
     for(let i=0;i<supIds.length;i++){
       const g=bySup[supIds[i]]; const phone=cleanPhone(g.sup.whatsapp||g.sup.phone);
-      let itemsList=''; g.items.forEach(entry=>{ itemsList+='• '+entry.cat.name+' - الكمية: '+entry.item.qty+' - '+entry.unit.name+'\n'; });
-      const msg=buildMsg(g.sup,itemsList);
+      let itemsList=''; g.items.forEach(entry=>{ itemsList+='• '+entry.cat.name+' - الكمية المطلوبة: '+wantedOrderQty(entry.item,entry.cat)+' - المتوفر: '+entry.item.qty+' - '+entry.unit.name+'\n'; });
+      const msg=buildMsg(g.sup,itemsList), orderBatchId=uid('order');
       window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank');
-      g.items.forEach(entry=>markNotified(entry.unit.id,entry.item.id,entry.item.qty));
+      g.items.forEach(entry=>{ markNotified(entry.unit.id,entry.item.id,entry.item.qty); markInventoryItemOrdered(entry.unit.id,entry.item.id,wantedOrderQty(entry.item,entry.cat),orderBatchId); });
       logWaSend({supplier:g.sup.companyName,material:g.items.map(x=>x.cat.name).join('، '),mode:'wa.me',status:'success'});
       await new Promise(r=>setTimeout(r,1400));
     }
