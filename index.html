@@ -48,7 +48,7 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 .hotspot{position:absolute;cursor:pointer;border:2px solid transparent;border-radius:6px;transition:.18s;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:5px;background:rgba(255,255,255,0);overflow:hidden}
 .hotspot:hover{background:rgba(37,99,235,.18);border-color:rgba(37,99,235,.9);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 4px 18px rgba(37,99,235,.32)}
 .hotspot.cabinet:hover{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.9)}
-.hotspot-label{background:rgba(15,23,42,.86);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;white-space:nowrap;backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.3);transform:translateY(4px);opacity:0;transition:.18s;pointer-events:none;max-width:95%;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.hotspot-label{background:rgba(15,23,42,.86);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;white-space:nowrap;backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.3),0 0 0 2px rgba(255,255,255,.65),0 0 10px rgba(255,255,255,.4);transform:translateY(4px);opacity:0;transition:.18s;pointer-events:none;max-width:95%;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .hotspot:hover .hotspot-label{transform:translateY(0);opacity:1}
 .hotspot-count{position:absolute;top:5px;right:5px;background:#2563eb;color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:20px;box-shadow:0 2px 6px rgba(37,99,235,.5);line-height:1.2;pointer-events:none}
 .hotspot-count.empty{background:rgba(15,23,42,.6)}.hotspot.cabinet .hotspot-count{background:#059669}
@@ -70,21 +70,37 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 .canvas-image-wrapper{position:relative;display:inline-block;max-width:100%;max-height:100%;box-shadow:0 12px 40px rgba(0,0,0,.5);border-radius:8px;overflow:hidden;background:#1e293b}
 .canvas-image-wrapper img.canvas-img{display:block;max-width:100%;max-height:70vh;width:auto;height:auto;object-fit:contain}
 .items-layer{position:absolute;inset:0;z-index:2}
-.placed-item{position:absolute;background:#fff;border-radius:9px;box-shadow:0 4px 14px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.9);border:2px solid transparent;cursor:grab;user-select:none;display:flex;flex-direction:column;overflow:hidden;min-width:58px;min-height:38px;transition:box-shadow .15s, border-color .15s}
-.placed-item:active{cursor:grabbing}.placed-item:hover{border-color:var(--primary);box-shadow:0 8px 22px rgba(0,0,0,.35);z-index:5}
-.placed-item.selected{border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.32),0 8px 22px rgba(0,0,0,.35);z-index:10!important}
-.placed-item.alert{border-color:var(--danger);box-shadow:0 0 0 2px rgba(220,38,38,.3),0 6px 18px rgba(0,0,0,.3)}.placed-item.expiry{border-color:var(--warning)}
-.placed-item img.item-img{width:100%;height:100%;object-fit:contain;object-position:center;position:absolute;inset:0;z-index:0;background:#fff;padding:2px 2px 15px}
+/* ===== بطاقات العناصر داخل الجرار/الخزائن =====
+   قاعدة أساسية: لا صندوق أبيض ولا إطار حول صورة المادة.
+   - إذا كان للمادة صورة  → البطاقة شفافة تماماً (بلا حواف) والصورة تلامس صورة الجرار مباشرة،
+     وأي ظل/إطار يظهر فقط عند المرور أو التحديد أو التنبيه.
+   - إذا لم توجد صورة     → البطاقة تأخذ لون المادة نفسه (لا يوجد أبيض أبداً). */
+.placed-item{position:absolute;background:transparent;border-radius:9px;border:2px solid transparent;cursor:grab;user-select:none;display:flex;flex-direction:column;overflow:hidden;min-width:58px;min-height:38px;transition:box-shadow .15s,border-color .15s,background .15s;-webkit-tap-highlight-color:transparent}
+.placed-item:active{cursor:grabbing}
+.placed-item:hover{border-color:rgba(37,99,235,.85);box-shadow:0 0 0 1px rgba(255,255,255,.55),0 6px 18px rgba(0,0,0,.28);z-index:5}
+.placed-item.selected{border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.35),0 8px 22px rgba(0,0,0,.32);z-index:10!important}
+.placed-item.alert{border-color:var(--danger);box-shadow:0 0 0 2px rgba(220,38,38,.35),0 6px 18px rgba(0,0,0,.3)}
+.placed-item.expiry{border-color:var(--warning);box-shadow:0 0 0 2px rgba(217,119,6,.32),0 6px 18px rgba(0,0,0,.3)}
+/* بدون صورة: خلفية بلون المادة نفسه حتى لا تظهر أي حافة بيضاء */
+.placed-item.no-image{background:var(--item-color,#fff);box-shadow:0 3px 10px rgba(0,0,0,.24)}
+.placed-item img.item-img{width:100%;height:100%;object-fit:contain;object-position:center;position:absolute;inset:0;z-index:0;background:transparent;border:0;padding:0;display:block;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 3px 7px rgba(0,0,0,.4))}
 .placed-item .item-overlay{position:relative;z-index:1;background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.85) 100%);padding:5px 7px;flex:1;display:flex;flex-direction:column;backdrop-filter:blur(2px)}
 /* when the item has a photo the picture owns the card; the text collapses into a thin strip at the bottom so the whole image stays visible */
-.placed-item.has-image .item-overlay{position:absolute;top:auto;bottom:0;left:0;right:0;flex:0 0 auto;flex-direction:row;align-items:center;justify-content:center;gap:5px;padding:11px 20px 3px;background:linear-gradient(0deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.88) 58%,rgba(255,255,255,0) 100%);backdrop-filter:none}
+.placed-item.has-image .item-overlay{position:absolute;top:auto;bottom:0;left:0;right:0;flex:0 0 auto;flex-direction:row;align-items:center;justify-content:center;gap:5px;padding:8px 16px 2px;background:linear-gradient(0deg,rgba(255,255,255,.8) 0%,rgba(255,255,255,.46) 52%,rgba(255,255,255,0) 100%);backdrop-filter:none}
 .placed-item.has-image .item-icon{display:none}
 .placed-item.has-image .item-top{order:2;flex:0 0 auto;justify-content:flex-end}
 .placed-item.has-image .item-name{order:1;flex:1 1 auto;min-width:0;margin-top:0;text-align:center;font-size:9.5px}
 .placed-item.has-image .item-meta{display:none}
-.placed-item .item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:3px}.placed-item .item-icon{font-size:13px;line-height:1}.placed-item .item-qty{background:#0f172a;color:#fff;font-size:9px;font-weight:800;padding:2px 5px;border-radius:20px;min-width:18px;text-align:center;cursor:pointer;z-index:2}
+.placed-item .item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:3px}.placed-item .item-icon{font-size:13px;line-height:1}.placed-item .item-qty{background:#0f172a;color:#fff;font-size:9px;font-weight:800;padding:2px 5px;border-radius:20px;min-width:18px;text-align:center;cursor:pointer;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.35)}
 .placed-item .item-qty.alert-qty{background:var(--danger);animation:pulse 1s infinite}
-.placed-item .item-name{font-size:10px;font-weight:800;margin-top:3px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* اسم المادة: ظل أبيض (هالة) خلف الحروف ليبقى مقروءاً فوق أي لون داخل الجرار */
+.placed-item .item-name{font-size:10px;font-weight:800;margin-top:3px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a;
+  text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 6px rgba(255,255,255,.98),
+              1px 0 2px #fff,-1px 0 2px #fff,0 1px 2px #fff,0 -1px 2px #fff,
+              1px 1px 2px rgba(255,255,255,.95),-1px 1px 2px rgba(255,255,255,.95),
+              1px -1px 2px rgba(255,255,255,.95),-1px -1px 2px rgba(255,255,255,.95),
+              0 2px 7px rgba(255,255,255,.9)}
+.placed-item .item-meta{color:#1e293b}
 .placed-item .item-meta{font-size:8.5px;color:#475569;margin-top:1px;display:flex;gap:4px;flex-wrap:wrap}.placed-item .item-meta span{background:rgba(0,0,0,.06);padding:1px 4px;border-radius:10px}
 .placed-item .resize-handle{position:absolute;bottom:1px;left:1px;width:14px;height:14px;background:var(--primary);border-radius:3px 0 7px 0;cursor:nwse-resize;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;opacity:0;transition:.15s;z-index:3}
 .placed-item:hover .resize-handle,.placed-item.selected .resize-handle{opacity:1}
@@ -129,7 +145,10 @@ header.topbar{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#
 .report-table td{padding:8px 9px;border-bottom:1px solid #f1f5f9}.report-table tr:hover td{background:#f8fafc}
 .badge{padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;display:inline-block}.badge-green{background:#dcfce7;color:#166534}.badge-yellow{background:#fef9c3;color:#854d0e}.badge-red{background:#fee2e2;color:#991b1b}.badge-blue{background:#dbeafe;color:#1e40af}
 .empty-state{text-align:center;padding:28px 14px;color:var(--text-light)}.empty-state .icon{font-size:36px;margin-bottom:8px;opacity:.5}.empty-state p{font-size:11.5px;line-height:1.6}
-.item-edit-preview{width:100%;height:180px;background:#f8fafc;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px;position:relative}
+/* شفافية الخلفية تظهر بوضوح في معاينة صورة المادة (مربعات رمادية خفيفة بدل الأبيض) */
+.item-edit-preview{background-color:#f8fafc;background-image:linear-gradient(45deg,#e8edf3 25%,transparent 25%,transparent 75%,#e8edf3 75%),linear-gradient(45deg,#e8edf3 25%,transparent 25%,transparent 75%,#e8edf3 75%);background-size:16px 16px;background-position:0 0,8px 8px}
+.image-upload{background-color:#fcfcfc;background-image:linear-gradient(45deg,#f1f5f9 25%,transparent 25%,transparent 75%,#f1f5f9 75%),linear-gradient(45deg,#f1f5f9 25%,transparent 25%,transparent 75%,#f1f5f9 75%);background-size:16px 16px;background-position:0 0,8px 8px}
+.image-upload .upload-text{background:rgba(255,255,255,.82);border-radius:8px;padding:4px}
 .item-edit-preview img{max-width:100%;max-height:100%;object-fit:contain}.item-edit-preview .no-image{font-size:12px;color:var(--text-light)}
 .wa-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
 .wa-card.highlight{border-color:var(--whatsapp);background:linear-gradient(135deg,#f0fdf4 0%,#fff 100%)}
@@ -337,7 +356,7 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 
 <!-- Materials Modal -->
 <div id="materialsModal" class="modal hidden">
-  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><input id="matName" placeholder="مثال: كمبوزيت A2"></div><div class="form-row"><div class="form-group"><label>الفئة</label><select id="matCategory"><option value="حشوات">🦷 حشوات</option><option value="تخدير">💉 تخدير</option><option value="تعقيم">🧼 تعقيم</option><option value="أدوات">🔧 أدوات</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option><option value="جراحة">🩸 جراحة</option><option value="تركيبات">👑 تركيبات</option><option value="عامة">📦 عامة</option></select></div><div class="form-group"><label>📅 تاريخ الانتهاء</label><input id="matExpiry" type="date"></div></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnExitMaterials" data-close="materialsModal">🚪 خروج</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
+  <div class="modal-content medium"><div class="modal-header"><h3>📦 إدارة المواد</h3><button class="btn btn-light btn-sm" id="btnCloseMaterials">✕</button></div><div class="modal-body"><div class="materials-grid"><div><h4 style="font-size:12px;margin-bottom:10px">➕ إضافة / تعديل</h4><div style="background:#f8fafc;padding:12px;border-radius:11px;border:1px solid var(--border)"><input type="hidden" id="matEditId"><div class="image-upload" id="matImageUpload"><img class="preview" id="matImagePreview"><div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المادة</b></div><input type="file" id="matImageInput" accept="image/*" style="display:none"></div><p style="font-size:10px;color:#475569;line-height:1.6;margin-top:6px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:8px;padding:5px 8px">🪄 تُزال الحواف/الخلفية البيضاء من الصورة تلقائياً، فتظهر المادة داخل الجرار <b>بلا أي إطار</b> وتندمج مع صورة الجرار — واسم المادة يظهر فوق ظل أبيض ليكون واضحاً.</p><div class="form-group" style="margin-top:10px"><label>اسم المادة *</label><input id="matName" placeholder="مثال: كمبوزيت A2"></div><div class="form-row"><div class="form-group"><label>الفئة</label><select id="matCategory"><option value="حشوات">🦷 حشوات</option><option value="تخدير">💉 تخدير</option><option value="تعقيم">🧼 تعقيم</option><option value="أدوات">🔧 أدوات</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option><option value="جراحة">🩸 جراحة</option><option value="تركيبات">👑 تركيبات</option><option value="عامة">📦 عامة</option></select></div><div class="form-group"><label>📅 تاريخ الانتهاء</label><input id="matExpiry" type="date"></div></div><div class="form-group"><label>المورد</label><select id="matSupplier"><option value="">-- بدون مورد --</option></select></div></div><div class="form-row"><div class="form-group"><label>حد التنبيه</label><input id="matMinThreshold" type="number" min="0" value="3"></div><div class="form-group"><label>واتساب تلقائي</label><select id="matAutoWhatsapp"><option value="0">❌ معطل</option><option value="1">✅ مفعل</option></select></div></div><div class="form-group"><label>اللون والأيقونة</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><div class="color-options" id="colorOptions"></div><div style="width:1px;height:24px;background:var(--border)"></div><div class="icon-options" id="iconOptions"></div></div></div><div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" id="btnSaveMat" style="flex:1">💾 حفظ</button><button class="btn btn-light" id="btnCancelMat">إلغاء</button><button class="btn btn-light" id="btnExitMaterials" data-close="materialsModal">🚪 خروج</button><button class="btn btn-light" id="btnRemoveMatImage" style="display:none">🗑️ حذف الصورة</button></div></div><div><h4 style="font-size:12px;margin-bottom:10px">📋 المواد (<span id="matCount">0</span>)</h4><div class="materials-list" id="materialsList"></div></div></div></div></div>
 </div>
 
 <!-- Suppliers Modal -->
@@ -420,6 +439,7 @@ Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body
     <div class="modal-header"><h3>✏️ تعديل المادة</h3><button class="btn btn-light btn-sm" id="btnCloseItemEdit">✕</button></div>
     <div class="modal-body">
       <div class="item-edit-preview" id="itemEditPreview" style="cursor:pointer" title="اضغط لتغيير الصورة"><span class="no-image">لا توجد صورة</span></div><input type="file" id="itemEditImageInput" accept="image/*" style="display:none"><div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn btn-light btn-sm" id="btnChangeItemImage" style="flex:1">📷 تغيير الصورة</button><button class="btn btn-light btn-sm" id="btnRemoveItemImage" style="display:none">🗑️ حذف الصورة</button></div>
+      <p style="font-size:10px;color:#475569;line-height:1.6;margin:-4px 0 10px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:8px;padding:5px 8px">🪄 الصورة الجديدة تُجهَّز تلقائياً بلا حواف بيضاء وتُقصّ الفراغات حولها، فتظهر المادة داخل الجرار بدون إطار.</p>
       <input type="hidden" id="itemEditUnitId"><input type="hidden" id="itemEditItemId">
       <div class="form-group"><label>اسم المادة</label><input id="itemEditName" disabled style="background:#f1f5f9"></div>
       <div class="form-row"><div class="form-group"><label>الكمية *</label><input id="itemEditQty" type="number" min="0" style="font-weight:800;font-size:16px;text-align:center"></div><div class="form-group"><label>حد التنبيه</label><input id="itemEditThreshold" type="number" min="0" placeholder="افتراضي"></div></div>
@@ -697,8 +717,9 @@ function renderItemsLayer(){
   unit.items.forEach(it=>{
     const cat=state.catalog.find(c=>c.id===it.catalogId); if(!cat) return;
     const low=isLowStock(it,cat); const near=isNearExpiry(it.expiryDate); const exp=isExpired(it.expiryDate);
-    const div=document.createElement('div'); div.className='placed-item'+(selectedItemId===it.id?' selected':'')+(low?' alert':'')+(near||exp?' expiry':'')+(cat.image?' has-image':'');
+    const div=document.createElement('div'); div.className='placed-item'+(selectedItemId===it.id?' selected':'')+(low?' alert':'')+(near||exp?' expiry':'')+(cat.image?' has-image':' no-image');
     div.dataset.itemId=it.id; div.style.left=it.x+'%'; div.style.top=it.y+'%'; div.style.width=it.w+'%'; div.style.height=it.h+'%';
+    if(!cat.image) div.style.setProperty('--item-color',cat.color||'#e2e8f0'); // بلا صورة → البطاقة بلون المادة، لا أبيض
     const imgHtml=cat.image?`<img class="item-img" src="${cat.image}" alt="${cat.name}">`:''; const alertIcon=low?'🔴':near?'🟠':exp?'⛔':'';
     div.innerHTML=`${imgHtml}${low||near||exp?`<div class="alert-badge">${low?'!':near?'⏰':'✕'}</div>`:''}<button class="delete-btn">✕</button><div class="item-overlay"><div class="item-top"><span class="item-icon">${cat.icon}</span><span class="item-qty ${low?'alert-qty':''}">${it.qty}</span></div><div class="item-name">${alertIcon} ${cat.name}</div><div class="item-meta">${it.expiryDate?`<span>📅 ${it.expiryDate.slice(0,7)}</span>`:''}${low?`<span style="background:#fee2e2;color:#991b1b">⚠️ حد ${it.minThreshold||cat.minThreshold}</span>`:''}</div></div><div class="resize-handle">⤡</div>`;
     div.addEventListener('pointerdown',(e)=>{ if(e.target.classList.contains('delete-btn')||e.target.classList.contains('resize-handle')) return; selectedItemId=it.id; document.querySelectorAll('.placed-item').forEach(el=>el.classList.remove('selected')); div.classList.add('selected'); startDrag(e,it,div); });
@@ -737,28 +758,107 @@ function refitItemsForCatalog(catalogId){
   state.units.forEach(u=>{ (u.items||[]).forEach(it=>{ if(it.catalogId===catalogId) fitItemToImage(it,cat); }); });
 }
 /* Shape the card like the photo, so a material dropped into a jar/cabinet shows its whole picture
-   (no cropping) and keeps that same proportion when the user drags the resize handle. */
+   (no cropping) and keeps that same proportion when the user drags the resize handle.
+   trim = the visible (non-transparent) part of the photo, when the white edges were removed,
+   so the card is sized/positioned to the material itself — the empty margins don't count. */
 function fitItemToImage(item,cat){
-  const src=(cat&&cat.image)||''; if(!src||typeof Image==='undefined') return;
-  const layer=document.getElementById('itemsLayer'); const rect=layer?layer.getBoundingClientRect():null;
+  const src=(cat&&cat.image)||''; if(!src) return;
+  const trim=getImageTrimMeta(src);
+  if(typeof Image==='undefined') return;
   const img=new Image();
   img.onload=()=>{
     if(!img.naturalWidth||!img.naturalHeight) return;
     const stillThere=state.units.some(u=>u.items&&u.items.indexOf(item)>=0); if(!stillThere) return;
-    const visual=img.naturalWidth/img.naturalHeight;                    // photo aspect in pixels
-    const layerRatio=(rect&&rect.width&&rect.height)?(rect.height/rect.width):1;
-    const ratio=visual*layerRatio;                                      // same aspect expressed in % of the unit
+    shapeItemLikeImage(item,img.naturalWidth,img.naturalHeight,trim);
+  };
+  img.onerror=()=>{
+    const m=/#trim=([\d.]+),([\d.]+),([\d.]+),([\d.]+)/.exec(src); if(!m) return;
+    const stillThere=state.units.some(u=>u.items&&u.items.indexOf(item)>=0); if(!stillThere) return;
+    // الأبعاد محفوظة داخل الرابط (نسبة الصورة المخزّنة) والقصاصة إن وُجدت
+    shapeItemLikeImage(item,1000,Math.round(1000*(+m[4]/+m[3])),trim);
+  };
+  img.src=src;
+}
+function shapeItemLikeImage(item,iw,ih,trim){
+  const layer=document.getElementById('itemsLayer'); const rect=layer?layer.getBoundingClientRect():null;
+  if(!(iw>0)||!(ih>0)) return;
+  const visual=iw/ih;                                                      // نسبة الصورة بالبكسل
+  const layerRatio=(rect&&rect.width&&rect.height)?(rect.height/rect.width):1;
+  const area=item.w*item.h;                                                // نفس المساحة التي أُسقطت بها البطاقة
+  if(!(area>0)) return;
+  const pxW=(rect&&rect.width)?rect.width:1, pxH=(rect&&rect.height)?rect.height:1;
+  /* كل الحساب بالبكسل ثم التحويل إلى % — أضمن للصحّة:
+     صندوق الصورة = أكبر مستطيل بنسبة الصورة (object-fit:contain) داخل البطاقة،
+     والمادة الظاهرة = جزء trim من هذا الصندوق. */
+  const geom=(nw,nh,tr)=>{
+    const cardW=nw*pxW/100, cardH=nh*pxH/100;
+    const k=Math.min(cardW/iw, cardH/ih);                  // كم بكسل من الصورة لكل بكسل معروض
+    const boxW=iw*k, boxH=ih*k;
+    const oxPx=(cardW-boxW)/2, oyPx=(cardH-boxH)/2;
+    if(!tr) return {cw:boxW*100/pxW, ch:boxH*100/pxH, cx:oxPx*100/pxW, cy:oyPx*100/pxH};
+    return {cw:tr.w*boxW*100/pxW, ch:tr.h*boxH*100/pxH,
+            cx:(oxPx+tr.x*boxW)*100/pxW, cy:(oyPx+tr.y*boxH)*100/pxH};
+  };
+  const clampPct=v=>Math.max(ITEM_MIN_PCT,Math.min(ITEM_MAX_PCT,v));
+  if(!trim){
+    // صورة عادية تملأ البطاقة: نسبة البطاقة = نسبة الصورة (لا قص ولا تمدد)
+    const ratio=visual*layerRatio;
     if(!(ratio>0)) return;
-    const area=item.w*item.h;                                           // keep the footprint it was dropped with
     let nh=Math.sqrt(area/ratio), nw=nh*ratio;
-    nw=Math.max(ITEM_MIN_PCT,Math.min(ITEM_MAX_PCT,nw)); nh=nw/ratio;
-    nh=Math.max(ITEM_MIN_PCT,Math.min(ITEM_MAX_PCT,nh)); nw=nh*ratio;
+    nw=clampPct(nw); nh=nw/ratio;
+    nh=clampPct(nh); nw=nh*ratio;
     if(item.x+nw>100) item.x=Math.max(0,100-nw);
     if(item.y+nh>100) item.y=Math.max(0,100-nh);
     item.w=nw; item.h=nh;
-    saveState(); if(currentUnitId) renderItemsLayer();
-  };
-  img.src=src;
+  }else{
+    // صورة منزوعة الخلفية: نقيس «المادة الظاهرة» نفسها (لا الإطار الشفاف حولها)،
+    // ثم نختار أصغر بطاقة تُظهرها بهذا الحجم — فما يتبقى حولها شفاف تماماً، لا أبيض فيه.
+    const g0=geom(item.w,item.h,trim);
+    const c0={x:item.x+g0.cx, y:item.y+g0.cy, w:Math.max(g0.cw,1e-4), h:Math.max(g0.ch,1e-4)};
+    // 1) المقاس المستهدف للمادة الظاهرة: نفس «بصمة» البطاقة التي أُسقطت،
+    //    لكن بنسبتها الحقيقية (بلا تشويه) — تُقاس بالبكسل لا بنِسَب الجرار
+    // نسبة المادة الظاهرة بالبكسل = نسبة قصاصتها داخل الصورة × نسبة الصورة بالبكسل
+    const cAspect=(trim.w/trim.h)*visual;
+    const dropAreaPx=item.w*item.h*(pxW*pxH/10000);
+    let cwPx=Math.sqrt(dropAreaPx*cAspect), chPx=cwPx/cAspect;
+    // 2) حد أدنى: تبقى المادة مقروءة بالعين وقابلة للمس/السحب
+    //    (الحد الأدنى نسبة من الجرار نفسه، فيصغر ويكبر معه تلقائياً)
+    const grow=Math.max(1, ITEM_MIN_PCT/(cwPx*100/pxW), ITEM_MIN_PCT/(chPx*100/pxH));
+    cwPx*=grow; chPx*=grow;
+    // 3) مقاس البطاقة = مقاس المادة الظاهرة مقسوماً على الجزء الذي تشغله من
+    //    الصورة على كل محور. عندها تكون نسبة البطاقة بالبكسل = نسبة الصورة
+    //    نفسها، فيعرضها object-fit:contain بحجم البطاقة كاملةً وتلامس المادة
+    //    حوافها من كل جهة: لا يبقى حولها أي هامش — لا أبيض (أُزيل من الصورة)
+    //    ولا فراغ شفاف — وبلا أي مطّ أو تشويه في شكل المادة.
+    let nw=cwPx/trim.w*100/pxW, nh=chPx/trim.h*100/pxH;
+    // 4) الحدود القصوى: لا تتجاوز الجرار
+    if(nw>ITEM_MAX_PCT||nh>ITEM_MAX_PCT){
+      const f=Math.min(ITEM_MAX_PCT/nw, ITEM_MAX_PCT/nh);
+      nw*=f; nh*=f; cwPx*=f; chPx*=f;
+    }
+    //    ولو ضغطها الحد الأقصى تحت الحد الأدنى، نوسّع المحور الآخر وحده
+    //    (يبقى الهامش الإضافي شفافاً تماماً فلا يرى المستخدم شيئاً)
+    if(nw<ITEM_MIN_PCT){ const f=ITEM_MIN_PCT/nw; nw*=f; cwPx*=f; }
+    if(nh<ITEM_MIN_PCT){ const f=ITEM_MIN_PCT/nh; nh*=f; chPx*=f; }
+    const tcw=cwPx*100/pxW, tch=chPx*100/pxH;
+    const g=geom(nw,nh,trim);
+    item.w=nw; item.h=nh;
+    // نُثبّت المادة في مكانها (بلا قفزة) ونُبقيها داخل حدود الجرار
+    item.x=Math.max(0,Math.min(100-nw,c0.x+(tcw-g.cw)/2-g.cx));
+    item.y=Math.max(0,Math.min(100-nh,c0.y+(tch-g.ch)/2-g.cy));
+  }
+  saveState(); if(currentUnitId) renderItemsLayer();
+}
+/* #trim=… داخل رابط الصورة: إحداثيات المادة الظاهرة (نسب من الصورة الأصلية) */
+function roundTrim(t){
+  const r=v=>Math.round(v*1000)/1000;
+  return {x:r(t.x),y:r(t.y),w:r(t.w),h:r(t.h)};
+}
+function trimText(t){ return t.x+','+t.y+','+t.w+','+t.h; }
+function setTrimMeta(src,t){
+  if(typeof src!=='string'||!src) return src;
+  const base=src.split('#')[0];
+  return t?base+'#trim='+trimText(t):base;
 }
 function startDrag(e,item,el){ e.preventDefault(); const layer=document.getElementById('itemsLayer'); const rect=layer.getBoundingClientRect(); const startX=e.clientX,startY=e.clientY,origX=item.x,origY=item.y; dragState={item,el,rect,startX,startY,origX,origY}; document.addEventListener('pointermove',onDragMove); document.addEventListener('pointerup',onDragEnd); if(el.setPointerCapture){ try{ el.setPointerCapture(e.pointerId); }catch(_){} } }
 function onDragMove(e){ if(!dragState) return; const {item,el,rect,startX,startY,origX,origY}=dragState; const dx=((e.clientX-startX)/rect.width)*100,dy=((e.clientY-startY)/rect.height)*100; let nx=origX+dx,ny=origY+dy; nx=Math.max(0,Math.min(100-item.w,nx)); ny=Math.max(0,Math.min(100-item.h,ny)); item.x=nx; item.y=ny; el.style.left=nx+'%'; el.style.top=ny+'%'; }
@@ -820,9 +920,18 @@ function saveMaterial(){
   document.getElementById('matEditId').value=''; document.getElementById('matName').value=''; document.getElementById('matExpiry').value=''; tempMatImage=''; document.getElementById('matImagePreview').src=''; document.getElementById('matImageUpload').classList.remove('has-image'); document.getElementById('btnRemoveMatImage').style.display='none'; saveState(); renderMaterialsList(); renderCatalogList(); if(refitCatalogId) refitItemsForCatalog(refitCatalogId);
   toast((editId?'✅ تم تعديل المادة: ':'✅ تم إضافة المادة: ')+name,'success');
 }
-function handleMatImageUpload(file){
+async function handleMatImageUpload(file){
   if(!file) return; if(file.size>5*1024*1024){ alert('حجم الصورة كبير'); return; }
-  const reader=new FileReader(); reader.onload=e=>{ const img=new Image(); img.onload=()=>{ const canvas=document.createElement('canvas'); const max=400; let w=img.width,h=img.height; if(w>max||h>max){ if(w>h){ h=h*(max/w); w=max; } else { w=w*(max/h); h=max; } } canvas.width=w; canvas.height=h; const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h); tempMatImage=canvas.toDataURL('image/jpeg',0.8); document.getElementById('matImagePreview').src=tempMatImage; document.getElementById('matImageUpload').classList.add('has-image'); document.getElementById('btnRemoveMatImage').style.display='inline-flex'; }; img.src=e.target.result; }; reader.readAsDataURL(file);
+  // تُعالَج الصورة تلقائياً: تُزال الحواف/الخلفية البيضاء وتُقصّ الفراغات → تظهر المادة داخل الجرار بلا أي إطار
+  try{
+    const url=await processMaterialImage(file,400,true);
+    if(!url) return;
+    tempMatImage=url;
+    document.getElementById('matImagePreview').src=tempMatImage;
+    document.getElementById('matImageUpload').classList.add('has-image');
+    document.getElementById('btnRemoveMatImage').style.display='inline-flex';
+    toast('🖼️ تم تجهيز الصورة: أُزيلت الحواف البيضاء لتظهر المادة داخل الجرار بلا إطار','success');
+  }catch(err){ alert('تعذر معالجة الصورة: '+(err&&err.message?err.message:err)); }
 }
 function renderSuppliersList(){
   const list=document.getElementById('suppliersList'); const count=document.getElementById('supCount'); count.textContent=state.suppliers.length; list.innerHTML='';
@@ -861,9 +970,15 @@ function renderItemEditPreview(cat){
   else{ preview.innerHTML='<span class="no-image">لا توجد صورة</span>'; }
   const rm=document.getElementById('btnRemoveItemImage'); if(rm) rm.style.display=tempItemEditImage?'inline-flex':'none';
 }
-function handleItemEditImageUpload(file){
+async function handleItemEditImageUpload(file){
   if(!file) return; if(file.size>5*1024*1024){ alert('حجم الصورة كبير'); return; }
-  const reader=new FileReader(); reader.onload=e=>{ const img=new Image(); img.onload=()=>{ const canvas=document.createElement('canvas'); const max=400; let w=img.width,h=img.height; if(w>max||h>max){ if(w>h){ h=h*(max/w); w=max; } else { w=w*(max/h); h=max; } } canvas.width=w; canvas.height=h; const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h); tempItemEditImage=canvas.toDataURL('image/jpeg',0.8); renderItemEditPreview(null); }; img.src=e.target.result; }; reader.readAsDataURL(file);
+  // نفس المعالجة: بلا حواف بيضاء، وتُعاد هندسة البطاقة داخل الجرار لتناسب حجم المادة الحقيقي
+  try{
+    const url=await processMaterialImage(file,400,true);
+    if(!url) return;
+    tempItemEditImage=url; renderItemEditPreview(null);
+    toast('🖼️ تم تجهيز الصورة بلا حواف بيضاء — اضغط 💾 حفظ لتطبيقها داخل الجرار','success');
+  }catch(err){ alert('تعذر معالجة الصورة: '+(err&&err.message?err.message:err)); }
 }
 
 function openReport(){
@@ -1165,6 +1280,176 @@ function compressImageFile(file,maxDim,quality){
     reader.onerror=()=>reject(new Error('تعذر قراءة الملف'));
     reader.readAsDataURL(file);
   });
+}
+/* ===================== 🖼️ تجهيز صورة المادة (بلا حواف بيضاء) =====================
+   الهدف: عندما توضع المادة داخل الجرار تظهر الصورة بدون أي حواف أو إطار أبيض.
+   1) processMaterialImage : تصغير الصورة + إزالة الخلفية البيضاء/الفاتحة من الحواف
+      (فيضان من أطراف الصورة فقط — لا يلمس داخل المادة) ثم قصّ الفراغ الشفاف.
+   2) النتيجة PNG شفاف، ويُخزَّن معها «قصاصة» (#trim=x,y,w,h) حتى تُقاس البطاقة
+      بحجم المادة الظاهرة فعلاً داخل الجرار.
+   3) إذا تبيّن أن الصورة ليست على خلفية فاتحة (أو فشلت المعالجة) نرجع لصورة JPEG
+      عادية، وتكفل الـ CSS أن البطاقة نفسها شفافة تماماً فلا يظهر أي إطار. */
+function _bgToneDiff(a,b){ return Math.max(Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1]),Math.abs(a[2]-b[2])); }
+function _bgToneDist(a,b){ return Math.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2+(a[2]-b[2])**2); }
+function _bgIsLightish(t){ return Math.max(t[0],t[1],t[2])>=104 && (Math.max(t[0],t[1],t[2])-Math.min(t[0],t[1],t[2]))<=76; }
+function _bgGetCtx(w,h){
+  const canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+  const ctx=canvas.getContext('2d',{willReadFrequently:true}); if(!ctx||typeof ctx.getImageData!=='function') return null;
+  return {canvas,ctx};
+}
+function removeWhiteBackground(img,w,h,tol){
+  const T=(tol==null?40:tol);
+  const g=_bgGetCtx(w,h); if(!g) return null;
+  const ctx=g.ctx; ctx.drawImage(img,0,0,w,h);
+  let data; try{ data=new Uint8ClampedArray(ctx.getImageData(0,0,w,h).data); }catch(_){ return null; }  // نسخة مملوكة لنا (الذاكرة الأصلية قد تتحرر)
+  const at=(x,y)=>{ const i=(y*w+x)*4; return [data[i],data[i+1],data[i+2]]; };
+  // 1) ما هو لون الخلفية؟ نأخذ أكثر درجة فاتحة تكراراً على أطراف الصورة فقط
+  const border=[];
+  for(let x=0;x<w;x++){ border.push([x,0],[x,h-1]); }
+  for(let y=0;y<h;y++){ border.push([0,y],[w-1,y]); }
+  const buckets=new Map();
+  border.forEach(([x,y])=>{ const t=at(x,y); if(!_bgIsLightish(t)) return; const k=(t[0]>>3)+','+(t[1]>>3)+','+(t[2]>>3); const b=buckets.get(k)||{n:0,sum:[0,0,0]}; b.n++; b.sum[0]+=t[0]; b.sum[1]+=t[1]; b.sum[2]+=t[2]; buckets.set(k,b); });
+  let best=null; buckets.forEach(b=>{ if(!best||b.n>best.n) best=b; });
+  if(!best||best.n<Math.max(10,border.length*0.06)) return null;      // لا توجد خلفية فاتحة واضحة
+  const bg=[Math.round(best.sum[0]/best.n),Math.round(best.sum[1]/best.n),Math.round(best.sum[2]/best.n)];
+  const notBg=border.filter(([x,y])=>_bgToneDiff(at(x,y),bg)>T).length;
+  if(notBg/border.length>0.15) return null;                            // المادة تلامس الحواف → لا نجازف
+  const n=w*h;
+  const diffArr=new Float32Array(n);
+  for(let p=0;p<n;p++){ const i=p*4; diffArr[p]=_bgToneDiff([data[i],data[i+1],data[i+2]],bg); }
+  // 2) قناع البكسلات الشبيهة بالخلفية + «إغلاق مورفولوجي» (توسيع ثم تآكل) لردم الفواصل
+  //    الدقيقة بين مناطق الخلفية، ثم حواجز عند الحواف القوية حتى لا يتسرّب الفيضان إلى
+  //    داخل المادة (مثلاً ملصق فاتح اللون على العلبة لا يُحذف)
+  let mask=new Uint8Array(n);
+  for(let p=0;p<n;p++) if(data[p*4+3]>0&&diffArr[p]<=T) mask[p]=1;
+  const barrier=new Uint8Array(n);
+  for(let p=0;p<n;p++) if(diffArr[p]>Math.max(64,T+26)) barrier[p]=1;
+  const R=2;
+  const dil=new Uint8Array(n);
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){
+    const p=y*w+x; if(mask[p]){ dil[p]=1; continue; }
+    let hit=0;
+    for(let dy=-R;dy<=R&&!hit;dy++){ const yy=y+dy; if(yy<0||yy>=h) continue;
+      for(let dx=-R;dx<=R;dx++){ const xx=x+dx; if(xx<0||xx>=w) continue; if(mask[yy*w+xx]){ hit=1; break; } } }
+    dil[p]=hit;
+  }
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){
+    const p=y*w+x; if(!dil[p]) continue;
+    let full=1;
+    for(let dy=-R;dy<=R&&full;dy++){ const yy=y+dy; if(yy<0||yy>=h) continue;
+      for(let dx=-R;dx<=R;dx++){ const xx=x+dx; if(xx<0||xx>=w) continue; if(!dil[yy*w+xx]){ full=0; break; } } }
+    if(full) mask[p]=1;
+  }
+  // 3) فيضان من حواف الصورة فقط، يتوقف عند الحواجز
+  const seen=new Uint8Array(n); const stack=[]; let removed=0;
+  border.forEach(([x,y])=>{ const p=y*w+x; if(!seen[p]&&mask[p]&&!barrier[p]){ seen[p]=1; stack.push(p); } });
+  while(stack.length){
+    const p=stack.pop(); const x=p%w, y=(p-x)/w; removed++;
+    if(x>0){ const q=p-1; if(!seen[q]&&mask[q]&&!barrier[q]){ seen[q]=1; stack.push(q); } }
+    if(x<w-1){ const q=p+1; if(!seen[q]&&mask[q]&&!barrier[q]){ seen[q]=1; stack.push(q); } }
+    if(y>0){ const q=p-w; if(!seen[q]&&mask[q]&&!barrier[q]){ seen[q]=1; stack.push(q); } }
+    if(y<h-1){ const q=p+w; if(!seen[q]&&mask[q]&&!barrier[q]){ seen[q]=1; stack.push(q); } }
+  }
+  if(removed<10||removed>n*0.965) return null;                         // لم نجد خلفية، أو اختفت الصورة كلها
+  // 4) تنعيم الحافة: تدرّج شفافية في «المنطقة الانتقالية» فقط (أبعد من حد الخلفية وأقرب
+  //    من حد الفيضان) + تفتيح تلك البكسلات نحو لون الخلفية حتى لا تبقى هالة رمادية/بيضاء.
+  //    مهم: أي بكسل لم يصله الفيضان يبقى كما هو — حتى لو كان فاتحاً جداً (ملصق أبيض على علبة).
+  for(let p=0;p<n;p++){
+    if(seen[p]){ data[p*4+3]=0; continue; }
+    const i=p*4; const d=diffArr[p];
+    if(d>T&&d<T+26){
+      const t=[data[i],data[i+1],data[i+2]];
+      const f=(d-T)/26;                                                  // 0 عند حد الخلفية → 1 خارجها
+      data[i+3]=Math.round(data[i+3]*f);
+      const k=1-f*0.5;
+      data[i]=Math.min(255,Math.round(t[0]*k+bg[0]*(1-k)));
+      data[i+1]=Math.min(255,Math.round(t[1]*k+bg[1]*(1-k)));
+      data[i+2]=Math.min(255,Math.round(t[2]*k+bg[2]*(1-k)));
+    }
+  }
+  let out; try{ ctx.putImageData(new ImageData(new Uint8ClampedArray(data),w,h),0,0); }
+  catch(_){ try{ const id=ctx.createImageData(w,h); id.data.set(data); ctx.putImageData(id,0,0); }catch(_2){ return null; } }
+  try{ out=g.canvas.toDataURL('image/png'); }catch(_){ return null; }
+  return (out&&out.length>32)?out:null;
+}
+function trimTransparentMargins(pngUrl,w,h,maxDim){
+  /* نقصّ الفراغ الشفاف حول المادة ونُخزّن إحداثيات القص (#trim=) داخل الرابط:
+     الصورة تصبح «المادة فقط» → البطاقة داخل الجرار تساوي المادة تماماً،
+     فلا يبقى أي هامش (أبيض أو شفاف) حولها. */
+  return new Promise(resolve=>{
+    let done=false; const finish=v=>{ if(!done){ done=true; resolve(v); } };
+    const im=new Image();
+    im.onload=()=>{
+      try{
+        const W=im.naturalWidth||w, H=im.naturalHeight||h;
+        const g=_bgGetCtx(W,H); if(!g) return finish(null);
+        g.ctx.drawImage(im,0,0);
+        let d; try{ d=new Uint8ClampedArray(g.ctx.getImageData(0,0,W,H).data); }catch(_){ return finish(null); }
+        let x0=W,y0=H,x1=-1,y1=-1;
+        for(let y=0;y<H;y++) for(let x=0;x<W;x++){ if(d[(y*W+x)*4+3]>8){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } }
+        if(x1<x0||y1<y0) return finish(null);                              // الصورة شفافة كلها → فشل
+        const cw=x1-x0+1, ch=y1-y0+1;
+        if(cw<4||ch<4||cw*ch<(W*H)*0.004) return finish(null);             // قص مبالغ فيه → أبقِ الأصل
+        if(cw>=W*0.995&&ch>=H*0.995) return finish(pngUrl);                // لا يوجد فراغ يستحق القص
+        let tw=cw, th=ch; const md=maxDim||360;
+        if(tw>md||th>md){ if(tw>th){ th=Math.max(1,Math.round(th*(md/tw))); tw=md; } else { tw=Math.max(1,Math.round(tw*(md/th))); th=md; } }
+        const g2=_bgGetCtx(tw,th); if(!g2) return finish(null);
+        g2.ctx.drawImage(im,x0,y0,cw,ch,0,0,tw,th);
+        let url; try{ url=g2.canvas.toDataURL('image/png'); }catch(_){ return finish(null); }
+        if(!url||url.length<32) return finish(null);
+        const meta=(Math.round(x0/W*1000)/1000)+','+(Math.round(y0/H*1000)/1000)+','+(Math.round(cw/W*1000)/1000)+','+(Math.round(ch/H*1000)/1000);
+        // الصورة المخزّنة هي «المادة نفسها» مقصوصة بإحكام: محتواها الظاهر = الصورة
+        // كلها. لذلك قصاصتها داخل إطارها المخزّن هي 0,0,1,1 (لا هامش شفاف حولها)،
+        // وبهذا تُقاس البطاقة على المادة تماماً فلا يبقى حولها أي فراغ.
+        finish(url+'#trim=0,0,1,1');
+      }catch(_){ finish(null); }
+    };
+    im.onerror=()=>finish(null);
+    im.src=pngUrl;
+  });
+}
+function processMaterialImage(file,maxDim,removeBg){
+  const MAX=maxDim||400;
+  return new Promise((resolve,reject)=>{
+    if(!file) return reject(new Error('no file'));
+    if(file.size>5*1024*1024){ alert('حجم الصورة كبير'); return reject(new Error('big file')); }
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('تعذر قراءة الملف'));
+    reader.onload=e=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('تعذر قراءة الصورة'));
+      img.onload=async ()=>{
+        let w=img.width||img.naturalWidth||0, h=img.height||img.naturalHeight||0;
+        try{
+          if(!w||!h) return reject(new Error('صورة غير صالحة'));
+          if(w>MAX||h>MAX){ if(w>h){ h=Math.round(h*(MAX/w)); w=MAX; } else { w=Math.round(w*(MAX/h)); h=MAX; } }
+          const fallback=()=>{ const g=_bgGetCtx(w,h); if(!g) return resolve(''); g.ctx.drawImage(img,0,0,w,h); let u=''; try{ u=g.canvas.toDataURL('image/jpeg',0.82); }catch(_){} resolve(u); };
+          if(removeBg===false) return fallback();
+          const png=removeWhiteBackground(img,w,h);
+          if(!png) return fallback();                                    // خلفية غير فاتحة → صورة عادية
+          const cropped=await trimTransparentMargins(png,w,h,360);
+          if(!cropped) return resolve(png);
+          const b64=(cropped.split(',')[1]||'').split('#')[0].length;
+          if(b64*0.75>420*1024) return resolve(png);                       // PNG كبير جداً → أبقِ النسخة الكاملة
+          resolve(cropped);
+        }catch(_){
+          const g=_bgGetCtx(w,h);
+          if(g){ try{ g.ctx.drawImage(img,0,0,w,h); return resolve(g.canvas.toDataURL('image/jpeg',0.82)); }catch(_2){} }
+          resolve('');
+        }
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+/* يقرأ «قصاصة» المادة الظاهرة من رابط الصورة (#trim=) — null إذا كانت الصورة عادية */
+function getImageTrimMeta(src){
+  if(typeof src!=='string') return null;
+  const m=/#trim=([\d.]+),([\d.]+),([\d.]+),([\d.]+)/.exec(src); if(!m) return null;
+  const t={x:+m[1],y:+m[2],w:+m[3],h:+m[4]};
+  if(!(t.w>0&&t.h>0&&t.w<=1&&t.h<=1&&t.x>=0&&t.y>=0&&t.x+t.w<=1.001&&t.y+t.h<=1.001)) return null;
+  return t;
 }
 async function hashPassword(password,salt){
   const input=(salt||'')+'::'+password;
