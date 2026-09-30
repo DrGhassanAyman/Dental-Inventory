@@ -209,6 +209,51 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 .local-chips button{border:1px solid var(--border);background:#f8fafc;border-radius:20px;padding:5px 11px;font-size:11px;cursor:pointer;font-weight:700}
 .local-chips button:hover{border-color:var(--primary);background:#eff6ff}
 .auth-features{margin-top:14px;background:#f8fafc;border:1px solid var(--border);border-radius:11px;padding:10px 14px;font-size:10.5px;color:#475569;line-height:1.9}
+/* ===== Password reset + owner panel ===== */
+.auth-links{display:flex;justify-content:space-between;gap:8px;margin-top:12px;flex-wrap:wrap}
+.auth-links button{border:none;background:none;color:var(--primary);font-size:11.5px;font-weight:800;cursor:pointer;padding:4px 2px;text-decoration:underline dotted}
+.auth-links button:hover{color:var(--primary-dark)}
+.auth-links button.owner{color:#0f766e}
+.auth-form-title{font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.auth-note{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:11px;padding:9px 12px;border-radius:9px;margin-top:10px;line-height:1.7}
+.auth-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.auth-note.err{background:#fee2e2;border-color:#fecaca;color:#991b1b}
+.auth-back{border:none;background:#f1f5f9;color:#475569;font-size:11px;font-weight:800;cursor:pointer;padding:7px 12px;border-radius:8px;margin-top:10px;width:100%}
+.auth-back:hover{background:#e2e8f0}
+.pw-wrap{position:relative}
+.pw-wrap input{width:100%;padding-left:38px!important}
+.pw-wrap .pw-eye{position:absolute;left:8px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;font-size:14px;opacity:.6}
+#ownerOverlay{position:fixed;inset:0;z-index:600;background:linear-gradient(160deg,#0f172a 0%,#134e4a 100%);display:flex;flex-direction:column;overflow:hidden}
+#ownerOverlay.hidden{display:none}
+.owner-top{background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.12);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#fff}
+.owner-top h2{font-size:15px;display:flex;align-items:center;gap:8px}
+.owner-top .sub{font-size:10.5px;opacity:.72;margin-top:2px}
+.owner-body{flex:1;overflow:auto;padding:14px;max-width:1180px;width:100%;margin:0 auto}
+.owner-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:12px}
+.owner-stat{background:rgba(255,255,255,.97);border-radius:12px;padding:11px 14px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.owner-stat b{font-size:20px;display:block;color:var(--text)}
+.owner-stat span{font-size:10.5px;color:var(--text-light);font-weight:700}
+.owner-toolbar{background:rgba(255,255,255,.97);border-radius:12px;padding:10px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.owner-toolbar input,.owner-toolbar select{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-family:inherit}
+.owner-toolbar input{flex:1;min-width:170px}
+.owner-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:11px}
+.owner-card{background:#fff;border-radius:13px;padding:13px;box-shadow:0 6px 20px rgba(0,0,0,.16);border-right:4px solid var(--primary);position:relative}
+.owner-card.supplier{border-right-color:var(--whatsapp)}
+.owner-card h4{font-size:13px;display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.owner-card .u{font-size:10.5px;color:var(--text-light);direction:ltr;text-align:right;font-family:monospace}
+.owner-card .rows{margin:9px 0;font-size:11px;color:#334155;line-height:1.9;word-break:break-word}
+.owner-card .rows b{color:var(--text-light);font-weight:700}
+.owner-card .tag{display:inline-block;background:#f1f5f9;border:1px solid var(--border);border-radius:20px;padding:2px 9px;font-size:9.5px;font-weight:800;color:#475569;margin:0 0 0 4px;direction:ltr}
+.owner-card .tag.clinic{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+.owner-card .tag.supplier{background:#ecfdf5;border-color:#a7f3d0;color:#047857}
+.owner-card .tag.live{background:#dcfce7;border-color:#bbf7d0;color:#166534}
+.owner-card .tag.mail-ok{background:#ecfdf5;border-color:#a7f3d0;color:#047857}
+.owner-card .tag.mail-off{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.owner-card .btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.owner-empty{background:rgba(255,255,255,.95);border-radius:13px;padding:26px;text-align:center;color:var(--text-light);font-size:12.5px}
+.link-box{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:10px 12px;font-family:monospace;font-size:11px;direction:ltr;text-align:left;word-break:break-all;line-height:1.6;margin:8px 0}
+.owner-note{font-size:11px;color:var(--text-light);line-height:1.8;margin-top:6px}
+@media(max-width:600px){.owner-list{grid-template-columns:1fr}.auth-card{padding:20px 16px}}
 .designer-layout{display:grid;grid-template-columns:1fr 300px;gap:0;flex:1;min-height:0;overflow:hidden}
 .designer-canvas-area{background:#0f172a;padding:12px;overflow:auto;display:flex;align-items:center;justify-content:center;position:relative}
 .designer-canvas-wrap{position:relative;display:inline-block;max-width:100%;box-shadow:0 12px 40px rgba(0,0,0,.5);border-radius:8px;overflow:hidden;line-height:0}
@@ -454,10 +499,102 @@ body.clinic-portal .portal-wrapper{display:none}
       <input type="hidden" id="regAccountType" value="clinic">
       <div class="form-group"><label id="regClinicNameLabel">اسم العيادة *</label><input id="regClinicName" placeholder="مثال: عيادة الابتسامة - عمان"></div>
       <div class="form-row"><div class="form-group"><label>اسم المستخدم *</label><input id="regUsername" dir="ltr" placeholder="حروف إنجليزية وأرقام"></div><div class="form-group"><label>رقم الهاتف</label><input id="regPhone" dir="ltr" placeholder="07XXXXXXXX"></div></div>
+      <div class="form-group"><label>البريد الإلكتروني * (لاستعادة كلمة المرور)</label><input id="regEmail" type="email" dir="ltr" autocomplete="email" placeholder="clinic@example.com"></div>
       <div class="form-row"><div class="form-group"><label>كلمة المرور * (6+ أحرف)</label><input id="regPassword" type="password" autocomplete="new-password"></div><div class="form-group"><label>تأكيد كلمة المرور *</label><input id="regPassword2" type="password" autocomplete="new-password"></div></div>
       <button type="submit" class="btn btn-whatsapp" style="width:100%;justify-content:center;padding:11px" id="regSubmitBtn">➕ إنشاء حساب العيادة</button>
     </form>
+    <div class="auth-links">
+      <button type="button" id="btnForgotPass">🔓 نسيت كلمة المرور؟</button>
+      <button type="button" id="btnOwnerPanel" class="owner">🛡️ دخول المالك</button>
+    </div>
+
+    <!-- استعادة كلمة المرور: طلب رابط مؤقت بالبريد -->
+    <form id="forgotForm" style="display:none">
+      <div class="auth-form-title">🔓 استعادة كلمة المرور</div>
+      <p class="sub" style="text-align:right">أدخل اسم المستخدم أو البريد الإلكتروني المسجّل، وسنرسل رابطاً مؤقتاً لتعيين كلمة مرور جديدة.</p>
+      <div class="form-group"><label>اسم المستخدم أو البريد الإلكتروني</label><input id="forgotIdentifier" dir="ltr" autocomplete="username" placeholder="clinic_aman أو name@example.com"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px" id="forgotSubmitBtn">📧 إرسال رابط الاستعادة</button>
+      <div id="forgotNote" class="auth-note" style="display:none"></div>
+      <button type="button" class="auth-back" id="btnForgotBack">→ رجوع لتسجيل الدخول</button>
+    </form>
+
+    <!-- تعيين كلمة مرور جديدة (يُفتح من رابط البريد ?reset=TOKEN) -->
+    <form id="resetForm" style="display:none">
+      <div class="auth-form-title">🔑 تعيين كلمة مرور جديدة</div>
+      <p class="sub" style="text-align:right" id="resetWho"></p>
+      <div id="resetFields">
+        <div class="form-group"><label>كلمة المرور الجديدة * (6+ أحرف)</label><div class="pw-wrap"><input id="resetPass" type="password" autocomplete="new-password"><button type="button" class="pw-eye" id="resetEye">👁️</button></div></div>
+        <div class="form-group"><label>تأكيد كلمة المرور *</label><input id="resetPass2" type="password" autocomplete="new-password"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px" id="resetSubmitBtn">💾 حفظ كلمة المرور الجديدة</button>
+      </div>
+      <div id="resetNote" class="auth-note" style="display:none"></div>
+      <button type="button" class="auth-back" id="btnResetBack">→ رجوع لتسجيل الدخول</button>
+    </form>
+
+    <!-- دخول المالك (لوحة الإدارة) -->
+    <form id="ownerLoginForm" style="display:none">
+      <div class="auth-form-title">🛡️ لوحة المالك</div>
+      <p class="sub" style="text-align:right">دخول مالك الموقع لعرض الحسابات المسجّلة وإنشاء روابط تغيير كلمة المرور.</p>
+      <div class="form-group"><label>اسم المستخدم</label><input id="ownerUser" dir="ltr" autocomplete="username" placeholder="GhassanAdmin"></div>
+      <div class="form-group"><label>كلمة المرور</label><input id="ownerPass" type="password" autocomplete="current-password"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px" id="ownerSubmitBtn">🛡️ دخول لوحة المالك</button>
+      <div id="ownerNote" class="auth-note" style="display:none"></div>
+      <button type="button" class="auth-back" id="btnOwnerBack">→ رجوع</button>
+    </form>
     <div class="auth-features" id="authFeatures">✅ كل عيادة لها بيانات مستقلة تماماً<br>✅ ارفع صورة مخزنك وحدد الجرارات والخزائن عليها<br>✅ رسائل واتساب تلقائية للموردين عند الحد الأدنى</div>
+  </div>
+</div>
+
+<!-- ===== Owner (admin) panel ===== -->
+<div id="ownerOverlay" class="hidden">
+  <div class="owner-top">
+    <div>
+      <h2>🛡️ لوحة المالك — الحسابات المسجّلة</h2>
+      <div class="sub" id="ownerTopSub">عيادات وموردون • إنشاء روابط تغيير كلمة المرور</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-light btn-sm" id="btnOwnerRefresh">🔄 تحديث</button>
+      <button class="btn btn-light btn-sm" id="btnOwnerLogout">🚪 خروج</button>
+    </div>
+  </div>
+  <div class="owner-body">
+    <div class="owner-stats" id="ownerStats"></div>
+    <div id="ownerMailWarn" class="auth-note warn" style="display:none"></div>
+    <div class="owner-toolbar">
+      <input id="ownerSearch" placeholder="🔍 ابحث بالاسم أو اسم المستخدم أو البريد…">
+      <select id="ownerTypeFilter"><option value="">كل الأنواع</option><option value="clinic">🏥 عيادات</option><option value="supplier">🏢 شركات موردة</option></select>
+      <span id="ownerCount" class="hint"></span>
+    </div>
+    <div class="owner-list" id="ownerList"></div>
+  </div>
+
+  <div id="ownerLinkModal" class="modal hidden" style="z-index:650">
+    <div class="modal-content" style="max-width:560px">
+      <div class="modal-header"><h3>🔑 رابط تغيير كلمة المرور</h3><button class="btn btn-light btn-sm" id="btnOwnerLinkClose">✕</button></div>
+      <div class="modal-body">
+        <div id="ownerLinkFor" class="owner-note" style="margin:0 0 6px;font-weight:800;color:var(--text)"></div>
+        <div class="link-box" id="ownerLinkUrl"></div>
+        <div class="owner-note" id="ownerLinkExpiry"></div>
+        <div class="auth-note" id="ownerLinkMail" style="display:none"></div>
+        <div class="owner-toolbar" style="box-shadow:none;padding:0;background:none;margin-top:12px">
+          <label class="owner-note" style="display:flex;align-items:center;gap:6px;margin:0">⏱️ صلاحية الرابط
+            <select id="ownerLinkMinutes" style="border:1px solid var(--border);border-radius:8px;padding:5px 8px;font-size:11px">
+              <option value="15">15 دقيقة</option>
+              <option value="60" selected>ساعة</option>
+              <option value="360">6 ساعات</option>
+              <option value="1440">24 ساعة</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-light btn-sm" id="btnOwnerLinkNew">♻️ رابط جديد بالصلاحية المحددة</button>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-light btn-sm" id="btnOwnerCopyLink">📋 نسخ الرابط</button>
+          <button class="btn btn-primary btn-sm" id="btnOwnerOpenLink">🔗 فتح</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -494,7 +631,7 @@ body.clinic-portal .portal-wrapper{display:none}
     <div class="modal-body">
       <div class="form-group"><label>اسم العيادة</label><input id="accClinicName"></div>
       <div class="form-row"><div class="form-group"><label>اسم المستخدم</label><input id="accUsername" disabled style="background:#f1f5f9" dir="ltr"></div><div class="form-group"><label>رقم الهاتف</label><input id="accPhone" dir="ltr"></div></div>
-      <div class="form-group"><label>العنوان</label><input id="accAddress"></div>
+      <div class="form-row"><div class="form-group"><label>البريد الإلكتروني (لاستعادة كلمة المرور)</label><input id="accEmail" type="email" dir="ltr" placeholder="name@example.com"></div><div class="form-group"><label>العنوان</label><input id="accAddress"></div></div>
       <div style="display:flex;gap:6px;margin-bottom:6px"><button class="btn btn-primary btn-sm" id="btnSaveAccount" style="flex:1">💾 حفظ البيانات</button></div>
       <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
       <h4 style="font-size:12px;margin-bottom:8px">🔑 تغيير كلمة المرور</h4>
@@ -2046,9 +2183,11 @@ async function hashPassword(password,salt){
   try{
     if(window.crypto&&crypto.subtle&&window.isSecureContext!==false){
       const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input));
+      hashPassword.mode='sha256';
       return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
     }
   }catch(e){ /* fallback below */ }
+  hashPassword.mode='fallback';
   let h1=0xdeadbeef,h2=0x41c6ce57;
   const str='salt:'+input+':pepper-dental';
   for(let r=0;r<3;r++){ for(let i=0;i<str.length;i++){ const ch=str.charCodeAt(i); h1=Math.imul(h1^ch,2654435761); h2=Math.imul(h2^ch,1597334677); } }
@@ -2079,6 +2218,13 @@ const LS_SESSION='dental_session_v1';
 function getLocalUsers(){ try{ return JSON.parse(localStorage.getItem(LS_USERS)||'[]'); }catch(e){ return []; } }
 function saveLocalUsers(users){ localStorage.setItem(LS_USERS,JSON.stringify(users)); }
 function validUsername(u){ return /^[a-zA-Z0-9_.-]{3,30}$/.test(u||''); }
+function validEmail(e){ return /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(String(e||'').trim()); }
+function maskEmailLocal(email){
+  const e=String(email||''), at=e.indexOf('@');
+  if(at<1) return '';
+  const n=e.slice(0,at);
+  return (n.length<=2?n[0]:n.slice(0,2))+'•••'+e.slice(at);
+}
 
 /* ---------- Per-clinic storage ---------- */
 function storageKey(){ return currentUser?('dental_inventory_user_'+currentUser.id):'dental_inventory_v5'; }
@@ -2458,16 +2604,20 @@ function openAccount(){
   $('accClinicName').value=currentUser.clinicName||'';
   $('accUsername').value=currentUser.username||'';
   $('accPhone').value=currentUser.phone||'';
+  $('accEmail').value=currentUser.email||'';
   $('accAddress').value=currentUser.address||'';
   $('accCurrentPass').value=''; $('accNewPass').value=''; $('accNewPass2').value='';
   $('accountModal').classList.remove('hidden');
 }
 async function saveAccountInfo(){
-  const name=$('accClinicName').value.trim();
+  const name=$('accClinicName').value.trim(), email=$('accEmail').value.trim().toLowerCase();
   if(!name){ toast('أدخل اسم العيادة','error'); return; }
-  currentUser.clinicName=name; currentUser.phone=$('accPhone').value.trim(); currentUser.address=$('accAddress').value.trim();
-  if(authMode==='local'){ const users=getLocalUsers(); const i=users.findIndex(u=>u.id===currentUser.id); if(i>=0){ users[i].clinicName=name; users[i].phone=currentUser.phone; users[i].address=currentUser.address; saveLocalUsers(users); } }
-  else { try{ await apiFetch('/api/me',{method:'PUT',body:JSON.stringify({clinicName:name,phone:currentUser.phone,address:currentUser.address})}); }catch(err){ toast('❌ '+err.message,'error'); return; } }
+  if(!validEmail(email)){ toast('أدخل بريداً إلكترونياً صالحاً (مطلوب للاستعادة)','error'); return; }
+  currentUser.clinicName=name; currentUser.email=email; currentUser.phone=$('accPhone').value.trim(); currentUser.address=$('accAddress').value.trim();
+  if(authMode==='local'){ const users=getLocalUsers(); const i=users.findIndex(u=>u.id===currentUser.id);
+    if(users.some(x=>x.id!==currentUser.id&&String(x.email||'').toLowerCase()===email)){ toast('هذا البريد مستخدم في حساب آخر على هذا الجهاز','error'); return; }
+    if(i>=0){ users[i].clinicName=name; users[i].email=email; users[i].phone=currentUser.phone; users[i].address=currentUser.address; saveLocalUsers(users); } }
+  else { try{ await apiFetch('/api/me',{method:'PUT',body:JSON.stringify({clinicName:name,email:email,phone:currentUser.phone,address:currentUser.address})}); }catch(err){ toast('❌ '+err.message,'error'); return; } }
   if(!state.clinic) state.clinic={};
   state.clinic.clinicName=name; saveState(); updateClinicBadge();
   toast('✅ تم حفظ بيانات العيادة','success');
@@ -2510,12 +2660,7 @@ function showAuthError(msg){ const e=$('authError'); e.textContent=msg; e.classL
 function showAuthSuccess(msg){ const e=$('authSuccess'); e.textContent=msg; e.classList.add('show'); $('authError').classList.remove('show'); }
 function clearAuthMsg(){ $('authError').classList.remove('show'); $('authSuccess').classList.remove('show'); }
 function switchAuthTab(which){
-  clearAuthMsg();
-  const isLogin=which==='login';
-  $('tabLogin').classList.toggle('active',isLogin);
-  $('tabRegister').classList.toggle('active',!isLogin);
-  $('loginForm').style.display=isLogin?'block':'none';
-  $('registerForm').style.display=isLogin?'none':'block';
+  showAuthView(which==='login'?'loginForm':'registerForm');
 }
 function renderLocalChips(){
   const box=$('localUsersBox'), chips=$('localUsersChips');
@@ -2545,32 +2690,35 @@ async function handleLogin(ev){
       const h=await hashPassword(password,u.salt);
       if(h!==u.passwordHash){ showAuthError('كلمة المرور غير صحيحة'); return; }
       localStorage.setItem(LS_SESSION,u.id);
-      await afterAuthSuccess({id:u.id,clinicName:u.clinicName,username:u.username,phone:u.phone||'',address:u.address||''},false);
+      await afterAuthSuccess({id:u.id,clinicName:u.clinicName,username:u.username,email:u.email||'',phone:u.phone||'',address:u.address||''},false);
     }
   }catch(err){ showAuthError(err.message||'فشل الدخول'); }
 }
 async function handleRegister(ev){
   ev.preventDefault(); clearAuthMsg();
   const clinicName=$('regClinicName').value.trim(), username=$('regUsername').value.trim(), phone=$('regPhone').value.trim();
+  const email=$('regEmail').value.trim().toLowerCase();
   const accountType=$('regAccountType').value||'clinic';
   const p1=$('regPassword').value, p2=$('regPassword2').value;
   if(!clinicName){ showAuthError(accountType==='supplier'?'أدخل اسم الشركة':'أدخل اسم العيادة'); return; }
   if(!validUsername(username)){ showAuthError('اسم المستخدم: 3-30 حرف إنجليزي/أرقام (بدون مسافات)'); return; }
+  if(!validEmail(email)){ showAuthError('أدخل بريداً إلكترونياً صالحاً — مطلوب لاستعادة كلمة المرور'); return; }
   if(!p1||p1.length<6){ showAuthError('كلمة المرور 6 أحرف على الأقل'); return; }
   if(p1!==p2){ showAuthError('تأكيد كلمة المرور غير متطابق'); return; }
   try{
     if(authMode==='server'){
-      const r=await apiFetch('/api/register',{method:'POST',body:JSON.stringify({clinicName:clinicName,username:username,password:p1,phone:phone,accountType:accountType})});
+      const r=await apiFetch('/api/register',{method:'POST',body:JSON.stringify({clinicName:clinicName,username:username,email:email,password:p1,phone:phone,accountType:accountType})});
       localStorage.setItem('dental_token_v1',r.token);
       await afterAuthSuccess(r.user,true);
     }else{
       const users=getLocalUsers();
       if(users.some(x=>x.username.toLowerCase()===username.toLowerCase())){ showAuthError('اسم المستخدم مسجل مسبقاً — اختر اسماً آخر'); return; }
+      if(users.some(x=>String(x.email||'').toLowerCase()===email)){ showAuthError('هذا البريد مسجل مسبقاً على هذا الجهاز — استخدم بريداً آخر'); return; }
       const salt=uid('salt');
-      const nu={id:uid(accountType),clinicName:clinicName,username:username,phone:phone,accountType:accountType,salt:salt,passwordHash:await hashPassword(p1,salt),createdAt:new Date().toISOString()};
+      const nu={id:uid(accountType),clinicName:clinicName,username:username,email:email,phone:phone,accountType:accountType,salt:salt,passwordHash:await hashPassword(p1,salt),createdAt:new Date().toISOString()};
       users.push(nu); saveLocalUsers(users);
       localStorage.setItem(LS_SESSION,nu.id);
-      await afterAuthSuccess({id:nu.id,clinicName:clinicName,username:username,phone:phone,accountType:accountType},false);
+      await afterAuthSuccess({id:nu.id,clinicName:clinicName,username:username,email:email,phone:phone,accountType:accountType},false);
       const welcomeMsg=accountType==='supplier'?'🎉 تم إنشاء حساب المورد '+clinicName+' — ابدأ بإضافة منتجاتك':'🎉 تم إنشاء حساب '+clinicName+' — ارفع صورة مخزنك من زر «🎨 مخزني»';
       setTimeout(()=>toast(welcomeMsg,'success',null,null,10000),600);
     }
@@ -2599,11 +2747,344 @@ function doLogout(){
   else localStorage.removeItem(LS_SESSION);
   location.reload();
 }
+/* =====================================================
+   PASSWORD RESET (forgot password · one-time e-mail link)
+   ===================================================== */
+const LS_OWNER_TOKEN='dental_owner_token_v1';
+// الوضع المحلي (بدون خادم): التحقق من المالك يتم داخل المتصفح — الحسابات أصلاً على هذا الجهاز
+const OWNER_LOCAL_USER='ghassanadmin';
+const OWNER_LOCAL_SALT='dental-owner-local';
+// بصمة كلمة مرور المالك لكل طريقة تشفير يستخدمها المتصفح (SHA-256 أو البديل)
+const OWNER_LOCAL_HASH_SHA256='084a47df7127401fdc3cdd18f254c44458853168e2054a890d3cdbb2cd12fb1a';
+const OWNER_LOCAL_HASH_FALLBACK='f_ea5d4d3165e6a';
+const AUTH_VIEWS=['loginForm','registerForm','forgotForm','resetForm','ownerLoginForm'];
+let resetTokenFromUrl='';
+function showAuthView(view){
+  clearAuthMsg();
+  AUTH_VIEWS.forEach(id=>{ const el=$(id); if(el) el.style.display=(id===view?'block':'none'); });
+  const isLogin=view==='loginForm', isRegister=view==='registerForm';
+  $('tabLogin').classList.toggle('active',isLogin);
+  $('tabRegister').classList.toggle('active',isRegister);
+  document.querySelector('.auth-tabs').style.display=(isLogin||isRegister)?'flex':'none';
+  const feat=$('authFeatures'); if(feat) feat.style.display=(view==='loginForm'||view==='registerForm')?'block':'none';
+  document.querySelector('.auth-links').style.display=(view==='loginForm')?'flex':'none';
+}
+function authNote(id,msg,kind){
+  const el=$(id); if(!el) return;
+  if(!msg){ el.style.display='none'; el.textContent=''; return; }
+  el.className='auth-note'+(kind==='warn'?' warn':kind==='err'?' err':'');
+  el.innerHTML=msg; el.style.display='block';
+}
+async function handleForgot(ev){
+  ev.preventDefault(); clearAuthMsg(); authNote('forgotNote','');
+  const identifier=$('forgotIdentifier').value.trim();
+  if(!identifier){ showAuthError('أدخل اسم المستخدم أو البريد الإلكتروني'); return; }
+  if(authMode!=='server'){
+    authNote('forgotNote','💻 الموقع يعمل حالياً <b>بالوضع المحلي</b> (بدون خادم)، والحسابات محفوظة داخل متصفح هذا الجهاز فقط — لا يمكن إرسال بريد من هنا.<br>الحل: من يدير هذا الجهاز يفتح <b>«🛡️ دخول المالك»</b> من شاشة الدخول ويعيّن لك كلمة مرور جديدة فوراً.<br>أما الإرسال التلقائي بالبريد فيحتاج تشغيل الموقع بخادم Node.js (<code dir="ltr">npm start</code>) أو نشره كخدمة خادم.', 'warn');
+    return;
+  }
+  const btn=$('forgotSubmitBtn'); btn.disabled=true; btn.textContent='⏳ جارٍ الإرسال…';
+  try{
+    const r=await apiFetch('/api/forgot-password',{method:'POST',body:JSON.stringify({identifier:identifier})});
+    if(r.delivery==='email'){
+      authNote('forgotNote','📧 أرسلنا رابط إعادة التعيين إلى <b dir="ltr">'+esc(r.maskedEmail||'')+'</b>.<br>افتح الرسالة واضغط الرابط (تحقق أيضاً من مجلد الرسائل غير المرغوبة). الرابط صالح لمدة محدودة ويُستخدم مرة واحدة.');
+    }else{
+      authNote('forgotNote','ℹ️ لا يمكن إرسال بريد تلقائياً من هذا الخادم حالياً'+(r.error?'<br><span dir="ltr" style="font-size:10px">'+esc(r.error)+'</span>':'')+'.<br>تواصل مع مالك الموقع ليعطيك رابطاً مؤقتاً من لوحة المالك.', 'warn');
+    }
+  }catch(err){ authNote('forgotNote','❌ '+esc(err.message||'تعذّر إرسال الطلب'),'err'); }
+  btn.disabled=false; btn.textContent='📧 إرسال رابط الاستعادة';
+}
+function showResetView(){ showAuthView('resetForm'); }
+function resetBackToLogin(){
+  if(location.search.indexOf('reset=')>=0){ history.replaceState(null,'',location.pathname); }
+  resetTokenFromUrl=''; $('resetPass').value=''; $('resetPass2').value='';
+  $('resetFields').style.display='block';
+  showAuthView('loginForm');
+}
+async function openResetFromUrl(token){
+  resetTokenFromUrl=token;
+  showResetView();
+  $('resetFields').style.display='none';
+  authNote('resetNote','⏳ جارٍ التحقق من الرابط…');
+  if(authMode!=='server'){
+    authNote('resetNote','💻 هذا الرابط يعمل فقط على نسخة الخادم. الموقع الحالي يعمل بالوضع المحلي — اطلب من مالك الموقع إعادة التعيين.','warn');
+    return;
+  }
+  try{
+    const r=await apiFetch('/api/reset-token?token='+encodeURIComponent(token),{method:'GET'});
+    $('resetWho').innerHTML='الحساب: <b dir="ltr">'+esc(r.username||'')+'</b>'+(r.maskedEmail?' • البريد: <span dir="ltr">'+esc(r.maskedEmail)+'</span>':'');
+    $('resetFields').style.display='block';
+    authNote('resetNote','');
+    $('resetPass').focus();
+  }catch(err){
+    authNote('resetNote','❌ '+esc(err.message||'الرابط غير صالح')+'<br>اطلب رابطاً جديداً من «نسيت كلمة المرور؟».','err');
+  }
+}
+async function handleResetPassword(ev){
+  ev.preventDefault(); clearAuthMsg(); authNote('resetNote','');
+  const p1=$('resetPass').value, p2=$('resetPass2').value;
+  if(!p1||p1.length<6){ showAuthError('كلمة المرور الجديدة 6 أحرف على الأقل'); return; }
+  if(p1!==p2){ showAuthError('تأكيد كلمة المرور غير متطابق'); return; }
+  const btn=$('resetSubmitBtn'); btn.disabled=true; btn.textContent='⏳ جارٍ الحفظ…';
+  try{
+    const r=await apiFetch('/api/reset-password',{method:'POST',body:JSON.stringify({token:resetTokenFromUrl,newPassword:p1})});
+    showAuthView('loginForm');
+    if(r&&r.username) $('loginUsername').value=r.username;
+    showAuthSuccess('✅ تم تعيين كلمة المرور الجديدة — سجّل الدخول بها الآن. (تم إنهاء الجلسات المفتوحة سابقاً)');
+    if(location.search.indexOf('reset=')>=0) history.replaceState(null,'',location.pathname);
+    resetTokenFromUrl='';
+  }catch(err){
+    authNote('resetNote','❌ '+esc(err.message||'تعذّر الحفظ'),'err');
+    if(authMode==='server') openResetFromUrl(resetTokenFromUrl);
+  }
+  btn.disabled=false; btn.textContent='💾 حفظ كلمة المرور الجديدة';
+}
+
+/* =====================================================
+   OWNER (ADMIN) PANEL — all registered clinics & suppliers
+   ===================================================== */
+let ownerAccounts=[], ownerAccountById={}, ownerLastLink={}, ownerInfo={};
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtDate(iso){ if(!iso) return '—'; try{ return new Date(iso).toLocaleString('ar-JO',{dateStyle:'short',timeStyle:'short'}); }catch(e){ return iso; } }
+function fmtBytes(n){ n=n||0; if(n<1024) return n+' B'; if(n<1048576) return (n/1024).toFixed(1)+' KB'; return (n/1048576).toFixed(2)+' MB'; }
+function ownerToken(){ return localStorage.getItem(LS_OWNER_TOKEN)||''; }
+async function ownerFetch(path,options){
+  const opt=Object.assign({headers:{}},options||{});
+  opt.headers=Object.assign({'Content-Type':'application/json'},opt.headers||{});
+  const t=ownerToken(); if(t) opt.headers['Authorization']='Bearer '+t;
+  const res=await fetch(path,opt);
+  let data=null; try{ data=await res.json(); }catch(e){ data=null; }
+  if(res.status===401){ localStorage.removeItem(LS_OWNER_TOKEN); closeOwnerPanel(); showAuthView('ownerLoginForm'); throw new Error('انتهت جلسة المالك — سجّل الدخول من جديد'); }
+  if(!res.ok) throw new Error((data&&data.error)||('خطأ '+res.status));
+  return data;
+}
+async function handleOwnerLogin(ev){
+  ev.preventDefault(); clearAuthMsg(); authNote('ownerNote','');
+  const u=$('ownerUser').value.trim(), p=$('ownerPass').value;
+  if(!u||!p){ showAuthError('أدخل اسم المستخدم وكلمة المرور'); return; }
+  const btn=$('ownerSubmitBtn'); btn.disabled=true; btn.textContent='⏳ جارٍ الدخول…';
+  try{
+    if(authMode==='server'){
+      const r=await apiFetch('/api/admin/login',{method:'POST',body:JSON.stringify({username:u,password:p})});
+      localStorage.setItem(LS_OWNER_TOKEN,r.token);
+    }else{
+      // الوضع المحلي: التحقق داخل المتصفح — الحسابات محفوظة أصلاً على هذا الجهاز
+      const h=await hashPassword(p,OWNER_LOCAL_SALT);
+      const expected=(hashPassword.mode==='sha256')?OWNER_LOCAL_HASH_SHA256:OWNER_LOCAL_HASH_FALLBACK;
+      if(u.toLowerCase()!==OWNER_LOCAL_USER || h!==expected){ throw new Error('بيانات دخول المالك غير صحيحة'); }
+    }
+    $('ownerPass').value='';
+    await enterOwnerPanel();
+  }catch(err){ authNote('ownerNote','❌ '+esc(err.message||'فشل الدخول'),'err'); }
+  btn.disabled=false; btn.textContent='🛡️ دخول لوحة المالك';
+}
+async function enterOwnerPanel(){
+  $('authOverlay').classList.add('hidden');
+  $('ownerOverlay').classList.remove('hidden');
+  $('ownerTopSub').textContent='تعمل كمالك الموقع • '+new Date().toLocaleDateString('ar-JO');
+  await ownerRefresh();
+}
+function closeOwnerPanel(){ $('ownerOverlay').classList.add('hidden'); $('authOverlay').classList.remove('hidden'); }
+async function openOwnerPanel(){
+  clearAuthMsg(); authNote('ownerNote','');
+  if(authMode!=='server'){
+    showAuthView('ownerLoginForm');
+    authNote('ownerNote','💻 الوضع المحلي: تظهر هنا الحسابات المحفوظة على هذا الجهاز فقط، ويمكنك تعيين كلمة مرور جديدة لها مباشرة.<br>لإدارة كل الحسابات وإرسال روابط بالبريد: شغّل الموقع بخادم Node.js.');
+    $('ownerUser').focus();
+    return;
+  }
+  if(ownerToken()){
+    try{ await ownerFetch('/api/admin/me'); await enterOwnerPanel(); return; }catch(e){ /* يحتاج تسجيل دخول جديد */ }
+  }
+  showAuthView('ownerLoginForm'); $('ownerUser').value=$('ownerUser').value||'';
+  $('ownerUser').focus();
+}
+async function ownerRefresh(){
+  const warn=$('ownerMailWarn');
+  if(authMode!=='server'){
+    ownerAccounts=getLocalUsers().map(u=>{
+      let bytes=0;
+      try{ const raw=localStorage.getItem('dental_inventory_user_'+u.id); bytes=raw?raw.length:0; }catch(e){}
+      return {id:u.id,clinicName:u.clinicName,username:u.username,email:u.email||'',phone:u.phone||'',accountType:u.accountType||'clinic',
+        createdAt:u.createdAt||'',hasData:bytes>0,dataBytes:bytes,dataUpdatedAt:null,resetLink:null,local:true};
+    }).sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+    ownerInfo={smtpConfigured:false,local:true};
+    ownerAccountById={}; ownerAccounts.forEach(a=>{ ownerAccountById[a.id]=a; });
+    warn.style.display='block';
+    warn.innerHTML='💻 <b>الوضع المحلي (بدون خادم)</b> — الحسابات محفوظة في متصفح هذا الجهاز. يمكنك تعيين كلمة مرور جديدة لأي حساب مباشرة من البطاقة. إرسال روابط الاستعادة بالبريد يحتاج تشغيل الموقع بخادم Node.js.';
+    renderOwnerPanel();
+    return;
+  }
+  try{
+    const r=await ownerFetch('/api/admin/accounts');
+    ownerAccounts=r.accounts||[]; ownerInfo=r;
+    ownerAccountById={}; ownerAccounts.forEach(a=>{ ownerAccountById[a.id]=a; });
+    if(r.smtpConfigured){ warn.style.display='none'; }
+    else{
+      warn.style.display='block';
+      warn.innerHTML='⚠️ <b>إرسال البريد غير مُعدّ على الخادم</b> — يمكنك إنشاء الروابط المؤقتة ونسخها وإرسالها بنفسك (واتساب مثلاً). لتشغيل الإرسال التلقائي أضف متغيّرات البيئة <code dir="ltr">SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS</code> في إعدادات الاستضافة وأعد النشر.';
+    }
+    renderOwnerPanel();
+  }catch(err){ toast('❌ '+err.message,'error'); }
+}
+function renderOwnerPanel(){
+  const serverMode=(authMode==='server');
+  const q=$('ownerSearch').value.trim().toLowerCase(), type=$('ownerTypeFilter').value;
+  const clinics=ownerAccounts.filter(a=>(a.accountType||'clinic')==='clinic').length;
+  const suppliers=ownerAccounts.length-clinics;
+  const withLinks=ownerAccounts.filter(a=>a.resetLink).length;
+  $('ownerStats').innerHTML=
+    '<div class="owner-stat"><b>'+ownerAccounts.length+'</b><span>إجمالي الحسابات</span></div>'+
+    '<div class="owner-stat"><b>'+clinics+'</b><span>🏥 عيادات</span></div>'+
+    '<div class="owner-stat"><b>'+suppliers+'</b><span>🏢 شركات موردة</span></div>'+
+    '<div class="owner-stat"><b>'+withLinks+'</b><span>🔑 روابط فعّالة</span></div>';
+  const list=ownerAccounts.filter(a=>{
+    if(type && (a.accountType||'clinic')!==type) return false;
+    if(!q) return true;
+    return (a.clinicName||'').toLowerCase().includes(q)||(a.username||'').toLowerCase().includes(q)||(a.email||'').toLowerCase().includes(q);
+  });
+  $('ownerCount').textContent='معروض: '+list.length;
+  const box=$('ownerList');
+  if(!list.length){ box.innerHTML='<div class="owner-empty">لا توجد حسابات مطابقة'+(ownerAccounts.length?'':' — لم يسجّل أحد بعد')+'.</div>'; return; }
+  box.innerHTML='';
+  list.forEach(a=>{
+    const isSupplier=(a.accountType||'clinic')==='supplier';
+    const card=document.createElement('div');
+    card.className='owner-card'+(isSupplier?' supplier':'');
+    const last=ownerLastLink[a.id];
+    card.innerHTML=
+      '<h4>'+(isSupplier?'🏢':'🏥')+' '+esc(a.clinicName||'')+'</h4>'+
+      '<div class="u">@'+esc(a.username||'')+'</div>'+
+      '<div class="rows">'+
+        '<b>البريد:</b> '+(a.email?'<span dir="ltr">'+esc(a.email)+'</span>':'<span style="color:#b45309">غير مسجّل</span>')+'<br>'+
+        '<b>الهاتف:</b> '+(a.phone?'<span dir="ltr">'+esc(a.phone)+'</span>':'—')+'<br>'+
+        '<b>التسجيل:</b> '+esc(fmtDate(a.createdAt))+'<br>'+
+        '<b>البيانات:</b> '+(a.hasData?esc(fmtBytes(a.dataBytes))+' • آخر تحديث '+esc(fmtDate(a.dataUpdatedAt)):'لا توجد بيانات بعد')+
+      '</div>'+
+      '<div>'+
+        '<span class="tag '+(isSupplier?'supplier':'clinic')+'">'+(isSupplier?'شركة موردة':'عيادة')+'</span>'+
+        (a.resetLink?'<span class="tag live">🔑 رابط فعّال حتى '+esc(fmtDate(a.resetLink.expiresAt))+'</span>':'')+
+        (a.email?'<span class="tag mail-ok">✉️ بريد مسجّل</span>':'<span class="tag mail-off">⚠️ بلا بريد</span>')+
+      '</div>'+
+      '<div class="btns">'+
+        (serverMode
+          ? '<button class="btn btn-primary btn-sm" data-act="link">🔑 إنشاء رابط</button>'+
+            '<button class="btn btn-light btn-sm" data-act="mail"'+(a.email?'':' disabled title="لا يوجد بريد مسجّل"')+'>📧 إرسال بالبريد</button>'+
+            (a.resetLink?'<button class="btn btn-light btn-sm" data-act="cancel">🚫 إلغاء الرابط</button>':'')+
+            (last?'<button class="btn btn-light btn-sm" data-act="copy">📋 نسخ آخر رابط</button>':'')
+          : '<button class="btn btn-primary btn-sm" data-act="setpass">🔑 تعيين كلمة مرور جديدة</button>'+
+            '<button class="btn btn-light btn-sm" data-act="showuser">👤 اسم المستخدم</button>')+
+      '</div>';
+    card.querySelectorAll('button[data-act]').forEach(b=>{
+      b.addEventListener('click',()=>ownerCardAction(b.dataset.act,a));
+    });
+    box.appendChild(card);
+  });
+}
+async function ownerCardAction(act,a){
+  if(act==='showuser'){ prompt('اسم المستخدم للحساب:', a.username); return; }
+  if(act==='setpass'){
+    const msg=authMode==='server'
+      ? 'أدخل كلمة المرور الجديدة لحساب «'+a.clinicName+'» (6 أحرف على الأقل):'
+      : 'كلمة مرور جديدة لحساب «'+a.clinicName+'» على هذا الجهاز (6 أحرف على الأقل):';
+    const p1=prompt(msg);
+    if(p1===null) return;
+    if(!p1||p1.length<6){ toast('كلمة المرور 6 أحرف على الأقل','error'); return; }
+    if(prompt('أعد كتابة كلمة المرور الجديدة للتأكيد:')!==p1){ toast('التأكيد غير متطابق','error'); return; }
+    if(authMode==='server'){
+      try{
+        const r=await ownerFetch('/api/admin/reset-link',{method:'POST',body:JSON.stringify({userId:a.id,minutes:60,sendEmail:false})});
+        ownerLastLink[a.id]={link:r.link,expiresAt:r.expiresAt};
+        showOwnerLinkModal(r,a); ownerRefresh();
+      }catch(err){ toast('❌ '+err.message,'error'); }
+      return;
+    }
+    const users=getLocalUsers(); const i=users.findIndex(u=>u.id===a.id);
+    if(i<0){ toast('الحساب غير موجود','error'); return; }
+    users[i].salt=uid('salt');
+    users[i].passwordHash=await hashPassword(p1,users[i].salt);
+    saveLocalUsers(users);
+    toast('✅ تم تعيين كلمة مرور جديدة لـ '+a.clinicName,'success');
+    ownerRefresh();
+    return;
+  }
+  if(act==='copy'){
+    const l=ownerLastLink[a.id];
+    if(l) copyText(l.link,'📋 تم نسخ الرابط');
+    return;
+  }
+  if(act==='cancel'){
+    if(!confirm('إلغاء رابط تغيير كلمة المرور الخاص بـ '+a.clinicName+'؟')) return;
+    try{ await ownerFetch('/api/admin/cancel-reset',{method:'POST',body:JSON.stringify({userId:a.id})}); toast('🚫 تم إلغاء الرابط','info'); ownerRefresh(); }
+    catch(err){ toast('❌ '+err.message,'error'); }
+    return;
+  }
+  if(authMode!=='server'){ toast('📧 إرسال البريد يعمل على نسخة الخادم فقط — استخدم «تعيين كلمة مرور جديدة»','info',null,null,6000); return; }
+  const minutes=parseInt($('ownerLinkMinutes').value,10)||60;
+  try{
+    const r=await ownerFetch('/api/admin/reset-link',{method:'POST',body:JSON.stringify({userId:a.id,minutes:minutes,sendEmail:act==='mail'})});
+    ownerLastLink[a.id]={link:r.link,expiresAt:r.expiresAt};
+    showOwnerLinkModal(r,a);
+    ownerRefresh();
+  }catch(err){ toast('❌ '+err.message,'error'); }
+}
+function showOwnerLinkModal(r,a){
+  $('ownerLinkFor').innerHTML='الحساب: <b>'+esc(r.clinicName||a.clinicName)+'</b> <span class="u" dir="ltr">@'+esc(r.username||a.username)+'</span>'+
+    (r.maskedEmail?' • البريد: <span dir="ltr">'+esc(r.maskedEmail)+'</span>':'');
+  $('ownerLinkUrl').textContent=r.link;
+  $('ownerLinkExpiry').innerHTML='⏱️ صالح حتى <b>'+esc(fmtDate(new Date(r.expiresAt).toISOString()))+'</b> — يُستخدم <b>مرة واحدة</b> فقط. بعد الاستخدام تُنهى كل جلسات الحساب المفتوحة.';
+  const mail=$('ownerLinkMail');
+  if(r.emailed){ mail.className='auth-note'; mail.innerHTML='✅ تم إرسال الرابط إلى بريد الحساب.'; mail.style.display='block'; }
+  else if(r.mailError){ mail.className='auth-note err'; mail.innerHTML='⚠️ لم يُرسل البريد: '+esc(r.mailError)+' — انسخ الرابط وأرسله بنفسك.'; mail.style.display='block'; }
+  else { mail.className='auth-note warn'; mail.innerHTML='📋 لم يُرسل بالبريد (لا يوجد بريد مسجّل أو ألغيت الإرسال) — انسخ الرابط وأرسله للعميل.'; mail.style.display='block'; }
+  $('ownerLinkModal').classList.remove('hidden');
+}
+function closeOwnerLinkModal(){ $('ownerLinkModal').classList.add('hidden'); }
+function copyText(text,okMsg){
+  const done=()=>toast(okMsg||'📋 تم النسخ','success');
+  if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done)); return; }
+  fallbackCopy(text,done);
+}
+function fallbackCopy(text,done){
+  try{
+    const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+  }catch(e){ prompt('انسخ الرابط يدوياً:',text); }
+}
+
 function bindAuthUI(){
   $('tabLogin').addEventListener('click',()=>switchAuthTab('login'));
   $('tabRegister').addEventListener('click',()=>switchAuthTab('register'));
   $('loginForm').addEventListener('submit',handleLogin);
   $('registerForm').addEventListener('submit',handleRegister);
+  $('btnForgotPass').addEventListener('click',()=>{ showAuthView('forgotForm'); $('forgotIdentifier').value=$('loginUsername').value.trim(); $('forgotIdentifier').focus(); });
+  $('btnForgotBack').addEventListener('click',()=>{ authNote('forgotNote',''); switchAuthTab('login'); });
+  $('forgotForm').addEventListener('submit',handleForgot);
+  $('btnResetBack').addEventListener('click',resetBackToLogin);
+  $('resetForm').addEventListener('submit',handleResetPassword);
+  $('resetEye').addEventListener('click',()=>{ const i=$('resetPass'); i.type=(i.type==='password'?'text':'password'); });
+  $('btnOwnerPanel').addEventListener('click',openOwnerPanel);
+  $('btnOwnerBack').addEventListener('click',()=>{ authNote('ownerNote',''); switchAuthTab('login'); });
+  $('ownerLoginForm').addEventListener('submit',handleOwnerLogin);
+  $('btnOwnerRefresh').addEventListener('click',ownerRefresh);
+  $('btnOwnerLogout').addEventListener('click',async()=>{
+    if(!confirm('تسجيل الخروج من لوحة المالك؟')) return;
+    if(authMode==='server'){ try{ await ownerFetch('/api/admin/logout',{method:'POST'}); }catch(e){ /* ignore */ } }
+    localStorage.removeItem(LS_OWNER_TOKEN); ownerAccounts=[]; ownerLastLink={};
+    closeOwnerPanel(); switchAuthTab('login');
+  });
+  $('ownerSearch').addEventListener('input',renderOwnerPanel);
+  $('ownerTypeFilter').addEventListener('change',renderOwnerPanel);
+  $('btnOwnerLinkClose').addEventListener('click',closeOwnerLinkModal);
+  $('btnOwnerCopyLink').addEventListener('click',()=>copyText($('ownerLinkUrl').textContent,'📋 تم نسخ الرابط'));
+  $('btnOwnerOpenLink').addEventListener('click',()=>{ const l=$('ownerLinkUrl').textContent; if(l) window.open(l,'_blank'); });
+  $('btnOwnerLinkNew').addEventListener('click',async()=>{
+    const current=$('ownerLinkFor').textContent; // الحساب المعروض حالياً
+    const acc=ownerAccounts.find(a=>current.indexOf(a.username)>=0);
+    if(!acc) return;
+    await ownerCardAction('link',acc);
+  });
+  $('ownerLinkModal').addEventListener('click',ev=>{ if(ev.target===$('ownerLinkModal')) closeOwnerLinkModal(); });
   initAccountTypeSelector();
 }
 function bindNewUI(){
@@ -2631,13 +3112,21 @@ async function bootApp(){
   if(authMode==='server'){ badge.textContent='☁️ وضع الخادم — حسابات مشتركة بين الأجهزة'; badge.className='badge badge-green'; }
   else { badge.textContent='💻 وضع محلي — حسابات مستقلة على هذا الجهاز'; badge.className='badge badge-blue'; }
   renderLocalChips();
+  // رابط إعادة تعيين كلمة المرور من البريد (?reset=TOKEN) يتقدّم على أي جلسة محفوظة
+  let resetParam='';
+  try{ resetParam=new URLSearchParams(location.search).get('reset')||''; }catch(e){}
+  if(resetParam){
+    $('authOverlay').classList.remove('hidden');
+    await openResetFromUrl(resetParam);
+    return;
+  }
   try{
     if(authMode==='server'){
       const token=localStorage.getItem('dental_token_v1');
       if(token){ const me=await apiFetch('/api/me',{method:'GET'}); if(me&&me.user){ await afterAuthSuccess(me.user,true); return; } }
     }else{
       const sid=localStorage.getItem(LS_SESSION);
-      if(sid){ const u=getLocalUsers().find(x=>x.id===sid); if(u){ await afterAuthSuccess({id:u.id,clinicName:u.clinicName,username:u.username,phone:u.phone||'',address:u.address||''},false); return; } }
+      if(sid){ const u=getLocalUsers().find(x=>x.id===sid); if(u){ await afterAuthSuccess({id:u.id,clinicName:u.clinicName,username:u.username,email:u.email||'',phone:u.phone||'',address:u.address||''},false); return; } }
     }
   }catch(e){ /* عرض شاشة الدخول */ }
   $('authOverlay').classList.remove('hidden');
