@@ -245,6 +245,127 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
 @keyframes alertPulse{0%,100%{box-shadow:0 4px 16px rgba(220,38,38,.08)}50%{box-shadow:0 0 0 4px rgba(220,38,38,.35)}}
 @media(max-width:900px){.designer-layout{grid-template-columns:1fr;grid-template-rows:1fr auto}.designer-side{border-right:none;border-top:1px solid var(--border);max-height:300px}}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+
+/* ===== Supplier Portal Styles ===== */
+.account-type-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.account-type-option{border:2px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;text-align:center;transition:.2s;position:relative}
+.account-type-option:hover{border-color:var(--primary);background:#f0f7ff;transform:translateY(-2px)}
+.account-type-option.selected{border-color:var(--primary);background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.account-type-option .icon{font-size:32px;margin-bottom:6px}
+.account-type-option b{display:block;font-size:13px}
+.account-type-option p{font-size:10px;color:var(--text-light);margin-top:3px;line-height:1.4}
+
+/* Supplier Portal */
+.portal-wrapper{display:none}
+.portal-wrapper.active{display:block}
+.portal-topbar{background:linear-gradient(135deg,#7c3aed 0%,#a855f7 100%);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 4px 20px rgba(124,58,237,.25)}
+.portal-topbar.supplier{background:linear-gradient(135deg,#0f766e 0%,#14b8a6 100%)}
+.portal-topbar .portal-brand{display:flex;align-items:center;gap:11px}
+.portal-topbar .portal-logo{width:40px;height:40px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;backdrop-filter:blur(10px)}
+.portal-topbar h1{font-size:15px;font-weight:800}
+.portal-topbar .portal-sub{font-size:10.5px;opacity:.8}
+
+.portal-nav{display:flex;gap:6px;flex-wrap:wrap}
+.portal-nav button{border:none;background:rgba(255,255,255,.15);color:#fff;padding:7px 13px;border-radius:9px;font-weight:700;font-size:11.5px;cursor:pointer;transition:.2s;position:relative;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(8px)}
+.portal-nav button:hover{background:rgba(255,255,255,.25);transform:translateY(-1px)}
+.portal-nav button.active{background:#fff;color:#0f766e;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.portal-nav .notif-badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;font-weight:900;min-width:18px;height:18px;border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(239,68,68,.4)}
+
+.portal-section{display:none;padding:14px;max-width:1280px;margin:0 auto}
+.portal-section.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.portal-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.portal-stat{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid #ece8e2}
+.portal-stat .stat-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:8px}
+.portal-stat .stat-icon.blue{background:#dbeafe;color:#2563eb}
+.portal-stat .stat-icon.green{background:#dcfce7;color:#059669}
+.portal-stat .stat-icon.yellow{background:#fef9c3;color:#d97706}
+.portal-stat .stat-icon.red{background:#fee2e2;color:#dc2626}
+.portal-stat .stat-icon.purple{background:#f3e8ff;color:#7c3aed}
+.portal-stat b{font-size:24px;display:block}
+.portal-stat span{font-size:11px;color:var(--text-light)}
+
+.portal-card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:1px solid #ece8e2;margin-bottom:14px}
+.portal-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.portal-card-header h3{font-size:14px;display:flex;align-items:center;gap:7px}
+
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.product-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;transition:.2s;position:relative;overflow:hidden}
+.product-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+.product-card img{width:100%;height:140px;object-fit:cover;border-radius:8px;background:#f8fafc}
+.product-card .no-img{width:100%;height:80px;background:#f8fafc;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;opacity:.5}
+.product-card h4{font-size:12px;line-height:1.3}
+.product-card .product-meta{display:flex;gap:6px;flex-wrap:wrap}
+.product-card .product-meta span{font-size:9.5px;padding:3px 8px;background:#f1f5f9;border-radius:20px}
+.product-card .product-price{font-size:16px;font-weight:900;color:var(--success)}
+.product-card .product-price small{font-size:10px;color:var(--text-light);font-weight:400}
+.product-actions{display:flex;gap:5px;margin-top:auto}
+
+.request-card{background:#fff;border:1px solid #fecaca;border-radius:12px;padding:14px;margin-bottom:12px;position:relative;overflow:hidden}
+.request-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:#f59e0b}
+.request-clinic{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.request-clinic .clinic-icon{width:40px;height:40px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.request-clinic h4{font-size:13px}
+.request-clinic p{font-size:10px;color:var(--text-light)}
+.request-items{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.request-item{display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:8px 10px;border-radius:8px;font-size:11px}
+.request-item b{color:var(--danger)}
+
+.offer-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;position:relative;overflow:hidden}
+.offer-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:#7c3aed}
+.offer-card.accepted::before{background:var(--success)}
+.offer-card.rejected::before{background:var(--danger)}
+.offer-card.expired::before{background:#9ca3af}
+.offer-supplier{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.offer-supplier .supplier-icon{width:42px;height:42px;background:linear-gradient(135deg,#f3e8ff,#e9d5ff);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.offer-supplier h4{font-size:13px}
+.offer-supplier p{font-size:10px;color:var(--text-light)}
+.offer-items-list{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.offer-item-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;padding:8px 12px;font-size:11px;border-bottom:1px solid #f1f5f9;align-items:center}
+.offer-item-row:last-child{border-bottom:none}
+.offer-item-row.header{background:#f8fafc;font-weight:800;font-size:10px;color:#475569}
+.offer-total{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.offer-total b{font-size:18px;color:var(--success)}
+.offer-status{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700}
+.offer-status.pending{background:#fef9c3;color:#854d0e}
+.offer-status.accepted{background:#dcfce7;color:#166534}
+.offer-status.rejected{background:#fee2e2;color:#991b1b}
+.offer-status.expired{background:#f1f5f9;color:#475569}
+.offer-validity{font-size:10px;color:var(--text-light);margin-top:4px}
+
+.notification-list{display:flex;flex-direction:column;gap:8px;max-height:400px;overflow:auto}
+.notif-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;transition:.15s;cursor:pointer}
+.notif-item.unread{background:#eff6ff;border-color:#bfdbfe}
+.notif-item:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.notif-icon.new_offer{background:#f3e8ff}
+.notif-icon.offer_accepted{background:#dcfce7}
+.notif-icon.offer_rejected{background:#fee2e2}
+.notif-icon.order_status{background:#dbeafe}
+.notif-icon.clinic_visible{background:#fef9c3}
+.notif-content{flex:1;min-width:0}
+.notif-content b{font-size:11px;display:block}
+.notif-content p{font-size:10px;color:var(--text-light);margin-top:2px}
+.notif-time{font-size:9px;color:#94a3b8;margin-top:3px}
+
+.visibility-toggle{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.visibility-toggle .info{flex:1}
+.visibility-toggle .info h4{font-size:12px;display:flex;align-items:center;gap:6px}
+.visibility-toggle .info p{font-size:10.5px;color:var(--text-light);margin-top:3px;line-height:1.5}
+
+.offer-form-items{display:flex;flex-direction:column;gap:8px;max-height:300px;overflow:auto;margin-bottom:12px}
+.offer-form-item{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px;display:grid;grid-template-columns:1fr 100px 100px auto;gap:8px;align-items:center}
+.offer-form-item input{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:11px}
+
+.tab-switcher{display:flex;background:#f1f5f9;border-radius:10px;padding:4px;margin-bottom:14px}
+.tab-switcher button{flex:1;border:none;background:transparent;padding:9px;border-radius:8px;font-weight:700;font-size:11.5px;cursor:pointer;color:var(--text-light);transition:.2s}
+.tab-switcher button.active{background:#fff;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+
+/* Hide clinic UI when in supplier portal */
+body.supplier-portal header.topbar{display:none}
+body.supplier-portal .container{display:none}
+body.clinic-portal .portal-wrapper{display:none}
 </style>
 </head>
 <body>
@@ -318,12 +439,25 @@ input:checked + .slider{background:var(--whatsapp)}input:checked + .slider:befor
       <div id="localUsersBox" style="display:none;margin-top:10px"><span class="mini-label">👥 حسابات مسجلة على هذا الجهاز — اضغط للتعبئة السريعة:</span><div class="local-chips" id="localUsersChips"></div></div>
     </form>
     <form id="registerForm" style="display:none">
-      <div class="form-group"><label>اسم العيادة *</label><input id="regClinicName" placeholder="مثال: عيادة الابتسامة - عمان"></div>
+      <div class="account-type-selector">
+        <div class="account-type-option selected" data-type="clinic" id="accTypeClinic">
+          <div class="icon">🏥</div>
+          <b>عيادة أسنان</b>
+          <p>إدارة المخزون والمستلزمات الطبية</p>
+        </div>
+        <div class="account-type-option" data-type="supplier" id="accTypeSupplier">
+          <div class="icon">🏢</div>
+          <b>مورد مستلزمات</b>
+          <p>شركة توريد مواد ومستلزمات طبية</p>
+        </div>
+      </div>
+      <input type="hidden" id="regAccountType" value="clinic">
+      <div class="form-group"><label id="regClinicNameLabel">اسم العيادة *</label><input id="regClinicName" placeholder="مثال: عيادة الابتسامة - عمان"></div>
       <div class="form-row"><div class="form-group"><label>اسم المستخدم *</label><input id="regUsername" dir="ltr" placeholder="حروف إنجليزية وأرقام"></div><div class="form-group"><label>رقم الهاتف</label><input id="regPhone" dir="ltr" placeholder="07XXXXXXXX"></div></div>
       <div class="form-row"><div class="form-group"><label>كلمة المرور * (6+ أحرف)</label><input id="regPassword" type="password" autocomplete="new-password"></div><div class="form-group"><label>تأكيد كلمة المرور *</label><input id="regPassword2" type="password" autocomplete="new-password"></div></div>
-      <button type="submit" class="btn btn-whatsapp" style="width:100%;justify-content:center;padding:11px">➕ إنشاء حساب العيادة</button>
+      <button type="submit" class="btn btn-whatsapp" style="width:100%;justify-content:center;padding:11px" id="regSubmitBtn">➕ إنشاء حساب العيادة</button>
     </form>
-    <div class="auth-features">✅ كل عيادة لها بيانات مستقلة تماماً<br>✅ ارفع صورة مخزنك وحدد الجرارات والخزائن عليها<br>✅ رسائل واتساب تلقائية للموردين عند الحد الأدنى</div>
+    <div class="auth-features" id="authFeatures">✅ كل عيادة لها بيانات مستقلة تماماً<br>✅ ارفع صورة مخزنك وحدد الجرارات والخزائن عليها<br>✅ رسائل واتساب تلقائية للموردين عند الحد الأدنى</div>
   </div>
 </div>
 
@@ -500,6 +634,245 @@ Body: {"messaging_product":"whatsapp","to":"9627...","type":"text","text":{"body
 <div id="reportModal" class="modal hidden"><div class="modal-content large"><div class="modal-header"><h3>📊 تقرير الجرد</h3><div style="display:flex;gap:5px"><button class="btn btn-light btn-sm" id="btnPrintReport">🖨️ طباعة</button><button class="btn btn-light btn-sm" id="btnCloseReport">✕</button></div></div><div class="modal-body" id="reportBody" style="padding:0"></div></div></div>
 <div id="qtyModal" class="modal hidden" style="z-index:300"><div class="modal-content" style="max-width:320px"><div class="modal-header"><h3>تعديل الكمية</h3><button class="btn btn-light btn-sm" id="btnCloseQty">✕</button></div><div class="modal-body" style="text-align:center"><div id="qtyMatName" style="font-weight:800;margin-bottom:12px;font-size:12px"></div><input id="qtyInput" type="number" min="0" style="width:110px;padding:10px;font-size:18px;font-weight:800;text-align:center;border:2px solid var(--border);border-radius:10px"><div style="display:flex;gap:6px;margin-top:16px"><button class="btn btn-primary" id="btnSaveQty" style="flex:1">حفظ</button><button class="btn btn-light" id="btnCancelQty" style="flex:1">إلغاء</button></div></div></div></div>
 <input type="file" id="importFile" accept=".json" style="display:none">
+
+<!-- Supplier Portal Wrapper -->
+<div id="supplierPortal" class="portal-wrapper">
+  <div class="portal-topbar supplier">
+    <div class="portal-brand">
+      <div class="portal-logo">🏢</div>
+      <div>
+        <h1>بوابة الموردين</h1>
+        <p class="portal-sub" id="supplierPortalSub">إدارة المنتجات والعروض والطلبات</p>
+      </div>
+    </div>
+    <div class="portal-nav">
+      <button class="active" data-section="sp-dashboard">📊 الرئيسية</button>
+      <button data-section="sp-products">📦 المنتجات</button>
+      <button data-section="sp-requests">📋 طلبات العيادات</button>
+      <button data-section="sp-offers">💼 العروض</button>
+      <button data-section="sp-orders">🚚 الطلبات</button>
+      <button data-section="sp-notifications">🔔 الإشعارات <span class="notif-badge" id="supplierNotifBadge" style="display:none">0</span></button>
+      <button data-section="sp-account">👤 حسابي</button>
+      <button id="btnSupplierLogout">🚪 خروج</button>
+    </div>
+  </div>
+
+  <!-- Supplier Dashboard -->
+  <div class="portal-section active" id="sp-dashboard">
+    <div class="portal-stats">
+      <div class="portal-stat"><div class="stat-icon blue">📦</div><b id="spStatProducts">0</b><span>عدد المنتجات</span></div>
+      <div class="portal-stat"><div class="stat-icon yellow">📋</div><b id="spStatRequests">0</b><span>طلبات العيادات</span></div>
+      <div class="portal-stat"><div class="stat-icon purple">💼</div><b id="spStatOffers">0</b><span>العروض المرسلة</span></div>
+      <div class="portal-stat"><div class="stat-icon green">✅</div><b id="spStatAccepted">0</b><span>عروض مقبولة</span></div>
+      <div class="portal-stat"><div class="stat-icon red">🚚</div><b id="spStatOrders">0</b><span>طلبات نشطة</span></div>
+    </div>
+    <div class="portal-card">
+      <div class="portal-card-header"><h3>📊 آخر النشاطات</h3></div>
+      <div id="spRecentActivity" class="notification-list"></div>
+    </div>
+  </div>
+
+  <!-- Supplier Products -->
+  <div class="portal-section" id="sp-products">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>📦 إدارة المنتجات والأسعار</h3>
+        <div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" id="btnAddProduct">➕ إضافة منتج جديد</button></div>
+      </div>
+      <div class="products-grid" id="supplierProductsGrid"></div>
+    </div>
+  </div>
+
+  <!-- Supplier Requests (Low Stock from Clinics) -->
+  <div class="portal-section" id="sp-requests">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>📋 طلبات العيادات - مواد وصلت حد التنبيه</h3>
+        <span class="hint">🔔 تظهر فقط المواد التي وصلت حد التنبيه من العيادات التي فعّلت الظهور</span>
+      </div>
+      <div id="supplierRequestsList"></div>
+    </div>
+  </div>
+
+  <!-- Supplier Offers -->
+  <div class="portal-section" id="sp-offers">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>💼 العروض المرسلة</h3>
+      </div>
+      <div id="supplierOffersList"></div>
+    </div>
+  </div>
+
+  <!-- Supplier Orders -->
+  <div class="portal-section" id="sp-orders">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>🚚 الطلبات الواردة</h3>
+      </div>
+      <div id="supplierOrdersList"></div>
+    </div>
+  </div>
+
+  <!-- Supplier Notifications -->
+  <div class="portal-section" id="sp-notifications">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>🔔 الإشعارات</h3>
+        <button class="btn btn-light btn-sm" id="btnMarkAllRead">✅ تحديد الكل كمقروء</button>
+      </div>
+      <div id="supplierNotificationsList" class="notification-list"></div>
+    </div>
+  </div>
+
+  <!-- Supplier Account -->
+  <div class="portal-section" id="sp-account">
+    <div class="portal-card" style="max-width:600px;margin:0 auto">
+      <div class="portal-card-header"><h3>👤 حساب المورد</h3></div>
+      <div class="form-group"><label>اسم الشركة</label><input id="spAccName"></div>
+      <div class="form-row"><div class="form-group"><label>اسم المستخدم</label><input id="spAccUsername" disabled style="background:#f1f5f9" dir="ltr"></div><div class="form-group"><label>رقم الهاتف</label><input id="spAccPhone" dir="ltr"></div></div>
+      <div class="form-group"><label>العنوان</label><input id="spAccAddress"></div>
+      <div style="display:flex;gap:6px;margin-bottom:6px"><button class="btn btn-primary btn-sm" id="btnSaveSpAccount" style="flex:1">💾 حفظ البيانات</button></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+      <h4 style="font-size:12px;margin-bottom:8px">🔑 تغيير كلمة المرور</h4>
+      <div class="form-group"><label>كلمة المرور الحالية</label><input id="spAccCurrentPass" type="password"></div>
+      <div class="form-row"><div class="form-group"><label>الجديدة (6+ أحرف)</label><input id="spAccNewPass" type="password"></div><div class="form-group"><label>تأكيد الجديدة</label><input id="spAccNewPass2" type="password"></div></div>
+      <button class="btn btn-light btn-sm" id="btnSpChangePass" style="width:100%;justify-content:center">🔑 تغيير كلمة المرور</button>
+      <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+      <button class="btn btn-danger btn-sm" id="btnSpDeleteAccount" style="width:100%;justify-content:center">🗑️ حذف حساب المورد نهائياً</button>
+    </div>
+  </div>
+</div>
+
+<!-- Clinic Supplier Portal Additions -->
+<div id="clinicSupplierPortal" class="portal-wrapper">
+  <div class="portal-topbar">
+    <div class="portal-brand">
+      <div class="portal-logo">🦷</div>
+      <div>
+        <h1 id="clinicPortalTitle">نظام جرد عيادة الأسنان</h1>
+        <p class="portal-sub" id="clinicPortalSub">إدارة المخزون والعروض</p>
+      </div>
+    </div>
+    <div class="portal-nav">
+      <button class="active" data-section="cp-inventory">📦 المخزون</button>
+      <button data-section="cp-offers">💼 عروض الموردين <span class="notif-badge" id="clinicOffersBadge" style="display:none">0</span></button>
+      <button data-section="cp-orders">🚚 الطلبات</button>
+      <button data-section="cp-notifications">🔔 الإشعارات <span class="notif-badge" id="clinicNotifBadge" style="display:none">0</span></button>
+    </div>
+  </div>
+
+  <!-- Clinic Inventory Section (shows existing clinic UI) -->
+  <div class="portal-section active" id="cp-inventory">
+    <div class="visibility-toggle" id="supplierVisibilityToggle">
+      <div class="info">
+        <h4>👁️ الظهور للموردين المعتمدين</h4>
+        <p>عند التفعيل، يمكن للموردين المعتمدين في المنصة رؤية المواد التي وصلت حد التنبيه فقط (بدون كشف كل مخزونك)، وإرسال عروض أسعار خاصة بك. العروض المرسلة لك لا تظهر لباقي العيادات.</p>
+      </div>
+      <label class="switch" style="margin-right:12px"><input type="checkbox" id="toggleSupplierVisibility"><span class="slider"></span></label>
+    </div>
+    <div id="clinicInventoryContainer"></div>
+  </div>
+
+  <!-- Clinic Offers Section -->
+  <div class="portal-section" id="cp-offers">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>💼 عروض الموردين الواردة</h3>
+        <span class="hint">🔒 هذه العروض خاصة بك ولا تظهر لباقي العيادات</span>
+      </div>
+      <div id="clinicOffersList"></div>
+    </div>
+  </div>
+
+  <!-- Clinic Orders Section -->
+  <div class="portal-section" id="cp-orders">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>🚚 طلباتي</h3>
+      </div>
+      <div id="clinicOrdersList"></div>
+    </div>
+  </div>
+
+  <!-- Clinic Notifications Section -->
+  <div class="portal-section" id="cp-notifications">
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <h3>🔔 الإشعارات</h3>
+        <button class="btn btn-light btn-sm" id="btnClinicMarkAllRead">✅ تحديد الكل كمقروء</button>
+      </div>
+      <div id="clinicNotificationsList" class="notification-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Send Offer Modal (for suppliers) -->
+<div id="sendOfferModal" class="modal hidden" style="z-index:290">
+  <div class="modal-content large" style="max-width:800px">
+    <div class="modal-header" style="background:linear-gradient(135deg,#f3e8ff 0%,#e9d5ff 100%);border-bottom:2px solid #d8b4fe"><h3>💼 إرسال عرض أسعار للعيادة</h3><button class="btn btn-light btn-sm" id="btnCloseSendOffer">✕</button></div>
+    <div class="modal-body">
+      <div class="portal-card" style="margin-bottom:12px">
+        <div class="request-clinic">
+          <div class="clinic-icon">🏥</div>
+          <div><h4 id="offerClinicName"></h4><p id="offerClinicInfo"></p></div>
+        </div>
+      </div>
+      <input type="hidden" id="offerClinicId">
+      <h4 style="font-size:12px;margin-bottom:10px">📦 المواد والأسعار</h4>
+      <div class="offer-form-items" id="offerFormItems"></div>
+      <button class="btn btn-light btn-sm" id="btnAddOfferItem" style="width:100%;justify-content:center;margin-bottom:12px">➕ إضافة مادة</button>
+      <div class="form-row">
+        <div class="form-group"><label>صلاحية العرض (أيام)</label><input id="offerValidDays" type="number" value="7" min="1" max="30"></div>
+        <div class="form-group"><label>ملاحظات</label><input id="offerNotes" placeholder="مثال: توصيل مجاني للطلبات فوق 100 دينار"></div>
+      </div>
+      <div class="offer-total">
+        <span style="font-weight:700">الإجمالي:</span>
+        <b id="offerTotalAmount">0.00</b>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span style="font-size:10px;color:var(--text-light)">🔒 هذا العرض يظهر فقط للعيادة المحددة</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-primary" id="btnSubmitOffer">💼 إرسال العرض</button>
+        <button class="btn btn-light" data-close="sendOfferModal">إلغاء</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Product Modal (for suppliers) -->
+<div id="productModal" class="modal hidden" style="z-index:290">
+  <div class="modal-content" style="max-width:520px">
+    <div class="modal-header"><h3>📦 إضافة/تعديل منتج</h3><button class="btn btn-light btn-sm" id="btnCloseProductModal">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="prodEditId">
+      <div class="image-upload" id="prodImageUpload">
+        <img class="preview" id="prodImagePreview">
+        <div class="upload-text"><div style="font-size:22px">📷</div><b style="font-size:11px">اضغط لرفع صورة المنتج</b></div>
+        <input type="file" id="prodImageInput" accept="image/*" style="display:none">
+      </div>
+      <div class="form-group" style="margin-top:10px"><label>اسم المنتج *</label><input id="prodName" placeholder="مثال: كمبوزيت A2 - 3M"></div>
+      <div class="form-row">
+        <div class="form-group"><label>الفئة</label><select id="prodCategory"><option value="حشوات">🦷 حشوات</option><option value="تخدير">💉 تخدير</option><option value="تعقيم">🧼 تعقيم</option><option value="أدوات">🔧 أدوات</option><option value="لبية">🩺 لبية</option><option value="أشعة">📷 أشعة</option><option value="تقويم">🔩 تقويم</option><option value="جراحة">🩸 جراحة</option><option value="تركيبات">👑 تركيبات</option><option value="عامة">📦 عامة</option></select></div>
+        <div class="form-group"><label>وحدة البيع</label><input id="prodUnit" value="قطعة"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>السعر *</label><input id="prodPrice" type="number" step="0.01" min="0" placeholder="0.00"></div>
+        <div class="form-group"><label>الحد الأدنى للطلب</label><input id="prodMinOrder" type="number" min="1" value="1"></div>
+      </div>
+      <div class="form-group"><label>الوصف</label><textarea id="prodDescription" placeholder="وصف مختصر للمنتج"></textarea></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:11px">متوفر</b><label class="switch"><input type="checkbox" id="prodInStock" checked><span class="slider"></span></label></div>
+    </div>
+    <div class="modal-footer">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-primary" id="btnSaveProduct" style="flex:1">💾 حفظ</button>
+        <button class="btn btn-light" data-close="productModal">إلغاء</button>
+        <button class="btn btn-danger" id="btnDeleteProduct" style="display:none">🗑️ حذف</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 const COLORS=['#fef3c7','#dbeafe','#dcfce7','#fce7f3','#e0e7ff','#ffedd5','#f3e8ff','#ccfbf1','#fecaca','#f1f5f9'];
@@ -2179,25 +2552,27 @@ async function handleLogin(ev){
 async function handleRegister(ev){
   ev.preventDefault(); clearAuthMsg();
   const clinicName=$('regClinicName').value.trim(), username=$('regUsername').value.trim(), phone=$('regPhone').value.trim();
+  const accountType=$('regAccountType').value||'clinic';
   const p1=$('regPassword').value, p2=$('regPassword2').value;
-  if(!clinicName){ showAuthError('أدخل اسم العيادة'); return; }
+  if(!clinicName){ showAuthError(accountType==='supplier'?'أدخل اسم الشركة':'أدخل اسم العيادة'); return; }
   if(!validUsername(username)){ showAuthError('اسم المستخدم: 3-30 حرف إنجليزي/أرقام (بدون مسافات)'); return; }
   if(!p1||p1.length<6){ showAuthError('كلمة المرور 6 أحرف على الأقل'); return; }
   if(p1!==p2){ showAuthError('تأكيد كلمة المرور غير متطابق'); return; }
   try{
     if(authMode==='server'){
-      const r=await apiFetch('/api/register',{method:'POST',body:JSON.stringify({clinicName:clinicName,username:username,password:p1,phone:phone})});
+      const r=await apiFetch('/api/register',{method:'POST',body:JSON.stringify({clinicName:clinicName,username:username,password:p1,phone:phone,accountType:accountType})});
       localStorage.setItem('dental_token_v1',r.token);
       await afterAuthSuccess(r.user,true);
     }else{
       const users=getLocalUsers();
       if(users.some(x=>x.username.toLowerCase()===username.toLowerCase())){ showAuthError('اسم المستخدم مسجل مسبقاً — اختر اسماً آخر'); return; }
       const salt=uid('salt');
-      const nu={id:uid('clinic'),clinicName:clinicName,username:username,phone:phone,salt:salt,passwordHash:await hashPassword(p1,salt),createdAt:new Date().toISOString()};
+      const nu={id:uid(accountType),clinicName:clinicName,username:username,phone:phone,accountType:accountType,salt:salt,passwordHash:await hashPassword(p1,salt),createdAt:new Date().toISOString()};
       users.push(nu); saveLocalUsers(users);
       localStorage.setItem(LS_SESSION,nu.id);
-      await afterAuthSuccess({id:nu.id,clinicName:clinicName,username:username,phone:phone},false);
-      setTimeout(()=>toast('🎉 تم إنشاء حساب '+clinicName+' — ارفع صورة مخزنك من زر «🎨 مخزني»','success',null,null,10000),600);
+      await afterAuthSuccess({id:nu.id,clinicName:clinicName,username:username,phone:phone,accountType:accountType},false);
+      const welcomeMsg=accountType==='supplier'?'🎉 تم إنشاء حساب المورد '+clinicName+' — ابدأ بإضافة منتجاتك':'🎉 تم إنشاء حساب '+clinicName+' — ارفع صورة مخزنك من زر «🎨 مخزني»';
+      setTimeout(()=>toast(welcomeMsg,'success',null,null,10000),600);
     }
   }catch(err){ showAuthError(err.message||'فشل إنشاء الحساب'); }
 }
@@ -2229,6 +2604,7 @@ function bindAuthUI(){
   $('tabRegister').addEventListener('click',()=>switchAuthTab('register'));
   $('loginForm').addEventListener('submit',handleLogin);
   $('registerForm').addEventListener('submit',handleRegister);
+  initAccountTypeSelector();
 }
 function bindNewUI(){
   bindDesigner();
@@ -2266,6 +2642,890 @@ async function bootApp(){
   }catch(e){ /* عرض شاشة الدخول */ }
   $('authOverlay').classList.remove('hidden');
 }
+/* ===============================================
+   SUPPLIER PORTAL & CLINIC-SUPPLIER INTEGRATION
+   =============================================== */
+
+// Account type selection in registration
+function initAccountTypeSelector(){
+  const options=document.querySelectorAll('.account-type-option');
+  options.forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      options.forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      const type=opt.dataset.type;
+      $('regAccountType').value=type;
+      if(type==='supplier'){
+        $('regClinicNameLabel').textContent='اسم الشركة *';
+        $('regClinicName').placeholder='مثال: شركة المستلزمات الطبية';
+        $('regSubmitBtn').textContent='➕ إنشاء حساب المورد';
+        $('authFeatures').innerHTML='✅ أضف منتجاتك مع الأسعار والعروض<br>✅ شاهد طلبات العيادات التي فعّلت الظهور<br>✅ أرسل عروض أسعار خاصة للعيادات<br>✅ إدارة الطلبات وتحديث حالتها';
+      }else{
+        $('regClinicNameLabel').textContent='اسم العيادة *';
+        $('regClinicName').placeholder='مثال: عيادة الابتسامة - عمان';
+        $('regSubmitBtn').textContent='➕ إنشاء حساب العيادة';
+        $('authFeatures').innerHTML='✅ كل عيادة لها بيانات مستقلة تماماً<br>✅ ارفع صورة مخزنك وحدد الجرارات والخزائن عليها<br>✅ رسائل واتساب تلقائية للموردين عند الحد الأدنى<br>✅ استقبل عروض الأسعار من الموردين';
+      }
+    });
+  });
+}
+
+// Portal state
+let portalState={
+  products:[],
+  offers:[],
+  orders:[],
+  requests:[],
+  notifications:[],
+  supplierVisibility:false
+};
+let notifPollTimer=null;
+
+// Supplier Portal Navigation
+function initSupplierPortalNav(){
+  const navBtns=document.querySelectorAll('#supplierPortal .portal-nav button[data-section]');
+  navBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      navBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#supplierPortal .portal-section').forEach(s=>s.classList.remove('active'));
+      const section=document.getElementById(btn.dataset.section);
+      if(section) section.classList.add('active');
+      // Refresh section data
+      const sec=btn.dataset.section;
+      if(sec==='sp-dashboard') loadSupplierDashboard();
+      else if(sec==='sp-products') loadSupplierProducts();
+      else if(sec==='sp-requests') loadSupplierRequests();
+      else if(sec==='sp-offers') loadSupplierOffers();
+      else if(sec==='sp-orders') loadSupplierOrders();
+      else if(sec==='sp-notifications') loadNotifications('supplier');
+    });
+  });
+}
+
+// Clinic Portal Navigation (for supplier offers integration)
+function initClinicPortalNav(){
+  const navBtns=document.querySelectorAll('#clinicSupplierPortal .portal-nav button[data-section]');
+  navBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      navBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#clinicSupplierPortal .portal-section').forEach(s=>s.classList.remove('active'));
+      const section=document.getElementById(btn.dataset.section);
+      if(section) section.classList.add('active');
+      const sec=btn.dataset.section;
+      if(sec==='cp-offers') loadClinicOffers();
+      else if(sec==='cp-orders') loadClinicOrders();
+      else if(sec==='cp-notifications') loadNotifications('clinic');
+      else if(sec==='cp-inventory') loadClinicInventory();
+    });
+  });
+}
+
+// Switch to supplier portal view
+function showSupplierPortal(){
+  document.body.classList.add('supplier-portal');
+  document.body.classList.remove('clinic-portal');
+  $('supplierPortal').classList.add('active');
+  $('clinicSupplierPortal').classList.remove('active');
+  $('supplierPortalSub').textContent='مرحباً '+currentUser.clinicName;
+  initSupplierPortalNav();
+  loadSupplierDashboard();
+  startNotifPolling();
+}
+
+// Switch to clinic portal view (with supplier integration)
+function showClinicPortal(){
+  document.body.classList.remove('supplier-portal');
+  document.body.classList.add('clinic-portal');
+  $('clinicSupplierPortal').classList.add('active');
+  $('supplierPortal').classList.remove('active');
+  $('clinicPortalTitle').textContent=currentUser.clinicName;
+  initClinicPortalNav();
+  
+  // Move existing clinic UI into the inventory section
+  const container=$('clinicInventoryContainer');
+  if(container && !container.hasChildNodes()){
+    // The existing clinic UI (topbar actions, stats, storage, etc.) is shown via body class
+    document.body.classList.remove('supplier-portal');
+  }
+  
+  loadSupplierVisibility();
+  startNotifPolling();
+}
+
+// Show the right portal based on account type
+function showPortalForAccountType(){
+  if(!currentUser) return;
+  const type=currentUser.accountType || 'clinic';
+  if(type==='supplier'){
+    showSupplierPortal();
+  }else{
+    // Show clinic with supplier integration
+    showClinicPortal();
+  }
+}
+
+// API helper for portal
+async function portalFetch(url, options){
+  return apiFetch(url, options);
+}
+
+// ============ SUPPLIER PORTAL FUNCTIONS ============
+
+async function loadSupplierDashboard(){
+  try{
+    // Load products
+    const dataRes=await portalFetch('/api/data',{method:'GET'}).catch(()=>null);
+    if(dataRes && dataRes.data){
+      portalState.products=dataRes.data.products || [];
+    }
+    
+    // Load offers
+    const offersRes=await portalFetch('/api/supplier/offers',{method:'GET'});
+    portalState.offers=offersRes.offers || [];
+    
+    // Load orders
+    const ordersRes=await portalFetch('/api/supplier/orders',{method:'GET'});
+    portalState.orders=ordersRes.orders || [];
+    
+    // Load requests
+    const reqRes=await portalFetch('/api/supplier/requests',{method:'GET'});
+    portalState.requests=reqRes.requests || [];
+    
+    // Update stats
+    $('spStatProducts').textContent=portalState.products.length;
+    $('spStatRequests').textContent=portalState.requests.reduce((s,r)=>s+r.items.length,0);
+    $('spStatOffers').textContent=portalState.offers.length;
+    $('spStatAccepted').textContent=portalState.offers.filter(o=>o.status==='accepted').length;
+    $('spStatOrders').textContent=portalState.orders.filter(o=>o.status!=='delivered'&&o.status!=='cancelled').length;
+    
+    // Recent activity
+    const activityBox=$('spRecentActivity');
+    const allActivity=[];
+    portalState.offers.slice(0,5).forEach(o=>{
+      allActivity.push({time:o.createdAt,type:'offer',text:'عرض لـ '+o.clinicName+' ('+o.items.length+' مادة)',status:o.status});
+    });
+    portalState.orders.slice(0,5).forEach(o=>{
+      allActivity.push({time:o.createdAt,type:'order',text:'طلب من '+o.clinicName,status:o.status});
+    });
+    allActivity.sort((a,b)=>new Date(b.time)-new Date(a.time));
+    
+    if(!allActivity.length){
+      activityBox.innerHTML='<div class="empty-state"><div class="icon">📊</div><p>لا توجد نشاطات بعد<br>ابدأ بإضافة منتجاتك وإرسال عروض للعيادات</p></div>';
+    }else{
+      activityBox.innerHTML='';
+      allActivity.slice(0,10).forEach(a=>{
+        const d=new Date(a.time);
+        const statusLabels={pending:'قيد الانتظار',accepted:'مقبول',rejected:'مرفوض',expired:'منتهي',confirmed:'مؤكد',shipped:'مشحون',delivered:'موصّل',cancelled:'ملغي'};
+        const statusClass=a.status==='accepted'||a.status==='delivered'?'accepted':(a.status==='rejected'||a.status==='cancelled'?'rejected':'pending');
+        activityBox.innerHTML+=`<div class="notif-item"><div class="notif-icon ${a.type==='offer'?'new_offer':'order_status'}">${a.type==='offer'?'💼':'🚚'}</div><div class="notif-content"><b>${escHtml(a.text)}</b><p><span class="offer-status ${statusClass}">${statusLabels[a.status]||a.status}</span></p><div class="notif-time">${isNaN(d.getTime())?'':d.toLocaleString('ar-JO')}</div></div></div>`;
+      });
+    }
+  }catch(err){
+    console.error('loadSupplierDashboard error:',err);
+  }
+}
+
+async function loadSupplierProducts(){
+  try{
+    const dataRes=await portalFetch('/api/data',{method:'GET'}).catch(()=>null);
+    if(dataRes && dataRes.data){
+      portalState.products=dataRes.data.products || [];
+    }
+    renderSupplierProducts();
+  }catch(err){
+    console.error(err);
+  }
+}
+
+function renderSupplierProducts(){
+  const grid=$('supplierProductsGrid');
+  if(!portalState.products.length){
+    grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="icon">📦</div><p>لا توجد منتجات بعد<br>اضغط "إضافة منتج جديد" للبدء</p></div>';
+    return;
+  }
+  grid.innerHTML='';
+  portalState.products.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='product-card';
+    card.innerHTML=`
+      ${p.image?'<img src="'+escHtml(p.image)+'" alt="">':'<div class="no-img">📦</div>'}
+      <h4>${escHtml(p.name)}</h4>
+      <div class="product-meta">
+        <span>${escHtml(p.category||'عامة')}</span>
+        <span>${p.inStock?'✅ متوفر':'❌ غير متوفر'}</span>
+        <span>الحد الأدنى: ${p.minOrder||1}</span>
+      </div>
+      ${p.description?'<p style="font-size:10px;color:var(--text-light);line-height:1.4">'+escHtml(p.description)+'</p>':''}
+      <div class="product-price">${parseFloat(p.price).toFixed(2)} <small>دينار / ${escHtml(p.unit||'قطعة')}</small></div>
+      <div class="product-actions">
+        <button class="btn btn-light btn-sm" style="flex:1" data-edit="${escHtml(p.id)}">✏️ تعديل</button>
+        <button class="btn btn-danger btn-sm" data-del="${escHtml(p.id)}">🗑️</button>
+      </div>
+    `;
+    card.querySelector('[data-edit]').addEventListener('click',()=>editProduct(p.id));
+    card.querySelector('[data-del]').addEventListener('click',()=>deleteProduct(p.id));
+    grid.appendChild(card);
+  });
+}
+
+function openProductModal(productId){
+  const prod=productId?portalState.products.find(p=>p.id===productId):null;
+  $('prodEditId').value=prod?prod.id:'';
+  $('prodName').value=prod?prod.name:'';
+  $('prodCategory').value=prod?prod.category||'عامة':'عامة';
+  $('prodUnit').value=prod?prod.unit||'قطعة':'قطعة';
+  $('prodPrice').value=prod?prod.price:'';
+  $('prodMinOrder').value=prod?prod.minOrder||1:1;
+  $('prodDescription').value=prod?prod.description||'':'';
+  $('prodInStock').checked=prod?prod.inStock!==false:true;
+  if(prod && prod.image){
+    $('prodImagePreview').src=prod.image;
+    $('prodImagePreview').style.display='block';
+    $('prodImageUpload').classList.add('has-image');
+  }else{
+    $('prodImagePreview').style.display='none';
+    $('prodImageUpload').classList.remove('has-image');
+  }
+  $('btnDeleteProduct').style.display=prod?'inline-flex':'none';
+  $('productModal').classList.remove('hidden');
+}
+
+function editProduct(id){ openProductModal(id); }
+
+async function saveProduct(){
+  const editId=$('prodEditId').value;
+  const name=$('prodName').value.trim();
+  const price=parseFloat($('prodPrice').value);
+  if(!name){ toast('اسم المنتج مطلوب','error'); return; }
+  if(!price||price<=0){ toast('السعر يجب أن يكون أكبر من صفر','error'); return; }
+  
+  const product={
+    id:editId||undefined,
+    name:name,
+    category:$('prodCategory').value,
+    unit:$('prodUnit').value.trim()||'قطعة',
+    price:price,
+    minOrder:parseInt($('prodMinOrder').value)||1,
+    description:$('prodDescription').value.trim(),
+    inStock:$('prodInStock').checked,
+    image:$('prodImagePreview').style.display!=='none'?$('prodImagePreview').src:''
+  };
+  
+  try{
+    await portalFetch('/api/supplier/products',{method:'POST',body:JSON.stringify(product)});
+    toast('✅ تم حفظ المنتج','success');
+    $('productModal').classList.add('hidden');
+    loadSupplierProducts();
+  }catch(err){
+    toast('❌ '+err.message,'error');
+  }
+}
+
+async function deleteProduct(id){
+  const prod=portalState.products.find(p=>p.id===id);
+  if(!prod) return;
+  if(!confirm('حذف المنتج "'+prod.name+'"؟')) return;
+  try{
+    await portalFetch('/api/supplier/products/'+id,{method:'DELETE'});
+    toast('✅ تم حذف المنتج','success');
+    loadSupplierProducts();
+  }catch(err){
+    toast('❌ '+err.message,'error');
+  }
+}
+
+async function loadSupplierRequests(){
+  try{
+    const res=await portalFetch('/api/supplier/requests',{method:'GET'});
+    portalState.requests=res.requests || [];
+    renderSupplierRequests();
+  }catch(err){
+    console.error(err);
+  }
+}
+
+function renderSupplierRequests(){
+  const box=$('supplierRequestsList');
+  if(!portalState.requests.length){
+    box.innerHTML='<div class="empty-state"><div class="icon">📋</div><p>لا توجد طلبات حالياً<br>ستظهر هنا المواد التي وصلت حد التنبيه من العيادات التي فعّلت الظهور</p></div>';
+    return;
+  }
+  box.innerHTML='';
+  portalState.requests.forEach(req=>{
+    const card=document.createElement('div');
+    card.className='request-card';
+    let itemsHtml='';
+    req.items.forEach(item=>{
+      itemsHtml+=`<div class="request-item"><span>${escHtml(item.materialName)} (${escHtml(item.category||'')})</span><span>المتوفر: ${item.currentQty} / التنبيه: <b>${item.threshold}</b></span></div>`;
+    });
+    card.innerHTML=`
+      <div class="request-clinic">
+        <div class="clinic-icon">🏥</div>
+        <div>
+          <h4>${escHtml(req.clinic.name)}</h4>
+          <p>📞 ${escHtml(req.clinic.phone||'بدون هاتف')}${req.clinic.address?' • 📍 '+escHtml(req.clinic.address):''}</p>
+        </div>
+      </div>
+      <div class="request-items">${itemsHtml}</div>
+      <button class="btn btn-primary btn-sm" data-clinic="${escHtml(req.clinic.id)}" data-clinic-name="${escHtml(req.clinic.name)}">💼 إرسال عرض أسعار</button>
+    `;
+    card.querySelector('[data-clinic]').addEventListener('click',(e)=>{
+      openSendOfferModal(e.target.dataset.clinic,e.target.dataset.clinicName,req.items);
+    });
+    box.appendChild(card);
+  });
+}
+
+function openSendOfferModal(clinicId,clinicName,items){
+  $('offerClinicId').value=clinicId;
+  $('offerClinicName').textContent=clinicName;
+  $('offerClinicInfo').textContent='مواد تحتاج عرض: '+items.length;
+  
+  const formBox=$('offerFormItems');
+  formBox.innerHTML='';
+  items.forEach((item,idx)=>{
+    addOfferItemRow(item.materialName,item.threshold*2);
+  });
+  
+  // Add one empty row
+  if(!items.length) addOfferItemRow('',0);
+  
+  updateOfferTotal();
+  $('sendOfferModal').classList.remove('hidden');
+}
+
+function addOfferItemRow(name='',qty=1,price=0){
+  const formBox=$('offerFormItems');
+  const row=document.createElement('div');
+  row.className='offer-form-item';
+  row.innerHTML=`
+    <input type="text" placeholder="اسم المادة" class="offer-item-name" value="${escHtml(name)}">
+    <input type="number" placeholder="الكمية" class="offer-item-qty" value="${qty}" min="1">
+    <input type="number" placeholder="سعر الوحدة" class="offer-item-price" value="${price||''}" min="0" step="0.01">
+    <button class="btn btn-danger btn-sm" type="button">✕</button>
+  `;
+  row.querySelector('button').addEventListener('click',()=>{
+    row.remove();
+    updateOfferTotal();
+  });
+  row.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',updateOfferTotal));
+  formBox.appendChild(row);
+}
+
+function updateOfferTotal(){
+  let total=0;
+  document.querySelectorAll('.offer-form-item').forEach(row=>{
+    const qty=parseFloat(row.querySelector('.offer-item-qty')?.value)||0;
+    const price=parseFloat(row.querySelector('.offer-item-price')?.value)||0;
+    total+=qty*price;
+  });
+  $('offerTotalAmount').textContent=total.toFixed(2)+' دينار';
+}
+
+async function submitOffer(){
+  const clinicId=$('offerClinicId').value;
+  const items=[];
+  document.querySelectorAll('.offer-form-item').forEach(row=>{
+    const name=row.querySelector('.offer-item-name')?.value?.trim();
+    const qty=parseInt(row.querySelector('.offer-item-qty')?.value)||0;
+    const price=parseFloat(row.querySelector('.offer-item-price')?.value)||0;
+    if(name && qty>0 && price>0){
+      items.push({materialName:name,quantity:qty,unitPrice:price});
+    }
+  });
+  
+  if(!items.length){ toast('أضف مادة واحدة على الأقل بسعر وكمية','error'); return; }
+  
+  try{
+    await portalFetch('/api/supplier/offers',{
+      method:'POST',
+      body:JSON.stringify({
+        clinicId:clinicId,
+        items:items,
+        notes:$('offerNotes').value.trim(),
+        validDays:parseInt($('offerValidDays').value)||7
+      })
+    });
+    toast('✅ تم إرسال العرض للعيادة','success');
+    $('sendOfferModal').classList.add('hidden');
+    $('offerNotes').value='';
+    loadSupplierDashboard();
+  }catch(err){
+    toast('❌ '+err.message,'error');
+  }
+}
+
+async function loadSupplierOffers(){
+  try{
+    const res=await portalFetch('/api/supplier/offers',{method:'GET'});
+    portalState.offers=res.offers || [];
+    renderSupplierOffers();
+  }catch(err){
+    console.error(err);
+  }
+}
+
+function renderSupplierOffers(){
+  const box=$('supplierOffersList');
+  if(!portalState.offers.length){
+    box.innerHTML='<div class="empty-state"><div class="icon">💼</div><p>لا توجد عروض مرسلة<br>أرسل عروض أسعار من صفحة "طلبات العيادات"</p></div>';
+    return;
+  }
+  box.innerHTML='';
+  portalState.offers.forEach(offer=>{
+    const card=document.createElement('div');
+    card.className='offer-card '+(offer.status||'pending');
+    const d=new Date(offer.createdAt);
+    const validD=new Date(offer.validUntil);
+    const statusLabels={pending:'قيد الانتظار',accepted:'مقبول',rejected:'مرفوض',expired:'منتهي الصلاحية'};
+    
+    let itemsHtml='<div class="offer-item-row header"><span>المادة</span><span>الكمية</span><span>سعر الوحدة</span><span>الإجمالي</span></div>';
+    offer.items.forEach(item=>{
+      itemsHtml+=`<div class="offer-item-row"><span>${escHtml(item.materialName)}</span><span>${item.quantity}</span><span>${parseFloat(item.unitPrice).toFixed(2)}</span><span>${parseFloat(item.totalPrice).toFixed(2)}</span></div>`;
+    });
+    
+    card.innerHTML=`
+      <div class="offer-supplier">
+        <div class="supplier-icon">🏥</div>
+        <div>
+          <h4>${escHtml(offer.clinicName)}</h4>
+          <p>أُرسل: ${isNaN(d.getTime())?'':d.toLocaleString('ar-JO')}</p>
+        </div>
+        <span class="offer-status ${offer.status}">${statusLabels[offer.status]||offer.status}</span>
+      </div>
+      <div class="offer-items-list">${itemsHtml}</div>
+      <div class="offer-total"><span>الإجمالي:</span><b>${parseFloat(offer.totalAmount).toFixed(2)} دينار</b></div>
+      ${offer.notes?'<p style="font-size:10.5px;color:var(--text-light);margin-bottom:8px">📝 '+escHtml(offer.notes)+'</p>':''}
+      <div class="offer-validity">⏰ صالح حتى: ${isNaN(validD.getTime())?'':validD.toLocaleDateString('ar-JO')}</div>
+    `;
+    box.appendChild(card);
+  });
+}
+
+async function loadSupplierOrders(){
+  try{
+    const res=await portalFetch('/api/supplier/orders',{method:'GET'});
+    portalState.orders=res.orders || [];
+    renderSupplierOrders();
+  }catch(err){
+    console.error(err);
+  }
+}
+
+function renderSupplierOrders(){
+  const box=$('supplierOrdersList');
+  if(!portalState.orders.length){
+    box.innerHTML='<div class="empty-state"><div class="icon">🚚</div><p>لا توجد طلبات واردة<br>ستظهر هنا الطلبات المقبولة من العيادات</p></div>';
+    return;
+  }
+  box.innerHTML='';
+  portalState.orders.forEach(order=>{
+    const card=document.createElement('div');
+    card.className='offer-card '+(order.status==='delivered'?'accepted':'');
+    const d=new Date(order.createdAt);
+    const statusLabels={confirmed:'مؤكد',shipped:'مشحون',delivered:'موصّل',cancelled:'ملغي'};
+    
+    let itemsHtml='<div class="offer-item-row header"><span>المادة</span><span>الكمية</span><span>سعر الوحدة</span><span>الإجمالي</span></div>';
+    order.items.forEach(item=>{
+      itemsHtml+=`<div class="offer-item-row"><span>${escHtml(item.materialName)}</span><span>${item.quantity}</span><span>${parseFloat(item.unitPrice).toFixed(2)}</span><span>${parseFloat(item.totalPrice).toFixed(2)}</span></div>`;
+    });
+    
+    card.innerHTML=`
+      <div class="offer-supplier">
+        <div class="supplier-icon">🏥</div>
+        <div>
+          <h4>${escHtml(order.clinicName)}</h4>
+          <p>تاريخ الطلب: ${isNaN(d.getTime())?'':d.toLocaleString('ar-JO')}</p>
+        </div>
+        <span class="offer-status ${order.status==='delivered'||order.status==='confirmed'?'accepted':(order.status==='cancelled'?'rejected':'pending')}">${statusLabels[order.status]||order.status}</span>
+      </div>
+      <div class="offer-items-list">${itemsHtml}</div>
+      <div class="offer-total"><span>الإجمالي:</span><b>${parseFloat(order.totalAmount).toFixed(2)} دينار</b></div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <select class="order-status-select" style="padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:11px;font-weight:700">
+          <option value="confirmed" ${order.status==='confirmed'?'selected':''}>✅ مؤكد</option>
+          <option value="shipped" ${order.status==='shipped'?'selected':''}>🚚 مشحون</option>
+          <option value="delivered" ${order.status==='delivered'?'selected':''}>📦 موصّل</option>
+          <option value="cancelled" ${order.status==='cancelled'?'selected':''}>❌ ملغي</option>
+        </select>
+        <button class="btn btn-primary btn-sm" data-order="${escHtml(order.id)}">💾 تحديث الحالة</button>
+      </div>
+    `;
+    card.querySelector('[data-order]').addEventListener('click',async()=>{
+      const newStatus=card.querySelector('.order-status-select').value;
+      try{
+        await portalFetch('/api/supplier/orders/'+order.id+'/status',{method:'PUT',body:JSON.stringify({status:newStatus})});
+        toast('✅ تم تحديث حالة الطلب','success');
+        loadSupplierOrders();
+      }catch(err){
+        toast('❌ '+err.message,'error');
+      }
+    });
+    box.appendChild(card);
+  });
+}
+
+// ============ CLINIC SUPPLIER INTEGRATION ============
+
+async function loadSupplierVisibility(){
+  try{
+    const dataRes=await portalFetch('/api/data',{method:'GET'}).catch(()=>null);
+    if(dataRes && dataRes.data && dataRes.data.settings){
+      portalState.supplierVisibility=!!dataRes.data.settings.supplierVisibility;
+      $('toggleSupplierVisibility').checked=portalState.supplierVisibility;
+    }
+  }catch(err){
+    console.error(err);
+  }
+}
+
+async function toggleSupplierVisibilityHandler(){
+  const visible=$('toggleSupplierVisibility').checked;
+  try{
+    await portalFetch('/api/clinic/visibility',{method:'PUT',body:JSON.stringify({visible:visible})});
+    portalState.supplierVisibility=visible;
+    toast(visible?'✅ تم تفعيل الظهور للموردين المعتمدين':'تم إيقاف الظهور للموردين',visible?'success':'info');
+  }catch(err){
+    toast('❌ '+err.message,'error');
+    $('toggleSupplierVisibility').checked=portalState.supplierVisibility;
+  }
+}
+
+async function loadClinicOffers(){
+  try{
+    const res=await portalFetch('/api/clinic/offers',{method:'GET'});
+    renderClinicOffers(res.offers || []);
+  }catch(err){
+    console.error(err);
+  }
+}
+
+function renderClinicOffers(offers){
+  const box=$('clinicOffersList');
+  if(!offers.length){
+    box.innerHTML='<div class="empty-state"><div class="icon">💼</div><p>لا توجد عروض واردة<br>ستظهر هنا عروض الأسعار من الموردين المعتمدين</p></div>';
+    return;
+  }
+  box.innerHTML='';
+  offers.forEach(offer=>{
+    const card=document.createElement('div');
+    card.className='offer-card '+(offer.status||'pending');
+    const d=new Date(offer.createdAt);
+    const validD=new Date(offer.validUntil);
+    const statusLabels={pending:'قيد الانتظار',accepted:'مقبول',rejected:'مرفوض',expired:'منتهي الصلاحية'};
+    const isExpired=new Date(offer.validUntil)<new Date() && offer.status==='pending';
+    
+    let itemsHtml='<div class="offer-item-row header"><span>المادة</span><span>الكمية</span><span>سعر الوحدة</span><span>الإجمالي</span></div>';
+    offer.items.forEach(item=>{
+      itemsHtml+=`<div class="offer-item-row"><span>${escHtml(item.materialName)}</span><span>${item.quantity}</span><span>${parseFloat(item.unitPrice).toFixed(2)}</span><span>${parseFloat(item.totalPrice).toFixed(2)}</span></div>`;
+    });
+    
+    card.innerHTML=`
+      <div class="offer-supplier">
+        <div class="supplier-icon">🏢</div>
+        <div>
+          <h4>${escHtml(offer.supplierName)}</h4>
+          <p>📞 ${escHtml(offer.supplierPhone||'')} • أُرسل: ${isNaN(d.getTime())?'':d.toLocaleString('ar-JO')}</p>
+        </div>
+        <span class="offer-status ${isExpired?'expired':offer.status}">${isExpired?'منتهي الصلاحية':(statusLabels[offer.status]||offer.status)}</span>
+      </div>
+      <div class="offer-items-list">${itemsHtml}</div>
+      <div class="offer-total"><span>الإجمالي:</span><b>${parseFloat(offer.totalAmount).toFixed(2)} دينار</b></div>
+      ${offer.notes?'<p style="font-size:10.5px;color:var(--text-light);margin-bottom:8px">📝 '+escHtml(offer.notes)+'</p>':''}
+      <div class="offer-validity">⏰ صالح حتى: ${isNaN(validD.getTime())?'':validD.toLocaleDateString('ar-JO')}</div>
+      ${offer.status==='pending'&&!isExpired?`
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-success" style="flex:1" data-accept="${escHtml(offer.id)}">✅ قبول العرض وإنشاء طلب</button>
+          <button class="btn btn-danger" style="flex:1" data-reject="${escHtml(offer.id)}">❌ رفض العرض</button>
+        </div>
+      `:''}
+    `;
+    
+    const acceptBtn=card.querySelector('[data-accept]');
+    const rejectBtn=card.querySelector('[data-reject]');
+    if(acceptBtn){
+      acceptBtn.addEventListener('click',async()=>{
+        if(!confirm('قبول هذا العرض وإنشاء طلب من '+offer.supplierName+'؟\n\nالإجمالي: '+parseFloat(offer.totalAmount).toFixed(2)+' دينار')) return;
+        try{
+          const res=await portalFetch('/api/clinic/offers/'+offer.id+'/accept',{method:'POST',body:JSON.stringify({})});
+          toast('✅ تم قبول العرض وإنشاء الطلب','success');
+          loadClinicOffers();
+          loadClinicOrders();
+        }catch(err){
+          toast('❌ '+err.message,'error');
+        }
+      });
+    }
+    if(rejectBtn){
+      rejectBtn.addEventListener('click',async()=>{
+        if(!confirm('رفض هذا العرض من '+offer.supplierName+'؟')) return;
+        try{
+          await portalFetch('/api/clinic/offers/'+offer.id+'/reject',{method:'POST',body:JSON.stringify({})});
+          toast('تم رفض العرض','info');
+          loadClinicOffers();
+        }catch(err){
+          toast('❌ '+err.message,'error');
+        }
+      });
+    }
+    box.appendChild(card);
+  });
+}
+
+async function loadClinicOrders(){
+  try{
+    const res=await portalFetch('/api/clinic/orders',{method:'GET'});
+    renderClinicOrders(res.orders || []);
+  }catch(err){
+    console.error(err);
+  }
+}
+
+function renderClinicOrders(orders){
+  const box=$('clinicOrdersList');
+  if(!orders.length){
+    box.innerHTML='<div class="empty-state"><div class="icon">🚚</div><p>لا توجد طلبات<br>ستظهر هنا الطلبات المُنشأة من العروض المقبولة</p></div>';
+    return;
+  }
+  box.innerHTML='';
+  orders.forEach(order=>{
+    const card=document.createElement('div');
+    card.className='offer-card '+(order.status==='delivered'?'accepted':'');
+    const d=new Date(order.createdAt);
+    const statusLabels={confirmed:'مؤكد',shipped:'مشحون',delivered:'موصّل',cancelled:'ملغي'};
+    
+    let itemsHtml='<div class="offer-item-row header"><span>المادة</span><span>الكمية</span><span>سعر الوحدة</span><span>الإجمالي</span></div>';
+    order.items.forEach(item=>{
+      itemsHtml+=`<div class="offer-item-row"><span>${escHtml(item.materialName)}</span><span>${item.quantity}</span><span>${parseFloat(item.unitPrice).toFixed(2)}</span><span>${parseFloat(item.totalPrice).toFixed(2)}</span></div>`;
+    });
+    
+    card.innerHTML=`
+      <div class="offer-supplier">
+        <div class="supplier-icon">🏢</div>
+        <div>
+          <h4>${escHtml(order.supplierName)}</h4>
+          <p>📞 ${escHtml(order.supplierPhone||'')} • تاريخ الطلب: ${isNaN(d.getTime())?'':d.toLocaleString('ar-JO')}</p>
+        </div>
+        <span class="offer-status ${order.status==='delivered'||order.status==='confirmed'?'accepted':(order.status==='cancelled'?'rejected':'pending')}">${statusLabels[order.status]||order.status}</span>
+      </div>
+      <div class="offer-items-list">${itemsHtml}</div>
+      <div class="offer-total"><span>الإجمالي:</span><b>${parseFloat(order.totalAmount).toFixed(2)} دينار</b></div>
+    `;
+    box.appendChild(card);
+  });
+}
+
+function loadClinicInventory(){
+  // This section shows the existing clinic UI
+  // It's already rendered in the main page
+}
+
+// ============ NOTIFICATIONS ============
+
+async function loadNotifications(role){
+  try{
+    const res=await portalFetch('/api/notifications',{method:'GET'});
+    const notifications=res.notifications || [];
+    portalState.notifications=notifications;
+    renderNotifications(notifications,role);
+    updateNotifBadge(notifications,role);
+  }catch(err){
+    console.error(err);
+  }
+}
+
+function renderNotifications(notifications,role){
+  const boxId=role==='supplier'?'supplierNotificationsList':'clinicNotificationsList';
+  const box=$(boxId);
+  if(!box) return;
+  
+  if(!notifications.length){
+    box.innerHTML='<div class="empty-state"><div class="icon">🔔</div><p>لا توجد إشعارات</p></div>';
+    return;
+  }
+  box.innerHTML='';
+  notifications.forEach(n=>{
+    const d=new Date(n.createdAt);
+    const item=document.createElement('div');
+    item.className='notif-item'+(n.read?'':' unread');
+    const iconMap={new_offer:'💼',offer_accepted:'✅',offer_rejected:'❌',order_status:'🚚',clinic_visible:'👁️'};
+    item.innerHTML=`
+      <div class="notif-icon ${n.type}">${iconMap[n.type]||'🔔'}</div>
+      <div class="notif-content">
+        <b>${escHtml(n.title)}</b>
+        <p>${escHtml(n.message)}</p>
+        <div class="notif-time">${isNaN(d.getTime())?'':d.toLocaleString('ar-JO')}</div>
+      </div>
+    `;
+    item.addEventListener('click',async()=>{
+      if(!n.read){
+        try{
+          await portalFetch('/api/notifications/read',{method:'POST',body:JSON.stringify({notificationIds:[n.id]})});
+          item.classList.remove('unread');
+          n.read=true;
+          updateNotifBadge(portalState.notifications,role);
+        }catch(e){}
+      }
+    });
+    box.appendChild(item);
+  });
+}
+
+function updateNotifBadge(notifications,role){
+  const unread=notifications.filter(n=>!n.read).length;
+  const badgeId=role==='supplier'?'supplierNotifBadge':'clinicNotifBadge';
+  const badge=$(badgeId);
+  if(!badge) return;
+  if(unread>0){
+    badge.textContent=unread;
+    badge.style.display='flex';
+  }else{
+    badge.style.display='none';
+  }
+  // Also update offers badge for clinics
+  if(role==='clinic'){
+    loadClinicOffersBadge();
+  }
+}
+
+async function loadClinicOffersBadge(){
+  try{
+    const res=await portalFetch('/api/clinic/offers',{method:'GET'});
+    const pendingOffers=(res.offers||[]).filter(o=>o.status==='pending');
+    const badge=$('clinicOffersBadge');
+    if(badge){
+      if(pendingOffers.length>0){
+        badge.textContent=pendingOffers.length;
+        badge.style.display='flex';
+      }else{
+        badge.style.display='none';
+      }
+    }
+  }catch(e){}
+}
+
+async function markAllNotificationsRead(role){
+  try{
+    await portalFetch('/api/notifications/read',{method:'POST',body:JSON.stringify({markAll:true})});
+    portalState.notifications.forEach(n=>n.read=true);
+    renderNotifications(portalState.notifications,role);
+    updateNotifBadge(portalState.notifications,role);
+    toast('✅ تم تحديد جميع الإشعارات كمقروءة','success');
+  }catch(err){
+    toast('❌ '+err.message,'error');
+  }
+}
+
+function startNotifPolling(){
+  if(notifPollTimer) clearInterval(notifPollTimer);
+  notifPollTimer=setInterval(()=>{
+    if(!currentUser) return;
+    const role=currentUser.accountType==='supplier'?'supplier':'clinic';
+    loadNotifications(role);
+  },30000); // Poll every 30 seconds
+}
+
+// ============ SUPPLIER ACCOUNT ============
+
+function openSupplierAccount(){
+  $('spAccName').value=currentUser.clinicName||'';
+  $('spAccUsername').value=currentUser.username||'';
+  $('spAccPhone').value=currentUser.phone||'';
+  $('spAccAddress').value=currentUser.address||'';
+}
+
+async function saveSupplierAccount(){
+  const name=$('spAccName').value.trim();
+  if(!name){ toast('اسم الشركة مطلوب','error'); return; }
+  currentUser.clinicName=name;
+  currentUser.phone=$('spAccPhone').value.trim();
+  currentUser.address=$('spAccAddress').value.trim();
+  try{
+    await portalFetch('/api/me',{method:'PUT',body:JSON.stringify({clinicName:name,phone:currentUser.phone,address:currentUser.address})});
+    $('supplierPortalSub').textContent='مرحباً '+name;
+    toast('✅ تم حفظ البيانات','success');
+  }catch(err){
+    toast('❌ '+err.message,'error');
+  }
+}
+
+// ============ INITIALIZATION ============
+
+function bindSupplierPortalUI(){
+  // Product modal
+  $('btnAddProduct').addEventListener('click',()=>openProductModal(null));
+  $('btnCloseProductModal').addEventListener('click',()=>closeModalById('productModal'));
+  $('btnSaveProduct').addEventListener('click',saveProduct);
+  $('btnDeleteProduct').addEventListener('click',()=>deleteProduct($('prodEditId').value));
+  
+  // Product image upload
+  $('prodImageUpload').addEventListener('click',()=>$('prodImageInput').click());
+  $('prodImageInput').addEventListener('change',(e)=>{
+    const file=e.target.files[0];
+    if(!file) return;
+    const reader=new FileReader();
+    reader.onload=(ev)=>{
+      $('prodImagePreview').src=ev.target.result;
+      $('prodImagePreview').style.display='block';
+      $('prodImageUpload').classList.add('has-image');
+    };
+    reader.readAsDataURL(file);
+  });
+  
+  // Send offer modal
+  $('btnCloseSendOffer').addEventListener('click',()=>closeModalById('sendOfferModal'));
+  $('btnAddOfferItem').addEventListener('click',()=>addOfferItemRow());
+  $('btnSubmitOffer').addEventListener('click',submitOffer);
+  
+  // Supplier account
+  $('btnSaveSpAccount').addEventListener('click',saveSupplierAccount);
+  $('btnSpChangePass').addEventListener('click',doChangePassword);
+  $('btnSpDeleteAccount').addEventListener('click',doDeleteAccount);
+  
+  // Supplier logout
+  $('btnSupplierLogout').addEventListener('click',()=>{ if(confirm('تسجيل الخروج؟')) doLogout(); });
+  
+  // Mark all read
+  $('btnMarkAllRead').addEventListener('click',()=>markAllNotificationsRead('supplier'));
+  $('btnClinicMarkAllRead').addEventListener('click',()=>markAllNotificationsRead('clinic'));
+  
+  // Clinic supplier visibility toggle
+  $('toggleSupplierVisibility').addEventListener('change',toggleSupplierVisibilityHandler);
+}
+
+// Override afterAuthSuccess to handle supplier accounts
+const _originalAfterAuthSuccess = afterAuthSuccess;
+afterAuthSuccess = async function(user, fromServer){
+  currentUser=user;
+  
+  if(fromServer){
+    try{
+      const r=await apiFetch('/api/data',{method:'GET'});
+      if(r&&r.data) localStorage.setItem(storageKey(),JSON.stringify(r.data));
+    }catch(err){ /* no data yet */ }
+  }
+  
+  $('authOverlay').classList.add('hidden');
+  
+  const type=user.accountType||'clinic';
+  if(type==='supplier'){
+    // Supplier portal
+    showSupplierPortal();
+    openSupplierAccount();
+    bindSupplierPortalUI();
+    toast('👋 أهلاً '+user.clinicName+' — بوابة الموردين','success');
+  }else{
+    // Clinic - show existing UI with supplier integration
+    initAppUI();
+    showClinicPortal();
+    bindSupplierPortalUI();
+    updateClinicBadge();
+    toast('👋 أهلاً '+user.clinicName,'success');
+  }
+}
+
 document.addEventListener('DOMContentLoaded',()=>{ bootApp(); });
 
 </script>
