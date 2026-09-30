@@ -1,9 +1,65 @@
+# Render blueprint — نشر الموقع كخدمة Node.js (Web Service)
+#
+# لماذا Web Service وليس موقعاً ثابتاً؟
+#   • الحسابات المشتركة بين الأجهزة (الخادم)
+#   • روابط استعادة كلمة المرور بالبريد
+#   • لوحة المالك (GhassanAdmin) لعرض كل العيادات والشركات
+#
+# الخطوات: Render → New → Blueprint → اختر هذا المستودع، ثم املأ القيم التي
+# عليها sync:false من لوحة Render (المفاتيح السرية لا تُحفظ في المستودع).
+#
+# ملاحظة Render المجاني: منافذ SMTP (25/465/587) محجوبة على الخطة المجانية،
+# لذا استخدم مفتاح خدمة بريد عبر HTTPS (RESEND_API_KEY / BREVO_API_KEY ...).
+
 services:
   - type: web
     name: dental-inventory
-    env: static
-    staticPublishPath: ./
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # --- لوحة المالك ---
+      - key: ADMIN_USERNAME
+        value: GhassanAdmin
+      - key: ADMIN_PASSWORD          # ⚠️ املأها بقيمة قوية من لوحة Render
+        sync: false
+      # --- إرسال البريد عبر HTTPS (يعمل على الخطة المجانية) ---
+      - key: RESEND_API_KEY          # مفتاح Resend — اترك الباقي فارغاً إن استخدمت مزوّداً آخر
+        sync: false
+      - key: BREVO_API_KEY           # بديل: مفتاح Brevo
+        sync: false
+      - key: SENDGRID_API_KEY        # بديل: مفتاح SendGrid
+        sync: false
+      - key: MAILGUN_API_KEY         # بديل: Mailgun (+ النطاق)
+        sync: false
+      - key: MAILGUN_DOMAIN
+        sync: false
+      - key: MAIL_FROM               # مثال: عيادة الابتسامة <info@yourdomain.com>
+        sync: false
+      # --- أو SMTP (يحتاج خطة مدفوعة على Render) ---
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      # --- إعدادات عامة ---
+      - key: APP_BASE_URL            # مثال: https://my-site.onrender.com (أساس الرابط في الرسالة)
+        sync: false
+      - key: RESET_TTL_MINUTES
+        value: "60"
+
+# لتفادي فقدان البيانات عند كل إعادة نشر (خطط مدفوعة فقط):
+#   أضف قرصاً دائماً ثم DATA_DIR=/var/data
+#     disk:
+#       name: dental-data
+#       mountPath: /var/data
+#       sizeGB: 1
+#     envVars:
+#       - key: DATA_DIR
+#         value: /var/data

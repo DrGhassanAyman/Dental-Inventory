@@ -120,7 +120,9 @@ npm test      # jsdom: الأزرار ونِسب أبعاد الصور + است�
 - **كخادم Node.js** (للحسابات المشتركة + وسيط واتساب + روابط إعادة تعيين كلمة المرور + لوحة المالك): New → Web Service:
   - Build Command: `npm install && npm run build`
   - Start Command: `npm start`
-  - متغيّرات البيئة المطلوبة للبريد ولوحة المالك: `SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, ADMIN_USERNAME, ADMIN_PASSWORD, APP_BASE_URL` — راجع `PASSWORD_RESET_GUIDE.md`.
+  - متغيّرات البيئة المطلوبة للبريد ولوحة المالك: `RESEND_API_KEY` (أو `BREVO_API_KEY` / `SENDGRID_API_KEY`) + `MAIL_FROM` + `ADMIN_USERNAME` + `ADMIN_PASSWORD` + `APP_BASE_URL` — التفاصيل في `PASSWORD_RESET_GUIDE.md`.
+  - ⚠️ خطة Render المجانية تحجب منافذ SMTP (25/465/587) — استخدم مفتاح بريد عبر HTTPS، أو خطة مدفوعة مع `SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS`.
+  - أو استخدم ملف `render.yaml` الجاهز: Render → New → Blueprint.
 - ملاحظة: نظام ملفات Render المجاني قد يفقد مجلد `data/` عند إعادة النشر — صدّر نسخاً احتياطية دورياً من زر 💾 تصدير.
 
 ## ربط واتساب Business API (تفاصيل)
@@ -129,8 +131,9 @@ npm test      # jsdom: الأزرار ونِسب أبعاد الصور + است�
 ## الملفات
 - `index.html`: البرنامج الرئيسي (حسابات + مصمم مخزن + جرد + واتساب).
 - `server.js`: خادم الحسابات والبيانات ووسيط واتساب (بدون مكتبات) + استعادة كلمة المرور + APIs لوحة المالك.
-- `mailer.js`: إرسال البريد عبر SMTP بدون مكتبات خارجية (TLS / STARTTLS).
-- `PASSWORD_RESET_GUIDE.md`: دليل استعادة كلمة المرور ولوحة المالك وإعداد SMTP.
+- `mailer.js`: إرسال البريد بدون مكتبات خارجية — HTTPS API (Resend / Brevo / SendGrid / Mailgun) أو SMTP (TLS / STARTTLS).
+- `PASSWORD_RESET_GUIDE.md`: دليل استعادة كلمة المرور ولوحة المالك، وإعداد البريد (HTTPS API أو SMTP)، وخطوات الترقية من موقع ثابت إلى خدمة Node.js.
+- `render.yaml`: إعداد نشر جاهز كخدمة Node.js مع متغيّرات البريد ولوحة المالك.
 - `data/`: بيانات الخادم (تُنشأ تلقائياً، خارج Git).
 - `images/full.jpg`: صورة المخزن الافتراضية.
 - `images/drawer.jpg` / `images/cabinet.jpg`: صور افتراضية داخل الجرارات/الخزائن.

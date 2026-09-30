@@ -371,6 +371,7 @@ async function handleAdminApi(req, res, urlPath, admin) {
     return sendJson(res, 200, {
       admin: publicAdmin(),
       smtpConfigured: mailer.isConfigured(),
+      mailTransport: mailer.transportName(),
       resetTtlMinutes: Math.round(RESET_TTL_MS / 60000)
     });
   }
@@ -402,6 +403,7 @@ async function handleAdminApi(req, res, urlPath, admin) {
     return sendJson(res, 200, {
       accounts,
       smtpConfigured: mailer.isConfigured(),
+      mailTransport: mailer.transportName(),
       resetTtlMinutes: Math.round(RESET_TTL_MS / 60000)
     });
   }
@@ -465,7 +467,7 @@ async function handleApi(req, res, urlPath) {
       mode: 'multi-user',
       version: '2.1.0',
       time: new Date().toISOString(),
-      features: { passwordReset: true, emailReset: mailer.isConfigured(), ownerPanel: true }
+      features: { passwordReset: true, emailReset: mailer.isConfigured(), mailTransport: mailer.transportName(), ownerPanel: true }
     });
   }
   // Public: WhatsApp proxy
@@ -540,7 +542,7 @@ async function handleApi(req, res, urlPath) {
     try { body = await readJsonBody(req); } catch (e) { return sendJson(res, 400, { error: e.message }); }
     const identifier = String(body.identifier || body.username || body.email || '').trim().toLowerCase();
     // Always answer the same way, so nobody can probe which accounts exist.
-    const generic = { success: true, smtpConfigured: mailer.isConfigured() };
+    const generic = { success: true, smtpConfigured: mailer.isConfigured(), mailTransport: mailer.transportName() };
     if (!identifier) return sendJson(res, 200, generic);
     const users = loadUsers();
     const u = users.find(x => x.username.toLowerCase() === identifier || String(x.email || '').toLowerCase() === identifier);

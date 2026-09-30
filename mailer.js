@@ -3,7 +3,16 @@
 // resolves with { sent:false, skipped:true } and the caller falls back to a
 // link the owner can copy from the admin panel.
 //
-// Configuration (environment variables):
+// Two transports are supported; the HTTPS API wins when both are configured,
+// because free hosting tiers (e.g. Render free web services) block outbound
+// SMTP ports 25/465/587 entirely.
+//
+// 1) HTTPS mail API (works on free plans — recommended)
+//   RESEND_API_KEY     + MAIL_FROM  → https://api.resend.com/emails   (RESEND_API_URL)
+//   BREVO_API_KEY      + MAIL_FROM  → https://api.brevo.com/v3/smtp/email (BREVO_API_URL)
+//   SENDGRID_API_KEY   + MAIL_FROM  → https://api.sendgrid.com/v3/mail/send (SENDGRID_API_URL)
+//   MAILGUN_API_KEY + MAILGUN_DOMAIN + MAIL_FROM → api.mailgun.net (MAILGUN_API_URL)
+// 2) SMTP
 //   SMTP_HOST   e.g. smtp.gmail.com
 //   SMTP_PORT   465 (implicit TLS) or 587 (STARTTLS) — default 587
 //   SMTP_SECURE 'true' | 'false' — default: true when port is 465
@@ -12,8 +21,9 @@
 //   SMTP_FROM   From header — default SMTP_USER
 //   SMTP_REPLY_TO  optional
 //
-// All variables may also be provided with a MAIL_ prefix (MAIL_HOST, ...), so
-// either naming style works on the hosting dashboard.
+// MAIL_FROM is shared by both transports (falls back to SMTP_FROM then SMTP_USER).
+// All SMTP variables may also be provided with a MAIL_ prefix (MAIL_HOST, ...),
+// so either naming style works on the hosting dashboard.
 
 const net = require('net');
 const tls = require('tls');
@@ -40,9 +50,115 @@ function getConfig() {
   return { host, port, secure, user, pass, from, replyTo };
 }
 
+function rawEnv(...names) {
+  for (const n of names) {
+    const v = process.env[n];
+    if (v !== undefined && v !== '') return String(v).trim();
+  }
+  return '';
+}
+
+// Returns { kind, ... } for the first configured transport, or null.
+function getTransport() {
+  const from = rawEnv('MAIL_FROM', 'SMTP_FROM', 'SMTP_USER');
+  const replyTo = rawEnv('MAIL_REPLY_TO', 'SMTP_REPLY_TO');
+
+  const resend = rawEnv('RESEND_API_KEY');
+  if (resend) return { kind: 'resend', apiKey: resend, from, replyTo, url: rawEnv('RESEND_API_URL') || 'https://api.resend.com/emails' };
+
+  const brevo = rawEnv('BREVO_API_KEY', 'SENDINBLUE_API_KEY');
+  if (brevo) return { kind: 'brevo', apiKey: brevo, from, replyTo, url: rawEnv('BREVO_API_URL') || 'https://api.brevo.com/v3/smtp/email' };
+
+  const sendgrid = rawEnv('SENDGRID_API_KEY');
+  if (sendgrid) return { kind: 'sendgrid', apiKey: sendgrid, from, replyTo, url: rawEnv('SENDGRID_API_URL') || 'https://api.sendgrid.com/v3/mail/send' };
+
+  const mailgun = rawEnv('MAILGUN_API_KEY');
+  const mailgunDomain = rawEnv('MAILGUN_DOMAIN');
+  if (mailgun && mailgunDomain) {
+    return {
+      kind: 'mailgun', apiKey: mailgun, from, replyTo, domain: mailgunDomain,
+      url: rawEnv('MAILGUN_API_URL') || ('https://api.mailgun.net/v3/' + mailgunDomain + '/messages')
+    };
+  }
+
+  const smtp = getConfig();
+  if (smtp.host && smtp.from) return { kind: 'smtp', smtp };
+  return null;
+}
+
 function isConfigured() {
-  const c = getConfig();
-  return !!(c.host && c.from);
+  return !!getTransport();
+}
+
+function transportName() {
+  const t = getTransport();
+  return t ? t.kind : 'none';
+}
+
+// "Clinic Name <info@domain.com>" → { email, name }
+function parseFrom(from) {
+  const m = /^\s*(.*?)\s*<([^>]+)>\s*$/.exec(String(from || ''));
+  if (m) return { name: m[1].replace(/^"|"$/g, '').trim(), email: m[2].trim() };
+  return { name: '', email: String(from || '').trim() };
+}
+
+// One HTTPS POST per provider — no dependencies, no SMTP ports involved.
+async function sendViaApi(t, mail) {
+  const from = parseFrom(t.from);
+  let url = t.url, headers = { 'Content-Type': 'application/json' }, body = null;
+
+  if (t.kind === 'resend') {
+    headers['Authorization'] = 'Bearer ' + t.apiKey;
+    body = { from: t.from, to: [mail.to], subject: mail.subject, text: mail.text };
+    if (mail.html) body.html = mail.html;
+    if (t.replyTo) body.reply_to = t.replyTo;
+  } else if (t.kind === 'brevo') {
+    headers['api-key'] = t.apiKey;
+    body = { sender: { email: from.email, name: from.name || undefined }, to: [{ email: mail.to }], subject: mail.subject, textContent: mail.text };
+    if (mail.html) body.htmlContent = mail.html;
+    if (t.replyTo) body.replyTo = { email: t.replyTo };
+  } else if (t.kind === 'sendgrid') {
+    headers['Authorization'] = 'Bearer ' + t.apiKey;
+    const content = [];
+    if (mail.text) content.push({ type: 'text/plain', value: mail.text });
+    if (mail.html) content.push({ type: 'text/html', value: mail.html });
+    body = {
+      personalizations: [{ to: [{ email: mail.to }] }],
+      from: { email: from.email, name: from.name || undefined },
+      reply_to: t.replyTo ? { email: t.replyTo } : undefined,
+      subject: mail.subject,
+      content: content,
+    };
+  } else if (t.kind === 'mailgun') {
+    // Mailgun expects form-encoded data with basic auth
+    const form = new URLSearchParams();
+    form.set('from', t.from);
+    form.set('to', mail.to);
+    form.set('subject', mail.subject);
+    if (mail.text) form.set('text', mail.text);
+    if (mail.html) form.set('html', mail.html);
+    if (t.replyTo) form.set('h:Reply-To', t.replyTo);
+    headers = { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + Buffer.from('api:' + t.apiKey).toString('base64') };
+    body = form.toString();
+  } else {
+    throw new Error('مزوّد بريد غير مدعوم');
+  }
+
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+  let res, text;
+  try {
+    res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body), signal: ctrl.signal });
+    text = await res.text();
+  } catch (err) {
+    throw new Error(err && err.name === 'AbortError' ? 'انتهت مهلة الاتصال بخدمة البريد' : ('تعذّر الاتصال بخدمة البريد: ' + (err && err.message)));
+  } finally {
+    clearTimeout(timer);
+  }
+  if (!res.ok) {
+    throw new Error('رفضت خدمة البريد الرسالة (' + res.status + '): ' + String(text || '').slice(0, 300));
+  }
+  return { sent: true };
 }
 
 function b64(s) { return Buffer.from(String(s), 'utf8').toString('base64'); }
@@ -251,16 +367,21 @@ function smtpSession(cfg) {
  * @returns {Promise<{sent:boolean, skipped?:boolean, error?:string}>}
  */
 async function sendMail({ to, subject, text, html }) {
-  const cfg = getConfig();
-  if (!cfg.host || !cfg.from) return { sent: false, skipped: true, error: 'SMTP غير مُعدّ' };
+  const t = getTransport();
+  if (!t) return { sent: false, skipped: true, error: 'لم تُعدّ خدمة البريد بعد (SMTP أو مفتاح API)' };
   if (!to) return { sent: false, error: 'لا يوجد بريد للمستلم' };
   try {
+    if (t.kind !== 'smtp') {
+      const r = await sendViaApi(t, { to, subject, text, html });
+      return { sent: !!(r && r.sent), transport: t.kind };
+    }
+    const cfg = t.smtp;
     cfg.message = { to, raw: buildMessage({ from: cfg.from, to, replyTo: cfg.replyTo, subject, text, html }) };
     const r = await smtpSession(cfg);
-    return { sent: !!(r && r.sent) };
+    return { sent: !!(r && r.sent), transport: 'smtp' };
   } catch (err) {
-    return { sent: false, error: err && err.message ? err.message : String(err) };
+    return { sent: false, transport: t.kind, error: err && err.message ? err.message : String(err) };
   }
 }
 
-module.exports = { sendMail, isConfigured, getConfig, buildMessage };
+module.exports = { sendMail, isConfigured, isTransportConfigured: isConfigured, getTransport, transportName, getConfig, buildMessage, parseFrom };

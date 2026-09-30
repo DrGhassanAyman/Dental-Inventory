@@ -2883,6 +2883,12 @@ async function enterOwnerPanel(){
   $('ownerOverlay').classList.remove('hidden');
   $('ownerTopSub').textContent='تعمل كمالك الموقع • '+new Date().toLocaleDateString('ar-JO');
   await ownerRefresh();
+  try{
+    const info=await apiFetch('/api/admin/me',{method:'GET'});
+    const names={smtp:'SMTP',resend:'Resend',brevo:'Brevo',sendgrid:'SendGrid',mailgun:'Mailgun',none:'غير مُعدّ'};
+    const t=(info&&info.mailTransport)||'none';
+    $('ownerTopSub').textContent+=' • البريد: '+(names[t]||t);
+  }catch(e){ /* ignore */ }
 }
 function closeOwnerPanel(){ $('ownerOverlay').classList.add('hidden'); $('authOverlay').classList.remove('hidden'); }
 async function openOwnerPanel(){
@@ -2920,9 +2926,12 @@ async function ownerRefresh(){
     ownerAccounts=r.accounts||[]; ownerInfo=r;
     ownerAccountById={}; ownerAccounts.forEach(a=>{ ownerAccountById[a.id]=a; });
     if(r.smtpConfigured){ warn.style.display='none'; }
+    else if(false){ /* kept for clarity */ }
     else{
       warn.style.display='block';
-      warn.innerHTML='⚠️ <b>إرسال البريد غير مُعدّ على الخادم</b> — يمكنك إنشاء الروابط المؤقتة ونسخها وإرسالها بنفسك (واتساب مثلاً). لتشغيل الإرسال التلقائي أضف متغيّرات البيئة <code dir="ltr">SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS</code> في إعدادات الاستضافة وأعد النشر.';
+      warn.innerHTML='⚠️ <b>إرسال البريد غير مُعدّ على الخادم</b> — يمكنك إنشاء الروابط المؤقتة ونسخها وإرسالها بنفسك (واتساب مثلاً).<br>'+
+        'لتشغيل الإرسال التلقائي أضف <b>مفتاح خدمة بريد</b> في متغيّرات البيئة: <code dir="ltr">RESEND_API_KEY</code> أو <code dir="ltr">BREVO_API_KEY</code> أو <code dir="ltr">SENDGRID_API_KEY</code> مع <code dir="ltr">MAIL_FROM</code> (يعمل على الخطة المجانية لأن الإرسال يمرّ عبر HTTPS).<br>'+
+        'أو استخدم SMTP <code dir="ltr">SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS</code> — لكن انتبه: <b>خطة Render المجانية تحجب منافذ SMTP</b> (25/465/587)، لذا يعمل SMTP فقط على خطة مدفوعة.';
     }
     renderOwnerPanel();
   }catch(err){ toast('❌ '+err.message,'error'); }

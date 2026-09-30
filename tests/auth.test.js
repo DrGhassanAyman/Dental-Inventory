@@ -168,6 +168,27 @@ function fakeSmtp(port) {
   })));
 }
 
+// Fake provider API (Resend-style JSON endpoint) — lets us verify the HTTPS path
+function fakeMailApi() {
+  const received = [];
+  const server = require('http').createServer((req, res) => {
+    let body = '';
+    req.on('data', c => { body += c; });
+    req.on('end', () => {
+      let json = null;
+      try { json = JSON.parse(body); } catch (e) { json = null; }
+      received.push({ url: req.url, auth: req.headers.authorization || req.headers['api-key'] || '', json: json });
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end('{"id":"fake"}');
+    });
+  });
+  return new Promise(resolve => server.listen(0, '127.0.0.1', () => resolve({
+    server, received,
+    url: 'http://127.0.0.1:' + server.address().port + '/emails',
+    close: () => new Promise(r => server.close(r)),
+  })));
+}
+
 function waitForHealth(port, tries = 60) {
   return new Promise((resolve, reject) => {
     const attempt = (n) => {
@@ -322,9 +343,74 @@ async function apiTests() {
   }
 }
 
+/* ---------------- Part C: HTTPS mail API (Render free plan blocks SMTP) ---------------- */
+async function mailApiTests() {
+  console.log('\n=== HTTPS mail API transport (free hosting blocks SMTP ports) ===');
+  const api = await fakeMailApi();
+  const appPort = 5000 + Math.floor(Math.random() * 900);
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dental-api-mail-'));
+  const child = spawn(process.execPath, [path.join(ROOT, 'server.js')], {
+    cwd: ROOT,
+    env: Object.assign({}, process.env, {
+      PORT: String(appPort),
+      DATA_DIR: dataDir,
+      RESEND_API_KEY: 'test-key-123',
+      RESEND_API_URL: api.url,
+      MAIL_FROM: 'عيادة الابتسامة <info@myclinic.com>',
+      ADMIN_USERNAME: 'GhassanAdmin',
+      ADMIN_PASSWORD: 'Alygzs@7',
+    }),
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  let log = '';
+  child.stdout.on('data', d => { log += d.toString(); });
+  child.stderr.on('data', d => { log += d.toString(); });
+  const base = 'http://127.0.0.1:' + appPort;
+  const post = async (p, body, token) => {
+    const r = await fetch(base + p, {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, token ? { Authorization: 'Bearer ' + token } : {}),
+      body: JSON.stringify(body || {}),
+    });
+    return { status: r.status, body: await r.json().catch(() => null) };
+  };
+  try {
+    const health = await waitForHealth(appPort);
+    check('the server reports the Resend transport',
+      health.features && health.features.emailReset === true && health.features.mailTransport === 'resend',
+      JSON.stringify(health.features));
+
+    let r = await post('/api/register', { clinicName: 'عيادة الابتسامة', username: 'api_clinic', password: 'secret1', email: 'boss@myclinic.com' });
+    check('registration still works with the API transport', r.status === 200, JSON.stringify(r.body));
+
+    r = await post('/api/forgot-password', { identifier: 'api_clinic' });
+    check('forgot-password is delivered through the HTTPS API',
+      r.status === 200 && r.body.delivery === 'email' && r.body.mailTransport === 'resend', JSON.stringify(r.body));
+    await new Promise(res => setTimeout(res, 150));
+    const call = api.received[api.received.length - 1];
+    check('the provider received the message with the domain sender and the reset link',
+      !!call && call.auth === 'Bearer test-key-123' && /info@myclinic.com/.test(call.json.from || '') &&
+      /reset=/.test(JSON.stringify(call.json)),
+      JSON.stringify(call && call.json).slice(0, 300));
+
+    const token = /reset=([a-f0-9]{32,})/.exec(JSON.stringify(call.json))[1];
+    r = await post('/api/reset-password', { token, newPassword: 'apiclinic99' });
+    check('the link sent through the API resets the password', r.status === 200, JSON.stringify(r.body));
+    r = await post('/api/login', { username: 'api_clinic', password: 'apiclinic99' });
+    check('the user can log in afterwards', r.status === 200);
+  } catch (err) {
+    check('API-transport flow completed without throwing', false, ((err && err.stack) || String(err)) + '\n' + log);
+  } finally {
+    child.kill('SIGKILL');
+    await api.close();
+    fs.rmSync(dataDir, { recursive: true, force: true });
+  }
+}
+
 async function main() {
   await uiTests();
   await apiTests();
+  await mailApiTests();
   console.log('\n' + pass + ' passed, ' + fail + ' failed');
   process.exit(fail ? 1 : 0);
 }
